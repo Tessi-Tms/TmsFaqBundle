@@ -57,4 +57,146 @@ class Response
      * @ORM\JoinColumn(name="consumer_search_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $consumerSearch;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set message
+     *
+     * @param string $message
+     * @return Response
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+    
+        return $this;
+    }
+
+    /**
+     * Get message
+     *
+     * @return string 
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * Set average
+     *
+     * @param float $average
+     * @return Response
+     */
+    public function setAverage($average)
+    {
+        $this->average = $average;
+    
+        return $this;
+    }
+
+    /**
+     * Get average
+     *
+     * @return float 
+     */
+    public function getAverage()
+    {
+        return $this->average;
+    }
+
+    /**
+     * Add questions
+     *
+     * @param \Tms\Bundle\FaqBundle\Entity\Question $questions
+     * @return Response
+     */
+    public function addQuestion(\Tms\Bundle\FaqBundle\Entity\Question $questions)
+    {
+        $this->questions[] = $questions;
+    
+        return $this;
+    }
+
+    /**
+     * Remove questions
+     *
+     * @param \Tms\Bundle\FaqBundle\Entity\Question $questions
+     */
+    public function removeQuestion(\Tms\Bundle\FaqBundle\Entity\Question $questions)
+    {
+        $this->questions->removeElement($questions);
+    }
+
+    /**
+     * Get questions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    /**
+     * Set evaluation
+     *
+     * @param \Tms\Bundle\FaqBundle\Entity\Evaluation $evaluation
+     * @return Response
+     */
+    public function setEvaluation(\Tms\Bundle\FaqBundle\Entity\Evaluation $evaluation = null)
+    {
+        $this->evaluation = $evaluation;
+    
+        return $this;
+    }
+
+    /**
+     * Get evaluation
+     *
+     * @return \Tms\Bundle\FaqBundle\Entity\Evaluation 
+     */
+    public function getEvaluation()
+    {
+        return $this->evaluation;
+    }
+
+    /**
+     * Set consumerSearch
+     *
+     * @param \Tms\Bundle\FaqBundle\Entity\ConsumerSearch $consumerSearch
+     * @return Response
+     */
+    public function setConsumerSearch(\Tms\Bundle\FaqBundle\Entity\ConsumerSearch $consumerSearch = null)
+    {
+        $this->consumerSearch = $consumerSearch;
+    
+        return $this;
+    }
+
+    /**
+     * Get consumerSearch
+     *
+     * @return \Tms\Bundle\FaqBundle\Entity\ConsumerSearch 
+     */
+    public function getConsumerSearch()
+    {
+        return $this->consumerSearch;
+    }
 }
