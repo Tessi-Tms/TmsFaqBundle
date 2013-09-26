@@ -49,17 +49,32 @@ class Faq
     private $customerId;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="faqs")
-     * @ORM\JoinColumn(name="question_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\OneToMany(targetEntity="FaqQuestionCategory", mappedBy="faq", cascade={"all"})
      */
-    private $question;
+    private $questionCategories;
 
     /**
-     * @ORM\ManyToOne(targetEntity="QuestionCategory", inversedBy="faqs")
-     * @ORM\JoinColumn(name="question_category_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\OneToMany(targetEntity="FaqQuestion", mappedBy="faq", cascade={"all"})
      */
-    private $questionCategory;
+    private $questions;
 
+    /**
+     * toString
+     */
+    public function __toString()
+    {
+        return $this->getCustomerId();
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->questionCategories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -140,48 +155,68 @@ class Faq
     }
 
     /**
-     * Set question
+     * Add questionCategories
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\Question $question
+     * @param \Tms\Bundle\FaqBundle\Entity\FaqQuestionCategory $questionCategories
      * @return Faq
      */
-    public function setQuestion(\Tms\Bundle\FaqBundle\Entity\Question $question = null)
+    public function addQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\FaqQuestionCategory $questionCategories)
     {
-        $this->question = $question;
+        $this->questionCategories[] = $questionCategories;
     
         return $this;
     }
 
     /**
-     * Get question
+     * Remove questionCategories
      *
-     * @return \Tms\Bundle\FaqBundle\Entity\Question 
+     * @param \Tms\Bundle\FaqBundle\Entity\FaqQuestionCategory $questionCategories
      */
-    public function getQuestion()
+    public function removeQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\FaqQuestionCategory $questionCategories)
     {
-        return $this->question;
+        $this->questionCategories->removeElement($questionCategories);
     }
 
     /**
-     * Set questionCategory
+     * Get questionCategories
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategory
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getQuestionCategories()
+    {
+        return $this->questionCategories;
+    }
+
+    /**
+     * Add questions
+     *
+     * @param \Tms\Bundle\FaqBundle\Entity\FaqQuestion $questions
      * @return Faq
      */
-    public function setQuestionCategory(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategory = null)
+    public function addQuestion(\Tms\Bundle\FaqBundle\Entity\FaqQuestion $questions)
     {
-        $this->questionCategory = $questionCategory;
+        $this->questions[] = $questions;
     
         return $this;
     }
 
     /**
-     * Get questionCategory
+     * Remove questions
      *
-     * @return \Tms\Bundle\FaqBundle\Entity\QuestionCategory 
+     * @param \Tms\Bundle\FaqBundle\Entity\FaqQuestion $questions
      */
-    public function getQuestionCategory()
+    public function removeQuestion(\Tms\Bundle\FaqBundle\Entity\FaqQuestion $questions)
     {
-        return $this->questionCategory;
+        $this->questions->removeElement($questions);
+    }
+
+    /**
+     * Get questions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
     }
 }

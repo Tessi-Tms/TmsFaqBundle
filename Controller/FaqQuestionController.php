@@ -7,55 +7,55 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Tms\Bundle\FaqBundle\Entity\Faq;
-use Tms\Bundle\FaqBundle\Form\FaqType;
+use Tms\Bundle\FaqBundle\Entity\FaqQuestion;
+use Tms\Bundle\FaqBundle\Form\FaqQuestionType;
 
 /**
- * Faq controller.
+ * FaqQuestion controller.
  *
- * @Route("/faq")
+ * @Route("/faqquestion")
  */
-class FaqController extends Controller
+class FaqQuestionController extends Controller
 {
     /**
-     * Lists all Faq entities.
+     * Lists all FaqQuestion entities.
      *
-     * @Route("/", name="tms_faq_faq")
+     * @Route("/", name="tms_faq_faq-question")
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
         return array(
-            'entities' => $this->get('tms_faq.manager.faq')->findAll(),
+            'entities' => $this->get('tms_faq.manager.faq_question')->findAll(),
         );
     }
 
     /**
-     * Creates a new Faq entity.
+     * Creates a new FaqQuestion entity.
      *
-     * @Route("/", name="tms_faq_faq_create")
+     * @Route("/", name="tms_faq_faq-question_create")
      * @Method("POST")
-     * @Template("TmsFaqBundle:Faq:new.html.twig")
+     * @Template("TmsFaqBundle:FaqQuestion:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity  = new Faq();
-        $form = $this->createForm(new FaqType(), $entity);
+        $entity  = new FaqQuestion();
+        $form = $this->createForm(new FaqQuestionType(), $entity);
         $form->submit($request);
 
         if ($form->isValid()) {
-            $this->get('tms_faq.manager.faq')->add($entity);
+            $this->get('tms_faq.manager.faq_question')->add($entity);
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans(
-                    'The faq %object% has been created',
+                    'The faq question %object% has been created',
                     array('%object%' => $entity->__toString())
                 )
             );
 
             return $this->redirect($this->generateUrl(
-                'tms_faq_faq_show',
+                'tms_faq_faq-question_show',
                 array('id' => $entity->getId())
             ));
         }
@@ -63,7 +63,7 @@ class FaqController extends Controller
         $this->get('session')->getFlashBag()->add(
             'error',
             $this->get('translator')->trans(
-                'The faq %object% was not created',
+                'The faq question %object% was not created',
                 array('%object%' => $entity->__toString())
             )
         );
@@ -75,16 +75,16 @@ class FaqController extends Controller
     }
 
     /**
-     * Displays a form to create a new Faq entity.
+     * Displays a form to create a new FaqQuestion entity.
      *
-     * @Route("/new", name="tms_faq_faq_new")
+     * @Route("/new", name="tms_faq_faq-question_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Faq();
-        $form   = $this->createForm(new FaqType(), $entity);
+        $entity = new FaqQuestion();
+        $form   = $this->createForm(new FaqQuestionType(), $entity);
 
         return array(
             'entity' => $entity,
@@ -93,18 +93,18 @@ class FaqController extends Controller
     }
 
     /**
-     * Finds and displays a Faq entity.
+     * Finds and displays a FaqQuestion entity.
      *
-     * @Route("/{id}", name="tms_faq_faq_show")
+     * @Route("/{id}", name="tms_faq_faq-question_show")
      * @Method("GET")
      * @Template()
      */
     public function showAction($id)
     {
-        $entity = $this->get('tms_faq.manager.faq')->find($id);
+        $entity = $this->get('tms_faq.manager.faq_question')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Faq entity.');
+            throw $this->createNotFoundException('Unable to find FaqQuestion entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -116,18 +116,18 @@ class FaqController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Faq entity.
+     * Displays a form to edit an existing FaqQuestion entity.
      *
-     * @Route("/{id}/edit", name="tms_faq_faq_edit")
+     * @Route("/{id}/edit", name="tms_faq_faq-question_edit")
      * @Method("GET")
      * @Template()
      */
     public function editAction($id)
     {
-        $entity = $this->get('tms_faq.manager.faq')->find($id);
+        $entity = $this->get('tms_faq.manager.faq_question')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Faq entity.');
+            throw $this->createNotFoundException('Unable to find FaqQuestion entity.');
         }
 
         $editForm = $this->createForm(new FaqType(), $entity);
@@ -141,36 +141,36 @@ class FaqController extends Controller
     }
 
     /**
-     * Edits an existing Faq entity.
+     * Edits an existing FaqQuestion entity.
      *
-     * @Route("/{id}", name="tms_faq_faq_update")
+     * @Route("/{id}", name="tms_faq_faq-question_update")
      * @Method("PUT")
-     * @Template("TmsFaqBundle:Faq:edit.html.twig")
+     * @Template("TmsFaqBundle:FaqQuestion:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
-        $entity = $this->get('tms_faq.manager.faq')->find($id);
+        $entity = $this->get('tms_faq.manager.faq_question')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Faq entity.');
+            throw $this->createNotFoundException('Unable to find FaqQuestion entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new FaqType(), $entity);
+        $editForm = $this->createForm(new FaqQuestionType(), $entity);
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
-            $this->get('tms_faq.manager.faq')->update($entity);
+            $this->get('tms_faq.manager.faq_question')->update($entity);
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans(
-                    'The faq %object% has been updated',
+                    'The faq question %object% has been updated',
                     array('%object%' => $entity->__toString())
                 )
             );
 
             return $this->redirect($this->generateUrl(
-                'tms_faq_faq_edit',
+                'tms_faq_faq-question_edit',
                 array('id' => $id)
             ));
         }
@@ -178,7 +178,7 @@ class FaqController extends Controller
         $this->get('session')->getFlashBag()->add(
             'error',
             $this->get('translator')->trans(
-                'The Faq %object% was not updated',
+                'The faq question %object% was not updated',
                 array('%object%' => $entity->__toString())
             )
         );
@@ -190,9 +190,9 @@ class FaqController extends Controller
         );
     }
     /**
-     * Deletes a Faq entity.
+     * Deletes a FaqQuestion entity.
      *
-     * @Route("/{id}", name="tms_faq_faq_delete")
+     * @Route("/{id}", name="tms_faq_faq-question_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -201,17 +201,17 @@ class FaqController extends Controller
         $form->submit($request);
 
         if ($form->isValid()) {
-            $entity = $this->get('tms_faq.manager.faq')->find($id);
+            $entity = $this->get('tms_faq.manager.faq_question')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Faq entity.');
+                throw $this->createNotFoundException('Unable to find FaqQuestion entity.');
             }
 
-            $this->get('tms_faq.manager.faq')->delete($entity);
+            $this->get('tms_faq.manager.faq_question')->delete($entity);
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans(
-                    'The faq %object% has been deleted',
+                    'The faq question %object% has been deleted',
                     array('%object%' => $entity->__toString())
                 )
             );
@@ -219,17 +219,17 @@ class FaqController extends Controller
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans(
-                    'The faq %object% was not deleted',
+                    'The faq question %object% was not deleted',
                     array('%object%' => $entity->__toString())
                 )
             );
         }
 
-        return $this->redirect($this->generateUrl('tms_faq_faq'));
+        return $this->redirect($this->generateUrl('tms_faq_faq-question'));
     }
 
     /**
-     * Creates a form to delete a Faq entity by id.
+     * Creates a form to delete a FaqQuestion entity by id.
      *
      * @param mixed $id The entity id
      *
