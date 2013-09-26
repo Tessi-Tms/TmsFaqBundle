@@ -33,4 +33,21 @@ class Question
      * @ORM\Column(name="content", type="text")
      */
     private $content;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Faq", mappedBy="question", cascade={"all"})
+     */
+    private $faqs;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Response", inversedBy="questions")
+     * @ORM\JoinColumn(name="response_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $response;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="QuestionCategory", inversedBy="questions")
+     * @ORM\JoinTable(name="question_catagory_question")
+     */
+    private $questionCategories;
 }

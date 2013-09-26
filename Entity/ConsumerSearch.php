@@ -11,12 +11,12 @@ namespace Tms\Bundle\FaqBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * QuestionCategory
+ * ConsumerSearch
  *
  * @ORM\Entity
- * @ORM\Table(name="question_category")
+ * @ORM\Table(name="consumer_search")
  */
-class QuestionCategory
+class ConsumerSearch
 {
     /**
      * @var integer
@@ -30,17 +30,19 @@ class QuestionCategory
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=128)
+     * @ORM\Column(name="query", type="string", length=255)
      */
-    private $name;
+    private $query;
 
     /**
-     * @ORM\OneToMany(targetEntity="Faq", mappedBy="questionCategory", cascade={"all"})
+     * @var boolean
+     *
+     * @ORM\Column(name="isProper", type="boolean")
      */
-    private $faqs;
+    private $isProper;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Question", mappedBy="questionCategories")
+     * @ORM\OneToMany(targetEntity="Response", mappedBy="consumerSearch", cascade={"all"})
      */
-    private $questions;
+    private $responses;
 }

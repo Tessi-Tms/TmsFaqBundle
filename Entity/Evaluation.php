@@ -11,12 +11,12 @@ namespace Tms\Bundle\FaqBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * QuestionCategory
+ * Evaluation
  *
  * @ORM\Entity
- * @ORM\Table(name="question_category")
+ * @ORM\Table(name="evaluation")
  */
-class QuestionCategory
+class Evaluation
 {
     /**
      * @var integer
@@ -28,19 +28,21 @@ class QuestionCategory
     private $id;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="name", type="string", length=128)
+     * @ORM\Column(name="value", type="integer")
      */
-    private $name;
+    private $value;
 
     /**
-     * @ORM\OneToMany(targetEntity="Faq", mappedBy="questionCategory", cascade={"all"})
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $faqs;
+    private $createdAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Question", mappedBy="questionCategories")
+     * @ORM\OneToMany(targetEntity="Response", mappedBy="evaluation", cascade={"all"})
      */
-    private $questions;
+    private $responses;
 }

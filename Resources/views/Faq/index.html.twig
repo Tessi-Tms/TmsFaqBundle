@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Faq list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Enabled</th>
+                <th>Displayfromrules</th>
+                <th>Customerid</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('faq_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.enabled }}</td>
+                <td>{{ entity.displayFromRules }}</td>
+                <td>{{ entity.customerId }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('faq_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('faq_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('faq_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

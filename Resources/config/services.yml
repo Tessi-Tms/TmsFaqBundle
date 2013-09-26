@@ -1,0 +1,13 @@
+services:
+    tms_faq.manager.faq:
+        class: Tms\Bundle\FaqBundle\Manager\FaqManager
+        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+    tms_faq.manager.question:
+        class: Tms\Bundle\FaqBundle\Manager\QuestionManager
+        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+    tms_faq.manager.question_category:
+        class: Tms\Bundle\FaqBundle\Manager\QuestionCategoryManager
+        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+    tms_faq.manager.response:
+        class: Tms\Bundle\FaqBundle\Manager\ResponseManager
+        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]

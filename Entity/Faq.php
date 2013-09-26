@@ -47,4 +47,16 @@ class Faq
      * @ORM\Column(name="customerId", type="string", length=32)
      */
     private $customerId;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="faqs")
+     * @ORM\JoinColumn(name="question_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $question;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="QuestionCategory", inversedBy="faqs")
+     * @ORM\JoinColumn(name="question_category_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $questionCategory;
 }
