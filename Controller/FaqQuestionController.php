@@ -130,7 +130,7 @@ class FaqQuestionController extends Controller
             throw $this->createNotFoundException('Unable to find FaqQuestion entity.');
         }
 
-        $editForm = $this->createForm(new FaqType(), $entity);
+        $editForm = $this->createForm(new FaqQuestionType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
