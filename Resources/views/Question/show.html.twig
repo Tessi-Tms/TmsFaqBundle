@@ -1,0 +1,38 @@
+{% extends 'TmsComplaintBundle::layout.html.twig' %}
+
+{% block nav %}
+    {% include 'TmsComplaintBundle::nav.html.twig' with {'active' : ['faq', 'question']} %}
+{% endblock %}
+
+{% block main %}
+    <h1>{% trans %}Faq Question{% endtrans %}</h1>
+
+    <table class="table table-condensed table-bordered">
+        <tbody>
+            <tr>
+                <th>{% trans %}Content{% endtrans %}</th>
+                <td>{{ entity.content }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="actions">
+        <li>
+            <a href="{{ path('tms_faq_question') }}" class="btn">
+                {% trans %}Back to the list{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('tms_faq_question_edit', { 'id': entity.id }) }}" class="btn">
+                {% trans %}Edit{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <form action="{{ path('tms_faq_question_delete', { 'id': entity.id }) }}" method="post">
+                <input type="hidden" name="_method" value="DELETE" />
+                {{ form_widget(delete_form) }}
+                <button type="submit" class="btn">{% trans %}Delete{% endtrans %}</button>
+            </form>
+        </li>
+    </ul>
+{% endblock %}

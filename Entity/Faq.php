@@ -21,7 +21,7 @@ class Faq
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -30,31 +30,31 @@ class Faq
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean")
+     * @ORM\Column(type="boolean")
      */
     private $enabled;
 
     /**
      * @var array
      *
-     * @ORM\Column(name="displayFromRules", type="object")
+     * @ORM\Column(name="display_from_rules", type="object")
      */
     private $displayFromRules;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="customerId", type="string", length=32)
+     * @ORM\Column(name="customer_id", type="string", length=32)
      */
     private $customerId;
 
     /**
-     * @ORM\OneToMany(targetEntity="FaqQuestionCategory", mappedBy="faq", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="QuestionCategory", mappedBy="faq", cascade={"all"})
      */
     private $questionCategories;
 
     /**
-     * @ORM\OneToMany(targetEntity="FaqQuestion", mappedBy="faq", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="faq", cascade={"all"})
      */
     private $questions;
 
@@ -160,7 +160,7 @@ class Faq
      * @param \Tms\Bundle\FaqBundle\Entity\FaqQuestionCategory $questionCategories
      * @return Faq
      */
-    public function addQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\FaqQuestionCategory $questionCategories)
+    public function addQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories)
     {
         $this->questionCategories[] = $questionCategories;
     
@@ -170,9 +170,9 @@ class Faq
     /**
      * Remove questionCategories
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\FaqQuestionCategory $questionCategories
+     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories
      */
-    public function removeQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\FaqQuestionCategory $questionCategories)
+    public function removeQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories)
     {
         $this->questionCategories->removeElement($questionCategories);
     }
@@ -190,10 +190,10 @@ class Faq
     /**
      * Add questions
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\FaqQuestion $questions
+     * @param \Tms\Bundle\FaqBundle\Entity\Question $questions
      * @return Faq
      */
-    public function addQuestion(\Tms\Bundle\FaqBundle\Entity\FaqQuestion $questions)
+    public function addQuestion(\Tms\Bundle\FaqBundle\Entity\Question $questions)
     {
         $this->questions[] = $questions;
     
@@ -203,9 +203,9 @@ class Faq
     /**
      * Remove questions
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\FaqQuestion $questions
+     * @param \Tms\Bundle\FaqBundle\Entity\Question $questions
      */
-    public function removeQuestion(\Tms\Bundle\FaqBundle\Entity\FaqQuestion $questions)
+    public function removeQuestion(\Tms\Bundle\FaqBundle\Entity\Question $questions)
     {
         $this->questions->removeElement($questions);
     }

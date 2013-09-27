@@ -45,9 +45,4 @@ public function registerBundles()
 }
 ```
 
-Not forget to install asset
-```sh
-php app/console assets:install --symlink
-```
-
 Now the Bundle is installed.
