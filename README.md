@@ -45,4 +45,10 @@ public function registerBundles()
 }
 ```
 
+Not forget to update schema with command:
+
+```sh
+php app/console doctrine:schema:update --force
+```
+
 Now the Bundle is installed.
