@@ -17,8 +17,7 @@
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
         "symfony/framework-bundle": ">=2.3",
-        "twig/twig": "*",
-        "tms/complaint-bundle":  "*"
+        "twig/twig": "*"
     },
     "autoload": {
         "psr-0": { "Tms\\Bundle\\FaqBundle": "" }

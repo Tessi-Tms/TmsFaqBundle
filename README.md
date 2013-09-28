@@ -1,5 +1,5 @@
 TmsFaqBundle
-=========================
+============
 
 Symfony 2 bundle to manage Faq
 
@@ -9,7 +9,6 @@ Installation
 To install this bundle please follow the next steps:
 
 First add the dependency in your `composer.json` file:
-
 ```json
 "repositories": [
     ...,
@@ -24,14 +23,7 @@ First add the dependency in your `composer.json` file:
     },
 ```
 
-Then install the bundle with the command:
-
-```sh
-php composer update
-```
-
 Enable the bundle in your application kernel:
-
 ```php
 <?php
 // app/AppKernel.php
@@ -45,8 +37,12 @@ public function registerBundles()
 }
 ```
 
-Not forget to update schema with command:
+Then install the bundle with the command:
+```sh
+php composer update
+```
 
+Not forget to update schema with command:
 ```sh
 php app/console doctrine:schema:update --force
 ```
