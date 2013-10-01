@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * FaqResponse
  *
  * @ORM\Entity
- * @ORM\Table(name="response")
+ * @ORM\Table(name="faq_response")
  */
 class Response
 {

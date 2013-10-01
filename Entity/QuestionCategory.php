@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * QuestionCategory
  *
  * @ORM\Entity
- * @ORM\Table(name="question_category")
+ * @ORM\Table(name="faq_question_category")
  */
 class QuestionCategory
 {
