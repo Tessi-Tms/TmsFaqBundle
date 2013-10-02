@@ -46,11 +46,8 @@ class Question
     private $responses;
 
     /**
-     * @ORM\ManyToMany(targetEntity="QuestionCategory")
-     * @ORM\JoinTable(name="faq_question_question_categories",
-     *      joinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="question_category_id", referencedColumnName="id", onDelete="CASCADE")}
-     *      )
+     * @ORM\ManyToMany(targetEntity="QuestionCategory", inversedBy="questions")
+     * @ORM\JoinTable(name="faq_question_question_categories")
      */
     private $questionCategories;
 
