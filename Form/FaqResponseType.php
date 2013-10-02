@@ -19,7 +19,6 @@ class FaqResponseType extends ResponseType
         if(!$faq) {
             throw new MissingRelatedEntityException('Faq', $this);
         }
-
         parent::buildForm($builder, $options);
         $builder->add('question', 'entity', array(
             'class' => 'Tms\Bundle\FaqBundle\Entity\Question',
