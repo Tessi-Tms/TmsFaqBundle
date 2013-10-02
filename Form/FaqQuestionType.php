@@ -5,8 +5,9 @@ namespace Tms\Bundle\FaqBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tms\Bundle\FaqBundle\Exception\MissingRelatedEntityException;
 
-class ResponseType extends AbstractType
+class FaqQuestionType extends QuestionType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -14,21 +15,15 @@ class ResponseType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('message')
-            ->add('average')
-            ->add('question')
-        ;
-    }
+        $faq = $builder->getData()->getFaq();
+        if(!$faq) {
+            throw new MissingRelatedEntityException('Faq', $this);
+        }
 
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Tms\Bundle\FaqBundle\Entity\Response'
-        ));
+        parent::buildForm($builder, $options);
+        $builder
+            ->remove('faq')
+        ;
     }
 
     /**
@@ -36,6 +31,6 @@ class ResponseType extends AbstractType
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_responsetype';
+        return 'tms_bundle_faqbundle_faqquestiontype';
     }
 }

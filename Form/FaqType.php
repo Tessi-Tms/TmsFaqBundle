@@ -15,7 +15,7 @@ class FaqType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('enabled')
+            ->add('enabled', 'checkbox', array('required' => false))
             ->add('displayFromRules')
             ->add('customerId')
         ;
@@ -36,6 +36,6 @@ class FaqType extends AbstractType
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_faq';
+        return 'tms_bundle_faqbundle_faqtype';
     }
 }

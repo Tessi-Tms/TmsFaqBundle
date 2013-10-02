@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class QuestionType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -36,6 +36,6 @@ class QuestionType extends AbstractType
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_question';
+        return 'tms_bundle_faqbundle_questiontype';
     }
 }

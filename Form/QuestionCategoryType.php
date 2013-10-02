@@ -35,6 +35,6 @@ class QuestionCategoryType extends AbstractType
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_questioncategory';
+        return 'tms_bundle_faqbundle_questioncategorytype';
     }
 }

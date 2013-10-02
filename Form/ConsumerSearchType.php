@@ -36,6 +36,6 @@ class ConsumerSearchType extends AbstractType
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_consumersearch';
+        return 'tms_bundle_faqbundle_consumersearchtype';
     }
 }

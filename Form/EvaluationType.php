@@ -35,6 +35,6 @@ class EvaluationType extends AbstractType
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_evaluation';
+        return 'tms_bundle_faqbundle_evaluationtype';
     }
 }
