@@ -41,6 +41,11 @@ class QuestionCategory
     private $faq;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Question", mappedBy="questionCategories")
+     */
+    private $questions;
+
+    /**
      * toString
      */
     public function __toString()
@@ -102,5 +107,45 @@ class QuestionCategory
     public function getFaq()
     {
         return $this->faq;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add questions
+     *
+     * @param \Tms\Bundle\FaqBundle\Entity\Question $questions
+     * @return QuestionCategory
+     */
+    public function addQuestion(\Tms\Bundle\FaqBundle\Entity\Question $questions)
+    {
+        $this->questions[] = $questions;
+    
+        return $this;
+    }
+
+    /**
+     * Remove questions
+     *
+     * @param \Tms\Bundle\FaqBundle\Entity\Question $questions
+     */
+    public function removeQuestion(\Tms\Bundle\FaqBundle\Entity\Question $questions)
+    {
+        $this->questions->removeElement($questions);
+    }
+
+    /**
+     * Get questions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
     }
 }
