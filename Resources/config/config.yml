@@ -3,12 +3,6 @@ idci_exporter:
     entities:
         faqs:
             class: "Tms\\Bundle\\FaqBundle\\Entity\\Faq"
-        questions:
-            class: "Tms\\Bundle\\FaqBundle\\Entity\\Question"
-        questionCategories:
-            class: "Tms\\Bundle\\FaqBundle\\Entity\\QuestionCategory"
-        reponses:
-            class: "Tms\\Bundle\\FaqBundle\\Entity\\Response"
         evaluations:
             class: "Tms\\Bundle\\FaqBundle\\Entity\\Evaluation"
         consumerSearchs:
