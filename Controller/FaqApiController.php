@@ -16,7 +16,7 @@ use Tms\Bundle\FaqBundle\Entity\Faq;
  *
  * @Route("/faqs")
  */
-class ApiController extends Controller
+class FaqApiController extends Controller
 {
 
    /**

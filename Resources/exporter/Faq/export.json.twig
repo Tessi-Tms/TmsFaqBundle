@@ -4,17 +4,18 @@
         {% for questioncategory in entity.questioncategories %}
         {% if not loop.first %},{% endif %}
         {
-            "name":{{ questioncategory.name }},
+            "name":"{{ questioncategory.name }}",
             "questions": [
             {% for question in questioncategory.questions %}
             {% if not loop.first %},{% endif %}
             {
-                "question":{{ question.content }},
+                "question":"{{ question.content }}",
                 "responses": [
                 {% for response in question.responses %}
                 {% if not loop.first %},{% endif %}
                 {
-                    "response":{{ response.message }}
+                    "response": "{{ response.message }}",
+                    "average": "{{ response.average }}"
                 }
                 {% endfor %}
                 ]
