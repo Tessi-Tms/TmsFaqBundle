@@ -29,9 +29,6 @@ class ApiController extends Controller
     public function getAction(Request $request, Faq $faq)
     {
         $format = $request->getRequestFormat();
-        //$question = $this->get('tms_faq.manager.faq')->findBy(array('faq'=>$faq));
-        //$faq = $this->get('tms_faq.manager.faq')->findAllIn($faq->getId());
-        //var_dump($faq);die;
         $export = $this->get('idci_exporter.manager')->export(array($faq), $format);
 
         $response = new Response();
