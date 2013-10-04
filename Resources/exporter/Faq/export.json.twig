@@ -4,27 +4,24 @@
         {% for questioncategory in entity.questioncategories %}
         {% if not loop.first %},{% endif %}
         {
-            "questionCategories":[
+            "name":{{ questioncategory.name }},
+            "questions": [
+            {% for question in questioncategory.questions %}
+            {% if not loop.first %},{% endif %}
+            {
+                "question":{{ question.content }},
+                "responses": [
+                {% for response in question.responses %}
+                {% if not loop.first %},{% endif %}
                 {
-                    "name":{{ questioncategory.name }},
-                    {% for question in questioncategory %}
-                    {% if not loop.first %},{% endif %}
-                        "questions": [
-                            {
-                                "content":{{ question.content }},
-                                "responses": [
-                                    {
-                                        {% for response in question.responses %}
-                                        {% if not loop.first %},{% endif %}
-                                            "message":{{ response.message }}
-                                        {% endfor %}
-                                    }
-                                ]
-                            }
-                        ]
-                    {% endfor %}
+                    "response":{{ response.message }}
                 }
+                {% endfor %}
+                ]
+            }
+            {% endfor %}
             ]
         }
+        {% endfor %}
     ]
 }
