@@ -14,6 +14,9 @@ services:
     tms_faq.manager.evaluation:
         class: Tms\Bundle\FaqBundle\Manager\EvaluationManager
         arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+    tms_faq.manager.consumer_search:
+        class: Tms\Bundle\FaqBundle\Manager\ConsumerSearchManager
+        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
 
     tms_faq.manager:
         class: Tms\Bundle\FaqBundle\Manager\Manager
@@ -23,4 +26,5 @@ services:
             - @tms_faq.manager.question_category
             - @tms_faq.manager.response
             - @tms_faq.manager.evaluation
+            - @tms_faq.manager.consumer_search
             - @event_dispatcher

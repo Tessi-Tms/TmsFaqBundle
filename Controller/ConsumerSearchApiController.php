@@ -10,31 +10,32 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Tms\Bundle\FaqBundle\Exception\ResponseNotFoundException;
-use Tms\Bundle\FaqBundle\Entity\Evaluation;
+use Tms\Bundle\FaqBundle\Entity\ConsumerSearch;
 
 /**
  * Api controller.
  *
- * @Route("/evaluations")
+ * @Route("/consumerSearchs")
  */
-class EvaluationApiController extends Controller
+class ConsumerSearchApiController extends Controller
 {
 
    /**
-    * Post an Evaluation
+    * Post a Consumer Search
     *
-    * @Route(".{_format}", name="tms_faq_api_evaluations_post", defaults={"_format"="json"})
+    * @Route(".{_format}", name="tms_faq_api_consumer-searchs_post", defaults={"_format"="json"})
     * @Method("POST")
     */
     public function postAction(Request $request)
     {
         $response_id = $request->request->get('response_id');
-        $value = $request->request->get('value');
+        $answerFound = $request->request->get('answerFound');
+        $query = $request->request->get('query');
         $format = $request->getRequestFormat();
         $response = new Response();
         try{
-            $evaluation = $this->get('tms_faq.manager')->addEvaluation($response_id, $value);
-            $export = $this->get('idci_exporter.manager')->export(array($evaluation),
+            $consumerSearch = $this->get('tms_faq.manager')->addConsumerSearch($response_id, $answerFound,$query);
+            $export = $this->get('idci_exporter.manager')->export(array($consumerSearch),
                 $format
             );
             $response->setStatusCode(201);

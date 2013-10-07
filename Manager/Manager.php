@@ -9,8 +9,10 @@ use Tms\Bundle\FaqBundle\Manager\QuestionManager;
 use Tms\Bundle\FaqBundle\Manager\QuestionCategoryManager;
 use Tms\Bundle\FaqBundle\Manager\ResponseManager;
 use Tms\Bundle\FaqBundle\Manager\EvaluationManager;
+use Tms\Bundle\FaqBundle\Manager\ConsumerSearchManager;
 use Tms\Bundle\FaqBundle\Exception\EntityNotFoundException;
 use Tms\Bundle\FaqBundle\Entity\Evaluation;
+use Tms\Bundle\FaqBundle\Entity\ConsumerSearch;
 
 /**
  * Manager.
@@ -24,6 +26,7 @@ class Manager
     protected $questionCategoryManager;
     protected $responseManager;
     protected $evaluationManager;
+    protected $consumerSearchManager;
     protected $eventDispatcher;
 
     public function __construct(FaqManager $faqManager,
@@ -31,6 +34,7 @@ class Manager
                                 QuestionCategoryManager $questionCategoryManager,
                                 ResponseManager $responseManager,
                                 EvaluationManager $evaluationManager,
+                                ConsumerSearchManager $consumerSearchManager,
                                 ContainerAwareEventDispatcher $eventDispatcher)
     {
         $this->faqManager = $faqManager;
@@ -38,6 +42,7 @@ class Manager
         $this->questionCategoryManager = $questionCategoryManager;
         $this->responseManager = $responseManager;
         $this->evaluationManager = $evaluationManager;
+        $this->consumerSearchManager = $consumerSearchManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -92,6 +97,16 @@ class Manager
     }
 
     /**
+     * Get ConsumerSearchManager
+     *
+     * @return ConsumerSearchManager
+     */
+    public function getConsumerSearchManager()
+    {
+        return $this->consumerSearchManager;
+    }
+
+    /**
      * Get EventDispatcher
      *
      * @return ContainerAwareEventDispatcher
@@ -122,4 +137,28 @@ class Manager
 
         return $entity;
     }
+
+    /**
+     * Create a consumerSearch for a given response, answerFound and query
+     * @param string $responseId
+     * @param string $answerFound
+     * @param string $query
+     * @param string $userId
+     * @return ConsumerSearch
+     */
+    public function addConsumerSearch($response_id, $answerFound, $query, $userId = null)
+    {
+        $entity = new ConsumerSearch();
+        $response = $this->getResponseManager()->find($response_id);
+        if(!$response){
+            throw new EntityNotFoundException();
+        }
+        $entity->setResponse($response);
+        $entity->setAnswerFound((bool)$answerFound);
+        $entity->setQuery($query);
+        $this->getConsumerSearchManager()->add($entity);
+
+        return $entity;
+    }
+    
 }
