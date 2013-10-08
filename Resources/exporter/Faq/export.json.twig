@@ -1,20 +1,23 @@
 {
     "id": "{{ entity.id }}",
     "title": "{{ entity.title }}",
-    "questioncategories": [
+    "questionCategories": [
         {% for questioncategory in entity.questioncategories %}
         {% if not loop.first %},{% endif %}
         {
+            "id":"{{ questioncategory.id }}",
             "name":"{{ questioncategory.name }}",
             "questions": [
             {% for question in questioncategory.questions %}
             {% if not loop.first %},{% endif %}
             {
+                "id":"{{ question.id }}",
                 "question":"{{ question.content }}",
                 "responses": [
                 {% for response in question.responses %}
                 {% if not loop.first %},{% endif %}
                 {
+                    "id": "{{ response.id }}",
                     "response": "{{ response.message }}",
                     "average": "{{ response.average }}"
                 }
