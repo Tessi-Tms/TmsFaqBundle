@@ -28,6 +28,13 @@ class Faq
     private $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=32)
+     */
+    private $title;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(type="boolean")
@@ -218,5 +225,28 @@ class Faq
     public function getQuestions()
     {
         return $this->questions;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Faq
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 }

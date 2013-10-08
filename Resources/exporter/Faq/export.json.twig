@@ -1,5 +1,6 @@
 {
     "id": "{{ entity.id }}",
+    "title": "{{ entity.title }}",
     "questioncategories": [
         {% for questioncategory in entity.questioncategories %}
         {% if not loop.first %},{% endif %}

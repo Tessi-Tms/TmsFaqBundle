@@ -19,6 +19,30 @@ use Tms\Bundle\FaqBundle\Entity\Faq;
 class FaqApiController extends Controller
 {
 
+    /**
+     * Get All Faqs
+     *
+     * @Route(".{_format}", name="tms_faq_api_faqs_list", defaults={"_format"="json"})
+     * @Method("GET")
+     */
+    public function listAction(Request $request)
+    {
+        $format = $request->getRequestFormat();
+
+        $export = $this->get('idci_exporter.manager')->export(
+             $this->get('tms_faq.manager.faq')->findAll(),
+             $format
+        );
+
+        $response = new Response();
+        $response->setContent($export->getContent());
+        $response->headers->set(
+            'Content-Type',
+            sprintf('%s; charset=UTF-8', $export->getContentType())
+        );
+        return $response;
+    }
+    
    /**
     * Get a faq by its id
     *

@@ -15,6 +15,7 @@ class FaqType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('title')
             ->add('enabled', 'checkbox', array('required' => false))
             ->add('displayFromRules')
             ->add('customerId')
