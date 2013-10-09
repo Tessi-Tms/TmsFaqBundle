@@ -6,7 +6,8 @@
         {% if not loop.first %},{% endif %}
         {
             "id":"{{ questioncategory.id }}",
-            "name":"{{ questioncategory.name }}"
+            "name":"{{ questioncategory.name }}",
+            "slug":"{{ questioncategory.slug }}"
         }
         {% endfor %}
     ],

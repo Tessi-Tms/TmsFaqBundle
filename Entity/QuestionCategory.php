@@ -9,12 +9,14 @@
 namespace Tms\Bundle\FaqBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Tms\Bundle\FaqBundle\Tools\StringTools;
 
 /**
  * QuestionCategory
  *
  * @ORM\Entity
  * @ORM\Table(name="faq_question_category")
+ * @ORM\HasLifecycleCallbacks()
  */
 class QuestionCategory
 {
@@ -33,6 +35,13 @@ class QuestionCategory
      * @ORM\Column(type="string", length=128)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=128)
+     */
+    private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="Faq", inversedBy="questionCategories")
@@ -54,6 +63,26 @@ class QuestionCategory
     }
 
     /**
+     * On create
+     *
+     * @ORM\PrePersist()
+     */
+    public function onCreate()
+    {
+        $this->setSlug(StringTools::slugify($this->getName()));
+    }
+
+    /**
+     * On update
+     *
+     * @ORM\PreUpdate()
+     */
+    public function onUpdate()
+    {
+        $this->setSlug(StringTools::slugify($this->getName()));
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -67,12 +96,12 @@ class QuestionCategory
      * Set name
      *
      * @param string $name
-     * @return FaqQuestionCategory
+     * @return QuestionCategory
      */
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
@@ -87,10 +116,33 @@ class QuestionCategory
     }
 
     /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return QuestionCategory
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * Set faq
      *
      * @param \Tms\Bundle\FaqBundle\Entity\Faq $faq
-     * @return FaqQuestionCategory
+     * @return QuestionCategory
      */
     public function setFaq(\Tms\Bundle\FaqBundle\Entity\Faq $faq = null)
     {
@@ -108,6 +160,7 @@ class QuestionCategory
     {
         return $this->faq;
     }
+
     /**
      * Constructor
      */
