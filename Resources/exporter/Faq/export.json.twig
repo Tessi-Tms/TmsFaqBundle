@@ -6,14 +6,25 @@
         {% if not loop.first %},{% endif %}
         {
             "id":"{{ questioncategory.id }}",
-            "name":"{{ questioncategory.name }}",
-            "questions": [
-            {% for question in questioncategory.questions %}
-            {% if not loop.first %},{% endif %}
-            {
-                "id":"{{ question.id }}",
-                "content":"{{ question.content }}",
-                "responses": [
+            "name":"{{ questioncategory.name }}"
+        }
+        {% endfor %}
+    ],
+    "questions": [
+        {% for question in entity.questions %}
+        {% if not loop.first %},{% endif %}
+        {
+            "id":"{{ question.id }}",
+            "content":"{{ question.content }}",
+            "questionCategories": [
+                {% for questionCategory in question.questionCategories %}
+                {% if not loop.first %},{% endif %}
+                {
+                    "id": "{{ questionCategory.id }}"
+                }
+                {% endfor %}
+            ],
+            "responses": [
                 {% for response in question.responses %}
                 {% if not loop.first %},{% endif %}
                 {
@@ -22,9 +33,6 @@
                     "average": "{{ response.average }}"
                 }
                 {% endfor %}
-                ]
-            }
-            {% endfor %}
             ]
         }
         {% endfor %}
