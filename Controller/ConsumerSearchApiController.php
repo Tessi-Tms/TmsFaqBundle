@@ -36,6 +36,7 @@ class ConsumerSearchApiController extends Controller
         $response = new Response();
         try{
             $consumerSearch = $this->get('tms_faq.manager')->addConsumerSearch($response_id, $answerFound, $query, $user_id);
+            $response->setStatusCode(201);
             $response->setContent(json_encode(true));
             $response->headers->set(
                 'Content-Type',
