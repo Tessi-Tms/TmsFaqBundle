@@ -135,6 +135,7 @@ class Manager
         $entity->setValue($value);
         // set UserId
         $this->getEvaluationManager()->add($entity);
+        $this->getResponseManager()->computeAverage($response);
 
         return $entity;
     }
@@ -162,5 +163,4 @@ class Manager
 
         return $entity;
     }
-    
 }

@@ -74,4 +74,25 @@ class ResponseManager extends AbstractManager
             new ResponseEvent($entity)
         );
     }
+
+    /**
+     * Compute average for a given Response
+     * @param Response $response
+     * @return float
+     */
+    public function computeAverage($entity)
+    {
+        $evaluations = $entity->getEvaluations();
+        $average = 0;
+        $numberOfEvaluation = count($evaluations);
+        if($numberOfEvaluation != 0){
+            foreach($evaluations->toArray() as $evaluation){
+                $average = $average + $evaluation->getValue();
+            }
+            $average = $average/$numberOfEvaluation;
+            //$average = array_sum($evaluations->toArray())/$numberOfEvaluation;
+        }
+        $entity->setAverage($average);
+        $this->update($entity);
+    }
 }

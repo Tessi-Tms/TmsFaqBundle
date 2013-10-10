@@ -35,9 +35,9 @@ class Response
     private $message;
 
     /**
-     * @var float
+     * @var decimal
      *
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="decimal", precision=5, scale=2)
      */
     private $average;
 
