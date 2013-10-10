@@ -52,7 +52,6 @@ class FaqApiController extends Controller
     */
     public function getAction(Request $request, Faq $faq)
     {
-        var_dump($request);die;
         $format = $request->getRequestFormat();
         $export = $this->get('idci_exporter.manager')->export(array($faq), $format);
 
