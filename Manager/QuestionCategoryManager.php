@@ -50,7 +50,6 @@ class QuestionCategoryManager extends AbstractManager
         );
 
         parent::update($entity);
-
         $this->getEventDispatcher()->dispatch(
             QuestionCategoryEvents::POST_UPDATE,
             new QuestionCategoryEvent($entity)

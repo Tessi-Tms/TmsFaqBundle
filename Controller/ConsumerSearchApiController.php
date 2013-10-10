@@ -31,18 +31,15 @@ class ConsumerSearchApiController extends Controller
         $response_id = $request->request->get('response_id');
         $answerFound = $request->request->get('answerFound');
         $query = $request->request->get('query');
+        $user_id = $request->request->get('user_id');
         $format = $request->getRequestFormat();
         $response = new Response();
         try{
-            $consumerSearch = $this->get('tms_faq.manager')->addConsumerSearch($response_id, $answerFound,$query);
-            $export = $this->get('idci_exporter.manager')->export(array($consumerSearch),
-                $format
-            );
-            $response->setStatusCode(201);
-            $response->setContent($export->getContent());
+            $consumerSearch = $this->get('tms_faq.manager')->addConsumerSearch($response_id, $answerFound, $query, $user_id);
+            $response->setContent(json_encode(true));
             $response->headers->set(
                 'Content-Type',
-                sprintf('%s; charset=UTF-8', $export->getContentType())
+                sprintf('%s; charset=UTF-8', $format)
             );
         }
         catch(\Exception $e){

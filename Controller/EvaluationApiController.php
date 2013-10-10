@@ -30,18 +30,16 @@ class EvaluationApiController extends Controller
     {
         $response_id = $request->request->get('response_id');
         $value = $request->request->get('value');
+        $user_id = $request->request->get('user_id');
         $format = $request->getRequestFormat();
         $response = new Response();
         try{
-            $evaluation = $this->get('tms_faq.manager')->addEvaluation($response_id, $value);
-            $export = $this->get('idci_exporter.manager')->export(array($evaluation),
-                $format
-            );
+            $evaluation = $this->get('tms_faq.manager')->addEvaluation($response_id, $value, $user_id);
             $response->setStatusCode(201);
-            $response->setContent($export->getContent());
+            $response->setContent(json_encode(true));
             $response->headers->set(
                 'Content-Type',
-                sprintf('%s; charset=UTF-8', $export->getContentType())
+                sprintf('%s; charset=UTF-8', $format)
             );
         }
         catch(\Exception $e){

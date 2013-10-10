@@ -133,6 +133,7 @@ class Manager
         }
         $entity->setResponse($response);
         $entity->setValue($value);
+        // set UserId
         $this->getEvaluationManager()->add($entity);
 
         return $entity;
@@ -156,6 +157,7 @@ class Manager
         $entity->setResponse($response);
         $entity->setAnswerFound((bool)$answerFound);
         $entity->setQuery($query);
+        // set UserId
         $this->getConsumerSearchManager()->add($entity);
 
         return $entity;
