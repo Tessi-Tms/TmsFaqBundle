@@ -3,6 +3,8 @@ TmsFaqBundle
 
 Symfony 2 bundle to manage Faq
 
+TmsFaqClientBundle it's an API which allow to call easily the web service -> see the documentation: https://github.com/Tessi-Tms/TmsFaqClientBundle
+
 Installation
 ============
 
