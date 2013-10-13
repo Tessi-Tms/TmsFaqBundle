@@ -14,9 +14,11 @@
     ],
     "require": {
         "php": ">=5.3.3",
+        "symfony/framework-bundle": ">=2.3",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
-        "symfony/framework-bundle": ">=2.3",
+        "twig/twig": "*",
+        "idci/exporter-bundle": "dev-master",
         "da/api-client-bundle": "dev-master"
     },
     "autoload": {
