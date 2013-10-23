@@ -51,7 +51,7 @@ class Faq
     /**
      * @var string
      *
-     * @ORM\Column(name="customer_id", type="string", length=32)
+     * @ORM\Column(name="customer_id", type="string", length=32, unique=true)
      */
     private $customerId;
 
