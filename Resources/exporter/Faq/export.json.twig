@@ -1,13 +1,14 @@
+{% autoescape false %}
 {
     "id": "{{ entity.id }}",
-    "title": "{{ entity.title }}",
+    "title": {{ entity.title | json_encode }},
     "questionCategories": [
         {% for questioncategory in entity.questioncategories %}
         {% if not loop.first %},{% endif %}
         {
-            "id":"{{ questioncategory.id }}",
-            "name":"{{ questioncategory.name }}",
-            "slug":"{{ questioncategory.slug }}"
+            "id": "{{ questioncategory.id }}",
+            "name": {{ questioncategory.name | json_encode }},
+            "slug": {{ questioncategory.slug | json_encode }}
         }
         {% endfor %}
     ],
@@ -15,8 +16,8 @@
         {% for question in entity.questions %}
         {% if not loop.first %},{% endif %}
         {
-            "id":"{{ question.id }}",
-            "content":"{{ question.content }}",
+            "id": "{{ question.id }}",
+            "content": {{ question.content | json_encode }},
             "questionCategories": [
                 {% for questionCategory in question.questionCategories %}
                 {% if not loop.first %},{% endif %}
@@ -30,8 +31,8 @@
                 {% if not loop.first %},{% endif %}
                 {
                     "id": "{{ response.id }}",
-                    "message": "{{ response.message }}",
-                    "average": "{{ response.average }}"
+                    "message": {{ response.message | json_encode}},
+                    "average": {{ response.average | json_encode }}
                 }
                 {% endfor %}
             ]
@@ -39,3 +40,4 @@
         {% endfor %}
     ]
 }
+{% endautoescape %}
