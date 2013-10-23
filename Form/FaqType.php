@@ -17,7 +17,6 @@ class FaqType extends AbstractType
         $builder
             ->add('title')
             ->add('enabled', 'checkbox', array('required' => false))
-            ->add('displayFromRules')
             ->add('customerId')
         ;
     }
