@@ -172,16 +172,6 @@ class Manager
      */
     public function search($customerId, $searchQuery)
     {
-        
-        /*foreach($data as $keyword) {
-            if(is_null($keyword)) {
-                continue;
-            }
-            $param[] = StringTools::deleteAccent($value);
-        }
-        $query = implode(" +", $param);*/
-
-
         $faq = $this->getFaqManager()->findOneByCustomerId(array("customerId" => $customerId));
 
         $arrayQuestions = $this->getQuestionManager()->search($searchQuery, $faq);
