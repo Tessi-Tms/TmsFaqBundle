@@ -44,14 +44,14 @@ class Faq
     /**
      * @var array
      *
-     * @ORM\Column(name="display_from_rules", type="object")
+     * @ORM\Column(name="display_from_rules", type="json_array", nullable=true)
      */
     private $displayFromRules;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="customer_id", type="string", length=32)
+     * @ORM\Column(name="customer_id", type="string", length=32, unique=true)
      */
     private $customerId;
 
@@ -118,7 +118,7 @@ class Faq
     /**
      * Set displayFromRules
      *
-     * @param \stdClass $displayFromRules
+     * @param array $displayFromRules
      * @return Faq
      */
     public function setDisplayFromRules($displayFromRules)
@@ -131,7 +131,7 @@ class Faq
     /**
      * Get displayFromRules
      *
-     * @return \stdClass 
+     * @return array 
      */
     public function getDisplayFromRules()
     {

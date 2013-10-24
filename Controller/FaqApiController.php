@@ -18,7 +18,6 @@ use Tms\Bundle\FaqBundle\Entity\Faq;
  */
 class FaqApiController extends Controller
 {
-
     /**
      * Get All Faqs
      *
@@ -28,25 +27,23 @@ class FaqApiController extends Controller
     public function listAction(Request $request)
     {
         $format = $request->getRequestFormat();
-        $customerId = $request->request->get('customer_id');
-        if($customerId){
-            $export = $this->get('idci_exporter.manager')->export(
-             $this->get('tms_faq.manager.faq')->findOneBy(array("customerId" => $customerId)),
-             $format
-            );
+        $faqs = array();
+        if ($request->query->has('customer_id')) {
+            $faqs = array($this->get('tms_faq.manager.faq')->findOneBy(array(
+                'customerId' => $request->query->get('customer_id')
+            )));
+        } else {
+            $faqs = $this->get('tms_faq.manager.faq')->findAll();
         }
-        else{
-            $export = $this->get('idci_exporter.manager')->export(
-             $this->get('tms_faq.manager.faq')->findAll(),
-             $format
-        );
-        }
+
+        $export = $this->get('idci_exporter.manager')->export($faqs, $format);
         $response = new Response();
         $response->setContent($export->getContent());
         $response->headers->set(
             'Content-Type',
             sprintf('%s; charset=UTF-8', $export->getContentType())
         );
+
         return $response;
     }
 
@@ -68,27 +65,7 @@ class FaqApiController extends Controller
             'Content-Type',
             sprintf('%s; charset=UTF-8', $export->getContentType())
         );
-        return $response;
-    }
 
-    /**
-     * Get a faq by its customerId
-     *
-     * @Route("/{customerId}.{_format}", name="tms_faq_api_faqs_get", defaults={"_format"="json"})
-     * @ParamConverter("faq", class="TmsFaqBundle:Faq", options={"customerId" = "customerId"})
-     * @Method("GET")
-     */
-    public function getByCustomerAction(Request $request, Faq $faq)
-    {
-        $format = $request->getRequestFormat();
-        $export = $this->get('idci_exporter.manager')->export(array($faq), $format);
-
-        $response = new Response();
-        $response->setContent($export->getContent());
-        $response->headers->set(
-            'Content-Type',
-            sprintf('%s; charset=UTF-8', $export->getContentType())
-        );
         return $response;
     }
 }
