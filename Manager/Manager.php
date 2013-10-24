@@ -179,7 +179,6 @@ class Manager
         if(!$faq){
             throw new EntityNotFoundException();
         }
-
         $arrayResponses = $this->getResponseManager()->search($searchQuery);
 
         $resultFaq = new Faq();

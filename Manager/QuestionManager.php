@@ -107,7 +107,6 @@ class QuestionManager extends AbstractManager
         foreach ($hits as $hit) {
             $ids[] = $hit->key;
         }
-        var_dump($ids);die;
         return $this->findAllIn($ids, $faq);
     }
 

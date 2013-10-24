@@ -30,8 +30,8 @@ class FaqApiController extends Controller
         $faqs = array();
         if ($request->query->has('customer_id')) {
             if($request->query->has('search_query')){
-                $customerId = $request->query->has('customer_id');
-                $searchQuery = $request->query->has('search_query');
+                $customerId = $request->query->get('customer_id');
+                $searchQuery = $request->query->get('search_query');
                 $faq = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
                 $faqs = array($faq);
             }else{
