@@ -29,9 +29,17 @@ class FaqApiController extends Controller
         $format = $request->getRequestFormat();
         $faqs = array();
         if ($request->query->has('customer_id')) {
-            $faqs = array($this->get('tms_faq.manager.faq')->findOneBy(array(
-                'customerId' => $request->query->get('customer_id')
-            )));
+            if($request->query->has('search_query')){
+                $customerId = $request->query->has('customer_id');
+                $searchQuery = $request->query->has('search_query');
+                $faq = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
+                $faqs = array($faq);
+            }else{
+                $faqs = array($this->get('tms_faq.manager.faq')->findOneBy(array(
+                    'customerId' => $request->query->get('customer_id')
+                )));
+            }
+            
         } else {
             $faqs = $this->get('tms_faq.manager.faq')->findAll();
         }
@@ -75,12 +83,12 @@ class FaqApiController extends Controller
      * @Route("/search/{customerId}/{searchQuery}.{_format}", name="tms_faq_api_faqs_search", defaults={"_format"="json"})
      * @Method("GET")
      */
-    public function searchAction(Request $request, $customerId, $searchQuery)
+   /* public function searchAction(Request $request, $customerId, $searchQuery)
     {
         $format = $request->getRequestFormat();
         $faq = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
 
-        $export = $this->get('idci_exporter.manager')->export(array($faq), $format);
+        $export = $this->get('idci_exporter.manager')->export(array($faq, $format);
 
         $response = new Response();
         $response->setContent($export->getContent());
@@ -90,5 +98,5 @@ class FaqApiController extends Controller
         );
 
         return $response;
-    }
+    }*/
 }
