@@ -179,6 +179,7 @@ class Manager
             throw new EntityNotFoundException();
         }
 
+        $faq = new Faq();
         $arrayQuestions = $this->getQuestionManager()->search($searchQuery, $faq);
         $arrayResponses = $this->getResponseManager()->search($searchQuery);
 
@@ -193,7 +194,7 @@ class Manager
                         }
                     }
                 }
-                $this->getQuestionManager()->update($question);
+                //$this->getQuestionManager()->update($question);
             }
         }
 
