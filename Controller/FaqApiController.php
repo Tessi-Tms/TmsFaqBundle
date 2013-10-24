@@ -68,4 +68,28 @@ class FaqApiController extends Controller
 
         return $response;
     }
+
+    /**
+     * Search questions and match responses
+     *
+     * @Route("/search/{customerId}/{searchQuery}.{_format}", name="tms_faq_api_faqs_search", defaults={"_format"="json"})
+     * @Method("GET")
+     */
+    public function searchAction(Request $request, $customerId, $searchQuery)
+    {
+        $format = $request->getRequestFormat();
+
+        $questions = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
+
+        $export = $this->get('idci_exporter.manager')->export($questions, $format);
+
+        $response = new Response();
+        $response->setContent($export->getContent());
+        $response->headers->set(
+            'Content-Type',
+            sprintf('%s; charset=UTF-8', $export->getContentType())
+        );
+
+        return $response;
+    }
 }

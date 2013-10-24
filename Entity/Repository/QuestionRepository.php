@@ -22,12 +22,13 @@ class QuestionRepository extends EntityRepository
      * @param array $ids
      * @return array
      */
-    public function findAllIn($ids)
+    public function findAllIn($ids, $faq)
     {
         $qb = $this->createQueryBuilder('question');
 
         return $qb
             ->where($qb->expr()->in('question.id', $ids))
+            ->where($qb->expr()->in('question.faq', $faq->getId()))
             ->getQuery()
             ->getResult()
         ;

@@ -92,7 +92,7 @@ class QuestionManager extends AbstractManager
      *
      * @return array Questions
      */
-    public function search($query)
+    public function search($query, $faq)
     {
         if(is_null($query)) {
             return $this->findAll();
@@ -109,7 +109,7 @@ class QuestionManager extends AbstractManager
             $ids[] = $hit->key;
         }
 
-        return $this->findAllIn($ids);
+        return $this->findAllIn($ids, $faq);
     }
 
 }

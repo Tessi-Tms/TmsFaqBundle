@@ -170,10 +170,9 @@ class Manager
      * @param array $parameters
      * @return array
      */
-    public function search($data)
+    public function search($customerId, $searchQuery)
     {
-        $param = array();
-
+        
         /*foreach($data as $keyword) {
             if(is_null($keyword)) {
                 continue;
@@ -182,8 +181,11 @@ class Manager
         }
         $query = implode(" +", $param);*/
 
-        $arrayQuestions = $this->getQuestionManager()->search($data);
-        $arrayResponses = $this->getResponseManager()->search($data);
+
+        $faq = $this->getFaqManager()->findOneByCustomerId(array("customerId" => $customerId));
+
+        $arrayQuestions = $this->getQuestionManager()->search($searchQuery, $faq);
+        $arrayResponses = $this->getResponseManager()->search($searchQuery);
 
         if(!is_null($arrayQuestions)){
             foreach($arrayQuestions as $question){
