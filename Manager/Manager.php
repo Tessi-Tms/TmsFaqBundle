@@ -14,6 +14,7 @@ use Tms\Bundle\FaqBundle\Exception\EntityNotFoundException;
 use Tms\Bundle\FaqBundle\Entity\Evaluation;
 use Tms\Bundle\FaqBundle\Entity\ConsumerSearch;
 use Tms\Bundle\FaqBundle\Entity\Faq;
+use Tms\Bundle\FaqBundle\Entity\Question;
 
 /**
  * Manager.
@@ -179,23 +180,16 @@ class Manager
             throw new EntityNotFoundException();
         }
 
-        $arrayQuestions = $this->getQuestionManager()->search($searchQuery, $faq);
         $arrayResponses = $this->getResponseManager()->search($searchQuery);
+
         $resultFaq = new Faq();
-        if(!is_null($arrayQuestions)){
-            foreach($arrayQuestions as $question){
-                $question->deleteResponse();
-                if(!is_null($arrayResponses)){
-                    foreach($arrayResponses as $response){
-                        if($response->getQuestion()->getId() == $question->getId()){
-                            $question->addResponse($response);
-                        }
-                    }
-                }
-               $resultFaq->addQuestion($question);
+        
+        if(!is_null($arrayResponses)){
+            foreach($arrayResponses as $response){
+                $question = $response->getQuestion();
+                $resultFaq->addQuestion($question);
             }
         }
-        
         return $resultFaq;
     }
 }

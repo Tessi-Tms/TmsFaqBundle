@@ -89,6 +89,7 @@ class QuestionManager extends AbstractManager
      * Search entity via indexer
      *
      * @param string $query
+     * @param Faq $faq
      *
      * @return array Questions
      */
@@ -97,18 +98,16 @@ class QuestionManager extends AbstractManager
         if(is_null($query)) {
             return $this->findAll();
         }
-
         $hits = $this->indexer->search($query);
 
         if(!$hits) {
             return array();
         }
-
         $ids = array();
         foreach ($hits as $hit) {
             $ids[] = $hit->key;
         }
-
+        var_dump($ids);die;
         return $this->findAllIn($ids, $faq);
     }
 

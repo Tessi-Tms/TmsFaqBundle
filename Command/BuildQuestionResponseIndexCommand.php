@@ -20,30 +20,13 @@ class BuildQuestionResponseIndexCommand extends ContainerAwareCommand
         $i = 0;
         $k = 0;
 
-        $question_indexer = $this->getContainer()->get('tms_faq.indexer.question');
         $response_indexer = $this->getContainer()->get('tms_faq.indexer.response');
-
-        $questions = $this
-            ->getContainer()
-            ->get('tms_faq.manager.question')
-            ->findAll()
-        ;
 
         $responses = $this
             ->getContainer()
             ->get('tms_faq.manager.response')
             ->findAll()
         ;
-
-        foreach($questions as $question) {
-            $output->writeln(sprintf(
-                '<info>%d > Build index for "%s" question (#%d)</info>',
-                ++$i,
-                $question->__toString(),
-                $question->getId()
-            ));
-            $question_indexer->add($question);
-        }
 
         foreach($responses as $response) {
             $output->writeln(sprintf(
@@ -55,7 +38,6 @@ class BuildQuestionResponseIndexCommand extends ContainerAwareCommand
             $response_indexer->add($response);
         }
 
-        $question_indexer->write();
         $response_indexer->write();
 
         $output->writeln(sprintf(

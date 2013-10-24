@@ -22,5 +22,14 @@ class QuestionIndexer extends AbstractIndexer
 
         $document->addField(Field::keyword('key', $entity->getId()));
         $document->addField(Field::text('content', StringTools::deleteAccent($entity->getContent()), 'utf-8'));
+        
+        $responses = $entity->getResponses();
+        if(!is_null($responses)){
+            foreach($responses as $response)
+            {
+                $document->addField(Field::keyword('responseId', $response->getId()));
+                $document->addField(Field::keyword('message', $response->getMessage()));
+            }
+        }
     }
 }

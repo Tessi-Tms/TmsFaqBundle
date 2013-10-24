@@ -28,7 +28,7 @@ class QuestionRepository extends EntityRepository
 
         return $qb
             ->where($qb->expr()->in('question.id', $ids))
-            ->where($qb->expr()->in('question.faq', $faq->getId()))
+            //->andwhere($qb->expr()->in('question.faq', $faq->getId()))
             ->getQuery()
             ->getResult()
         ;
