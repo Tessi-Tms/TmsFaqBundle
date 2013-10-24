@@ -13,6 +13,7 @@ use Tms\Bundle\FaqBundle\Manager\ConsumerSearchManager;
 use Tms\Bundle\FaqBundle\Exception\EntityNotFoundException;
 use Tms\Bundle\FaqBundle\Entity\Evaluation;
 use Tms\Bundle\FaqBundle\Entity\ConsumerSearch;
+use Tms\Bundle\FaqBundle\Entity\Faq;
 
 /**
  * Manager.
@@ -167,7 +168,8 @@ class Manager
     
     /**
      * Search questions and match responses
-     * @param array $parameters
+     * @param string $customerId
+     * @param string $searchQuery
      * @return array
      */
     public function search($customerId, $searchQuery)
