@@ -78,10 +78,9 @@ class FaqApiController extends Controller
     public function searchAction(Request $request, $customerId, $searchQuery)
     {
         $format = $request->getRequestFormat();
+        $faq = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
 
-        $questions = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
-
-        $export = $this->get('idci_exporter.manager')->export($questions, $format);
+        $export = $this->get('idci_exporter.manager')->export(array($faq), $format);
 
         $response = new Response();
         $response->setContent($export->getContent());

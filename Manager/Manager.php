@@ -175,6 +175,9 @@ class Manager
     public function search($customerId, $searchQuery)
     {
         $faq = $this->getFaqManager()->findOneByCustomerId(array("customerId" => $customerId));
+        if(!$faq){
+            throw new EntityNotFoundException();
+        }
 
         $arrayQuestions = $this->getQuestionManager()->search($searchQuery, $faq);
         $arrayResponses = $this->getResponseManager()->search($searchQuery);
@@ -186,12 +189,14 @@ class Manager
                     foreach($arrayResponses as $response){
                         if($response->getQuestion()->getId() == $question->getId()){
                             $question->addResponse($response);
+                            
                         }
                     }
                 }
+                $this->getQuestionManager()->update($question);
             }
         }
 
-        return $arrayQuestions;
+        return $faq;
     }
 }
