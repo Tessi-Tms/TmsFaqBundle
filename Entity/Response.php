@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * FaqResponse
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Tms\Bundle\FaqBundle\Entity\Repository\ResponseRepository")
  * @ORM\Table(name="faq_response")
  */
 class Response
@@ -82,7 +82,7 @@ class Response
      * Set message
      *
      * @param string $message
-     * @return FaqResponse
+     * @return Response
      */
     public function setMessage($message)
     {
@@ -105,7 +105,7 @@ class Response
      * Set average
      *
      * @param float $average
-     * @return FaqResponse
+     * @return Response
      */
     public function setAverage($average)
     {
@@ -128,7 +128,7 @@ class Response
      * Set question
      *
      * @param \Tms\Bundle\FaqBundle\Entity\Question $question
-     * @return FaqResponse
+     * @return Response
      */
     public function setQuestion(\Tms\Bundle\FaqBundle\Entity\Question $question = null)
     {

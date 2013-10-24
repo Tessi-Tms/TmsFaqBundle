@@ -73,7 +73,7 @@ class Manager
      */
     public function getQuestionCategoryManager()
     {
-        return $this->questionCategoryqManager;
+        return $this->questionCategoryManager;
     }
 
     /**
@@ -162,5 +162,42 @@ class Manager
         $this->getConsumerSearchManager()->add($entity);
 
         return $entity;
+    }
+
+    
+    /**
+     * Search questions and match responses
+     * @param array $parameters
+     * @return array
+     */
+    public function search($data)
+    {
+        $param = array();
+
+        /*foreach($data as $keyword) {
+            if(is_null($keyword)) {
+                continue;
+            }
+            $param[] = StringTools::deleteAccent($value);
+        }
+        $query = implode(" +", $param);*/
+
+        $arrayQuestions = $this->getQuestionManager()->search($data);
+        $arrayResponses = $this->getResponseManager()->search($data);
+
+        if(!is_null($arrayQuestions)){
+            foreach($arrayQuestions as $question){
+                $question->deleteResponse();
+                if(!is_null($arrayResponses)){
+                    foreach($arrayResponses as $response){
+                        if($response->getQuestion()->getId() == $question->getId()){
+                            $question->addResponse($response);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $arrayQuestions;
     }
 }

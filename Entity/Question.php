@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Question
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Tms\Bundle\FaqBundle\Entity\Repository\QuestionRepository")
  * @ORM\Table(name="faq_question")
  */
 class Question
@@ -138,13 +138,26 @@ class Question
     }
 
     /**
-     * Remove responses
+     * Remove response
      *
      * @param \Tms\Bundle\FaqBundle\Entity\Response $responses
      */
     public function removeResponse(\Tms\Bundle\FaqBundle\Entity\Response $responses)
     {
         $this->responses->removeElement($responses);
+    }
+
+    /**
+     * Delete responses
+     *
+     * @param \Tms\Bundle\FaqBundle\Entity\Response $responses
+     */
+    public function deleteResponse()
+    {
+        $responses = $this->getResponses();
+        foreach($responses as $response){
+            $this->removeResponse($response);
+        }
     }
 
     /**

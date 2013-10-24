@@ -1,0 +1,14 @@
+{
+    "id": "{{ entity.id }}",
+    "content": "{{ entity.content }}",
+    "responses": [
+        {% for response in entity.responses %}
+        {% if not loop.first %},{% endif %}
+        {
+            "id": "{{ response.id }}",
+            "message": "{{ response.message }}",
+            "average": "{{ response.average }}"
+        }
+        {% endfor %}
+    ]
+}

@@ -4,13 +4,13 @@ services:
         arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
     tms_faq.manager.question:
         class: Tms\Bundle\FaqBundle\Manager\QuestionManager
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+        arguments: [@doctrine.orm.entity_manager, @event_dispatcher, @tms_faq.indexer.question]
     tms_faq.manager.question_category:
         class: Tms\Bundle\FaqBundle\Manager\QuestionCategoryManager
         arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
     tms_faq.manager.response:
         class: Tms\Bundle\FaqBundle\Manager\ResponseManager
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+        arguments: [@doctrine.orm.entity_manager, @event_dispatcher, @tms_faq.indexer.response]
     tms_faq.manager.evaluation:
         class: Tms\Bundle\FaqBundle\Manager\EvaluationManager
         arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
@@ -28,3 +28,11 @@ services:
             - @tms_faq.manager.evaluation
             - @tms_faq.manager.consumer_search
             - @event_dispatcher
+
+    tms_faq.indexer.question:
+        class: Tms\Bundle\FaqBundle\Indexer\QuestionIndexer
+        arguments:  [@ewz_search.lucene]
+
+    tms_faq.indexer.response:
+        class: Tms\Bundle\FaqBundle\Indexer\ResponseIndexer
+        arguments:  [@ewz_search.lucene]

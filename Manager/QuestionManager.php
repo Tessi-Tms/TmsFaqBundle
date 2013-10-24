@@ -1,10 +1,12 @@
 <?php
-
 namespace Tms\Bundle\FaqBundle\Manager;
 
 use Tms\Bundle\FaqBundle\Entity\Question;
 use Tms\Bundle\FaqBundle\Event\QuestionEvent;
 use Tms\Bundle\FaqBundle\Event\QuestionEvents;
+use Tms\Bundle\FaqBundle\Indexer\QuestionIndexer;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
 /**
  * Question manager.
@@ -13,6 +15,14 @@ use Tms\Bundle\FaqBundle\Event\QuestionEvents;
  */
 class QuestionManager extends AbstractManager
 {
+    protected $indexer;
+
+    public function __construct(EntityManager $entityManager, ContainerAwareEventDispatcher $eventDispatcher, QuestionIndexer $questionIndexer)
+    {
+        parent::__construct($entityManager, $eventDispatcher);
+        $this->indexer = $questionIndexer;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -74,4 +84,32 @@ class QuestionManager extends AbstractManager
             new QuestionEvent($entity)
         );
     }
+
+    /**
+     * Search entity via indexer
+     *
+     * @param string $query
+     *
+     * @return array Questions
+     */
+    public function search($query)
+    {
+        if(is_null($query)) {
+            return $this->findAll();
+        }
+
+        $hits = $this->indexer->search($query);
+
+        if(!$hits) {
+            return array();
+        }
+
+        $ids = array();
+        foreach ($hits as $hit) {
+            $ids[] = $hit->key;
+        }
+
+        return $this->findAllIn($ids);
+    }
+
 }

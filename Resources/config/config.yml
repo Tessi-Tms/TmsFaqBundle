@@ -7,3 +7,7 @@ idci_exporter:
             class: "Tms\\Bundle\\FaqBundle\\Entity\\Evaluation"
         consumerSearchs:
             class: "Tms\\Bundle\\FaqBundle\\Entity\\ConsumerSearch"
+        questions:
+            class: "Tms\\Bundle\\FaqBundle\\Entity\\Question"
+        responses:
+            class: "Tms\\Bundle\\FaqBundle\\Entity\\Response"
