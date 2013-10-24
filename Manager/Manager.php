@@ -179,10 +179,9 @@ class Manager
             throw new EntityNotFoundException();
         }
 
-        $faq = new Faq();
         $arrayQuestions = $this->getQuestionManager()->search($searchQuery, $faq);
         $arrayResponses = $this->getResponseManager()->search($searchQuery);
-
+        $resultFaq = new Faq();
         if(!is_null($arrayQuestions)){
             foreach($arrayQuestions as $question){
                 $question->deleteResponse();
@@ -190,14 +189,13 @@ class Manager
                     foreach($arrayResponses as $response){
                         if($response->getQuestion()->getId() == $question->getId()){
                             $question->addResponse($response);
-                            
                         }
                     }
                 }
-                //$this->getQuestionManager()->update($question);
+               $resultFaq->addQuestion($question);
             }
         }
-
-        return $faq;
+        
+        return $resultFaq;
     }
 }
