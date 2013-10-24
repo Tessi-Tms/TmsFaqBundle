@@ -1,6 +1,14 @@
 {
     "id": "{{ entity.id }}",
     "content": "{{ entity.content }}",
+    "questionCategories": [
+        {% for questionCategory in entity.questionCategories %}
+        {% if not loop.first %},{% endif %}
+        {
+            "id": "{{ questionCategory.id }}"
+        }
+        {% endfor %}
+    ],
     "responses": [
         {% for response in entity.responses %}
         {% if not loop.first %},{% endif %}
