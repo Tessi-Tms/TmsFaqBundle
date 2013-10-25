@@ -246,4 +246,21 @@ class Question implements MetadatableInterface
     {
         return $this->tags;
     }
+
+    /**
+     * Has tags
+     *
+     * @param array $tags
+     * @return boolean
+     */
+    public function hasTags($tags)
+    {
+        foreach ($this->getTags() as $tag) {
+            if (in_array($tag->getKey(), $tags)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

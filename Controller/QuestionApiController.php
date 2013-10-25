@@ -18,7 +18,6 @@ use Tms\Bundle\FaqBundle\Entity\Question;
  */
 class QuestionApiController extends Controller
 {
-
     /**
      * Search questions and match responses
      *
@@ -28,14 +27,7 @@ class QuestionApiController extends Controller
     public function searchAction(Request $request, $query)
     {
         $format = $request->getRequestFormat();
-        /*$parameters = array();
-        foreach($request->request->all() as $param){
-            $parameters[] = $param;
-        }
-        var_dump($request->request->get('mot1'));die;*/
-
         $questions = $this->get('tms_faq.manager')->search($query);
-        //var_dump($questions); die;
         $export = $this->get('idci_exporter.manager')->export($questions, $format);
 
         $response = new Response();

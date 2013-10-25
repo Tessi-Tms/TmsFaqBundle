@@ -8,7 +8,13 @@
         {
             "id": "{{ questioncategory.id }}",
             "name": {{ questioncategory.name | json_encode }},
-            "slug": {{ questioncategory.slug | json_encode }}
+            "slug": {{ questioncategory.slug | json_encode }},
+            "tags": {
+                {% for tag in questioncategory.tags %}
+                {% if not loop.first %},{% endif %}
+                "{{ tag.key }}":"{{ tag.value }}"
+                {% endfor %}
+            }
         }
         {% endfor %}
     ],

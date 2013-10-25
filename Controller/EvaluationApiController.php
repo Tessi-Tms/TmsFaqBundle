@@ -19,7 +19,6 @@ use Tms\Bundle\FaqBundle\Entity\Evaluation;
  */
 class EvaluationApiController extends Controller
 {
-
    /**
     * Post an Evaluation
     *

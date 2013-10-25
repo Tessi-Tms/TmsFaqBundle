@@ -66,6 +66,11 @@ class Faq
     private $questions;
 
     /**
+     * @var array
+     */
+    public $tagsFilter = null;
+
+    /**
      * toString
      */
     public function __toString()
@@ -80,6 +85,7 @@ class Faq
     {
         $this->questionCategories = new \Doctrine\Common\Collections\ArrayCollection();
         $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tagsFilter = null;
     }
 
     /**
@@ -247,6 +253,17 @@ class Faq
      */
     public function getQuestions()
     {
-        return $this->questions;
+        if (null === $this->tagsFilter) {
+            return $this->questions;
+        }
+
+        $questions = array();
+        foreach ($this->questions as $question) {
+            if ($question->hasTags($this->tagsFilter)) {
+                $questions[] = $question;
+            }
+        }
+
+        return $questions;
     }
 }
