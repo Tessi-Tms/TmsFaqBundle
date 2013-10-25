@@ -27,7 +27,6 @@ services:
             - @tms_faq.manager.response
             - @tms_faq.manager.evaluation
             - @tms_faq.manager.consumer_search
-            - @event_dispatcher
 
     tms_faq.indexer.question:
         class: Tms\Bundle\FaqBundle\Indexer\QuestionIndexer

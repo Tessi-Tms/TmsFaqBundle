@@ -3,7 +3,6 @@
 namespace Tms\Bundle\FaqBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Tms\Bundle\FaqBundle\Manager\FaqManager;
 use Tms\Bundle\FaqBundle\Manager\QuestionManager;
 use Tms\Bundle\FaqBundle\Manager\QuestionCategoryManager;
@@ -29,15 +28,13 @@ class Manager
     protected $responseManager;
     protected $evaluationManager;
     protected $consumerSearchManager;
-    protected $eventDispatcher;
 
     public function __construct(FaqManager $faqManager,
                                 QuestionManager $questionManager,
                                 QuestionCategoryManager $questionCategoryManager,
                                 ResponseManager $responseManager,
                                 EvaluationManager $evaluationManager,
-                                ConsumerSearchManager $consumerSearchManager,
-                                ContainerAwareEventDispatcher $eventDispatcher)
+                                ConsumerSearchManager $consumerSearchManager)
     {
         $this->faqManager = $faqManager;
         $this->questionManager = $questionManager;
@@ -45,7 +42,6 @@ class Manager
         $this->responseManager = $responseManager;
         $this->evaluationManager = $evaluationManager;
         $this->consumerSearchManager = $consumerSearchManager;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -109,16 +105,6 @@ class Manager
     }
 
     /**
-     * Get EventDispatcher
-     *
-     * @return ContainerAwareEventDispatcher
-     */
-    public function getEventDispatcher()
-    {
-        return $this->eventDispatcher;
-    }
-
-    /**
      * Create an evaluation for a given response
      *
      * @param string $responseId
@@ -144,6 +130,7 @@ class Manager
 
     /**
      * Create a consumerSearch for a given response, answerFound and query
+     *
      * @param string $responseId
      * @param string $answerFound
      * @param string $query
@@ -169,6 +156,7 @@ class Manager
     
     /**
      * Search questions and match responses
+     *
      * @param string $customerId
      * @param string $searchQuery
      * @return array
@@ -176,19 +164,21 @@ class Manager
     public function search($customerId, $searchQuery)
     {
         $faq = $this->getFaqManager()->findOneByCustomerId(array("customerId" => $customerId));
-        if(!$faq){
+        if (!$faq) {
             throw new EntityNotFoundException();
         }
         $arrayResponses = $this->getResponseManager()->search($searchQuery);
+        var_dump($arrayResponses); die;
 
         $resultFaq = new Faq();
-        
-        if(!is_null($arrayResponses)){
-            foreach($arrayResponses as $response){
+
+        if (!is_null($arrayResponses)) {
+            foreach ($arrayResponses as $response) {
                 $question = $response->getQuestion();
                 $resultFaq->addQuestion($question);
             }
         }
+
         return $resultFaq;
     }
 }
