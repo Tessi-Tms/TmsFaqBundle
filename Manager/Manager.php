@@ -168,7 +168,6 @@ class Manager
             throw new EntityNotFoundException();
         }
         $arrayResponses = $this->getResponseManager()->search($searchQuery);
-        var_dump($arrayResponses); die;
 
         $resultFaq = new Faq();
 
