@@ -18,6 +18,7 @@ class QuestionType extends AbstractType
             ->add('content')
             ->add('faq')
             ->add('questionCategories')
+            ->add('tags', 'related_to_many_metadata_tags')
         ;
     }
     

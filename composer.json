@@ -19,6 +19,7 @@
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/twig": "*",
         "idci/exporter-bundle": "dev-master",
+        "idci/simple-metadata-bundle": "dev-master",
         "da/api-client-bundle": "dev-master"
     },
     "autoload": {

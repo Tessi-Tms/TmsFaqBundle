@@ -9,6 +9,7 @@
 namespace Tms\Bundle\FaqBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IDCI\Bundle\SimpleMetadataBundle\Metadata\MetadatableInterface;
 
 /**
  * Question
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="\Tms\Bundle\FaqBundle\Entity\Repository\QuestionRepository")
  * @ORM\Table(name="faq_question")
  */
-class Question
+class Question implements MetadatableInterface
 {
     /**
      * @var integer
@@ -52,11 +53,30 @@ class Question
     private $questionCategories;
 
     /**
+     * @var array<Metadata>
+     *
+     * @ORM\ManyToMany(targetEntity="IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata", cascade={"all"})
+     * @ORM\JoinTable(name="faq_question_tag",
+     *     joinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id", onDelete="cascade")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", unique=true, onDelete="cascade")}
+     * )
+     */
+    private $tags;
+
+    /**
      * toString
      */
     public function __toString()
     {
         return $this->getContent();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetadatas()
+    {
+        return $this->getTags();
     }
 
     /**
@@ -66,6 +86,7 @@ class Question
     {
         $this->responses = new \Doctrine\Common\Collections\ArrayCollection();
         $this->questionCategories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -201,5 +222,38 @@ class Question
     public function getQuestionCategories()
     {
         return $this->questionCategories;
+    }
+
+    /**
+     * Add tag
+     *
+     * @param \IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag
+     * @return Product
+     */
+    public function addTag(\IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag)
+    {
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Remove tag
+     *
+     * @param \IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag
+     */
+    public function removeTag(\IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

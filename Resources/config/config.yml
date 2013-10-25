@@ -11,3 +11,7 @@ idci_exporter:
             class: "Tms\\Bundle\\FaqBundle\\Entity\\Question"
         responses:
             class: "Tms\\Bundle\\FaqBundle\\Entity\\Response"
+
+# IDCI Metadata
+idci_simple_metadata:
+    namespaces: [tags]
