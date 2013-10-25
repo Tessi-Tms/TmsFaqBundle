@@ -12,7 +12,7 @@
             "tags": {
                 {% for tag in questioncategory.tags %}
                 {% if not loop.first %},{% endif %}
-                "{{ tag.key | json_encode }}":"{{ tag.value | json_encode }}"
+                {{ tag.key | json_encode }}:{{ tag.value | json_encode }}
                 {% endfor %}
             }
         }
