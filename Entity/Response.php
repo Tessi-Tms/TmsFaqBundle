@@ -66,6 +66,7 @@ class Response
     public function __construct()
     {
         $this->evaluations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->average = 0;
     }
     
     /**

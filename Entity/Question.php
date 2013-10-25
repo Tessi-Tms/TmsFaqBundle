@@ -42,7 +42,7 @@ class Question implements MetadatableInterface
     private $faq;
 
     /**
-     * @ORM\OneToMany(targetEntity="Response", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="Response", mappedBy="question", cascade={"all"})
      */
     private $responses;
 
@@ -88,7 +88,7 @@ class Question implements MetadatableInterface
         $this->questionCategories = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
@@ -103,12 +103,12 @@ class Question implements MetadatableInterface
      * Set content
      *
      * @param string $content
-     * @return FaqQuestion
+     * @return Question
      */
     public function setContent($content)
     {
         $this->content = $content;
-    
+
         return $this;
     }
 
@@ -126,12 +126,12 @@ class Question implements MetadatableInterface
      * Set faq
      *
      * @param \Tms\Bundle\FaqBundle\Entity\Faq $faq
-     * @return FaqQuestion
+     * @return Question
      */
     public function setFaq(\Tms\Bundle\FaqBundle\Entity\Faq $faq = null)
     {
         $this->faq = $faq;
-    
+
         return $this;
     }
 
@@ -153,32 +153,22 @@ class Question implements MetadatableInterface
      */
     public function addResponse(\Tms\Bundle\FaqBundle\Entity\Response $responses)
     {
+        if (!$responses->getQuestion()) {
+            $responses->setQuestion($this);
+        }
         $this->responses[] = $responses;
-    
+
         return $this;
     }
 
     /**
-     * Remove response
+     * Remove responses
      *
      * @param \Tms\Bundle\FaqBundle\Entity\Response $responses
      */
     public function removeResponse(\Tms\Bundle\FaqBundle\Entity\Response $responses)
     {
         $this->responses->removeElement($responses);
-    }
-
-    /**
-     * Delete responses
-     *
-     * @param \Tms\Bundle\FaqBundle\Entity\Response $responses
-     */
-    public function deleteResponse()
-    {
-        $responses = $this->getResponses();
-        foreach($responses as $response){
-            $this->removeResponse($response);
-        }
     }
 
     /**
@@ -195,12 +185,12 @@ class Question implements MetadatableInterface
      * Add questionCategories
      *
      * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories
-     * @return FaqQuestion
+     * @return Question
      */
     public function addQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories)
     {
         $this->questionCategories[] = $questionCategories;
-    
+
         return $this;
     }
 
@@ -225,26 +215,26 @@ class Question implements MetadatableInterface
     }
 
     /**
-     * Add tag
+     * Add tags
      *
-     * @param \IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag
-     * @return Product
+     * @param \IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tags
+     * @return Question
      */
-    public function addTag(\IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag)
+    public function addTag(\IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tags)
     {
-        $this->tags[] = $tag;
+        $this->tags[] = $tags;
 
         return $this;
     }
 
     /**
-     * Remove tag
+     * Remove tags
      *
-     * @param \IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag
+     * @param \IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tags
      */
-    public function removeTag(\IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag)
+    public function removeTag(\IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tags)
     {
-        $this->tags->removeElement($tag);
+        $this->tags->removeElement($tags);
     }
 
     /**

@@ -15,7 +15,9 @@ use Tms\Bundle\FaqBundle\Tools\StringTools;
  * QuestionCategory
  *
  * @ORM\Entity
- * @ORM\Table(name="faq_question_category")
+ * @ORM\Table(name="faq_question_category", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="faq_question_category", columns={"name","faq_id"})
+ * })
  * @ORM\HasLifecycleCallbacks()
  */
 class QuestionCategory
@@ -50,7 +52,7 @@ class QuestionCategory
     private $faq;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Question", mappedBy="questionCategories")
+     * @ORM\ManyToMany(targetEntity="Question", mappedBy="questionCategories", cascade={"all"})
      */
     private $questions;
 

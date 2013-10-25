@@ -81,7 +81,7 @@ class Faq
         $this->questionCategories = new \Doctrine\Common\Collections\ArrayCollection();
         $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
@@ -93,6 +93,29 @@ class Faq
     }
 
     /**
+     * Set title
+     *
+     * @param string $title
+     * @return Faq
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
      * Set enabled
      *
      * @param boolean $enabled
@@ -101,7 +124,7 @@ class Faq
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
-    
+
         return $this;
     }
 
@@ -124,7 +147,7 @@ class Faq
     public function setDisplayFromRules($displayFromRules)
     {
         $this->displayFromRules = $displayFromRules;
-    
+
         return $this;
     }
 
@@ -147,7 +170,7 @@ class Faq
     public function setCustomerId($customerId)
     {
         $this->customerId = $customerId;
-    
+
         return $this;
     }
 
@@ -164,13 +187,13 @@ class Faq
     /**
      * Add questionCategories
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\FaqQuestionCategory $questionCategories
+     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories
      * @return Faq
      */
     public function addQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories)
     {
         $this->questionCategories[] = $questionCategories;
-    
+
         return $this;
     }
 
@@ -203,7 +226,7 @@ class Faq
     public function addQuestion(\Tms\Bundle\FaqBundle\Entity\Question $questions)
     {
         $this->questions[] = $questions;
-    
+
         return $this;
     }
 
@@ -225,28 +248,5 @@ class Faq
     public function getQuestions()
     {
         return $this->questions;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return Faq
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string 
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 }
