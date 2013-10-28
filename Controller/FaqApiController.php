@@ -49,7 +49,7 @@ class FaqApiController extends Controller
     {
         $format = $request->getRequestFormat();
         if ($request->query->has('search_query')) {
-            $faq = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
+            $faq = $this->get('tms_faq.manager')->search($id, $request->query->get('search_query'));
         } else {
             $faq = $this->get('tms_faq.manager.faq')->findOneBy(array('customerId' => $id));
         }
