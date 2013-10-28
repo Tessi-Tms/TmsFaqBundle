@@ -27,24 +27,38 @@ class FaqApiController extends Controller
     public function listAction(Request $request)
     {
         $format = $request->getRequestFormat();
-        $faqs = array();
-        if ($request->query->has('customer_id')) {
-            if($request->query->has('search_query')){
-                $customerId = $request->query->get('customer_id');
-                $searchQuery = $request->query->get('search_query');
-                $faq = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
-                $faqs = array($faq);
-            }else{
-                $faqs = array($this->get('tms_faq.manager.faq')->findOneBy(array(
-                    'customerId' => $request->query->get('customer_id')
-                )));
-            }
-            
+        $faqs = $this->get('tms_faq.manager.faq')->findAll();
+        $export = $this->get('idci_exporter.manager')->export($faqs, $format);
+        $response = new Response();
+        $response->setContent($export->getContent());
+        $response->headers->set(
+            'Content-Type',
+            sprintf('%s; charset=UTF-8', $export->getContentType())
+        );
+
+        return $response;
+    }
+
+    /**
+     * Get Faq for a customer
+     *
+     * @Route("/customers/{id}.{_format}", name="tms_faq_api_customer_faqs_get", defaults={"_format"="json"})
+     * @Method("GET")
+     */
+    public function customerAction(Request $request, $id)
+    {
+        $format = $request->getRequestFormat();
+        if ($request->query->has('search_query')) {
+            $faq = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
         } else {
-            $faqs = $this->get('tms_faq.manager.faq')->findAll();
+            $faq = $this->get('tms_faq.manager.faq')->findOneBy(array('customerId' => $id));
         }
 
-        $export = $this->get('idci_exporter.manager')->export($faqs, $format);
+        if ($request->query->has('tags')) {
+            $faq->tagsFilter = $request->query->get('tags');
+        }
+
+        $export = $this->get('idci_exporter.manager')->export(array($faq), $format);
         $response = new Response();
         $response->setContent($export->getContent());
         $response->headers->set(
@@ -76,27 +90,4 @@ class FaqApiController extends Controller
 
         return $response;
     }
-
-    /**
-     * Search questions and match responses
-     *
-     * @Route("/search/{customerId}/{searchQuery}.{_format}", name="tms_faq_api_faqs_search", defaults={"_format"="json"})
-     * @Method("GET")
-     */
-   /* public function searchAction(Request $request, $customerId, $searchQuery)
-    {
-        $format = $request->getRequestFormat();
-        $faq = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
-
-        $export = $this->get('idci_exporter.manager')->export(array($faq, $format);
-
-        $response = new Response();
-        $response->setContent($export->getContent());
-        $response->headers->set(
-            'Content-Type',
-            sprintf('%s; charset=UTF-8', $export->getContentType())
-        );
-
-        return $response;
-    }*/
 }
