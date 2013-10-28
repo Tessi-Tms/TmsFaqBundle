@@ -21,6 +21,7 @@ class ResponseIndexer extends AbstractIndexer
         }
 
         $document->addField(Field::keyword('key', $entity->getId()));
+        $document->addField(Field::text('object','response'));
         $document->addField(Field::text('message', StringTools::deleteAccent($entity->getMessage()), 'utf-8'));
         $document->addField(Field::text('average', StringTools::deleteAccent($entity->getAverage()), 'utf-8'));
     }

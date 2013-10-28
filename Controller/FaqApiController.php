@@ -27,38 +27,24 @@ class FaqApiController extends Controller
     public function listAction(Request $request)
     {
         $format = $request->getRequestFormat();
-        $faqs = $this->get('tms_faq.manager.faq')->findAll();
-        $export = $this->get('idci_exporter.manager')->export($faqs, $format);
-        $response = new Response();
-        $response->setContent($export->getContent());
-        $response->headers->set(
-            'Content-Type',
-            sprintf('%s; charset=UTF-8', $export->getContentType())
-        );
-
-        return $response;
-    }
-
-    /**
-     * Get Faq for a customer
-     *
-     * @Route("/customers/{id}.{_format}", name="tms_faq_api_customer_faqs_get", defaults={"_format"="json"})
-     * @Method("GET")
-     */
-    public function customerAction(Request $request, $id)
-    {
-        $format = $request->getRequestFormat();
-        if ($request->query->has('search_query')) {
-            $faq = $this->get('tms_faq.manager')->search($id, $request->query->get('search_query'));
+        $faqs = array();
+        if ($request->query->has('customer_id')) {
+            if($request->query->has('search_query')){
+                $customerId = $request->query->get('customer_id');
+                $searchQuery = $request->query->get('search_query');
+                $faq = $this->get('tms_faq.manager')->search($customerId, $searchQuery);
+                $faqs = array($faq);
+            }else{
+                $faqs = array($this->get('tms_faq.manager.faq')->findOneBy(array(
+                    'customerId' => $request->query->get('customer_id')
+                )));
+            }
+            
         } else {
-            $faq = $this->get('tms_faq.manager.faq')->findOneBy(array('customerId' => $id));
+            $faqs = $this->get('tms_faq.manager.faq')->findAll();
         }
 
-        if ($request->query->has('tags')) {
-            $faq->tagsFilter = $request->query->get('tags');
-        }
-
-        $export = $this->get('idci_exporter.manager')->export(array($faq), $format);
+        $export = $this->get('idci_exporter.manager')->export($faqs, $format);
         $response = new Response();
         $response->setContent($export->getContent());
         $response->headers->set(

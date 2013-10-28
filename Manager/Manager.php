@@ -167,7 +167,7 @@ class Manager
         if (!$faq) {
             throw new EntityNotFoundException();
         }
-        $arrayResponses = $this->getResponseManager()->search($searchQuery);
+        $arrayResponses = $this->getResponseManager()->search($searchQuery." and object:response");
 
         $resultFaq = new Faq();
 
