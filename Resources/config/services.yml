@@ -4,13 +4,13 @@ services:
         arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
     tms_faq.manager.question:
         class: Tms\Bundle\FaqBundle\Manager\QuestionManager
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher, @tms_faq.indexer.question]
+        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
     tms_faq.manager.question_category:
         class: Tms\Bundle\FaqBundle\Manager\QuestionCategoryManager
         arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
     tms_faq.manager.response:
         class: Tms\Bundle\FaqBundle\Manager\ResponseManager
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher, @tms_faq.indexer.response]
+        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
     tms_faq.manager.evaluation:
         class: Tms\Bundle\FaqBundle\Manager\EvaluationManager
         arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
@@ -27,11 +27,16 @@ services:
             - @tms_faq.manager.response
             - @tms_faq.manager.evaluation
             - @tms_faq.manager.consumer_search
+            - @tms_faq.indexer
 
-    tms_faq.indexer.question:
-        class: Tms\Bundle\FaqBundle\Indexer\QuestionIndexer
+    tms_faq.indexer:
+        class: Tms\Bundle\FaqBundle\Indexer\FaqIndexer
         arguments:  [@ewz_search.lucene]
 
-    tms_faq.indexer.response:
-        class: Tms\Bundle\FaqBundle\Indexer\ResponseIndexer
-        arguments:  [@ewz_search.lucene]
+    ## Event Subscribers ##
+
+    tms_faq.event.subscriber.indexer:
+        class: Tms\Bundle\FaqBundle\Event\Subscriber\QuestionIndexerSubscriber
+        arguments: [@tms_faq.indexer]
+        tags: 
+            - { name: tms_faq.event.subscriber }

@@ -9,11 +9,13 @@ use Tms\Bundle\FaqBundle\Manager\QuestionCategoryManager;
 use Tms\Bundle\FaqBundle\Manager\ResponseManager;
 use Tms\Bundle\FaqBundle\Manager\EvaluationManager;
 use Tms\Bundle\FaqBundle\Manager\ConsumerSearchManager;
+use Tms\Bundle\FaqBundle\Indexer\FaqIndexer;
 use Tms\Bundle\FaqBundle\Exception\EntityNotFoundException;
 use Tms\Bundle\FaqBundle\Entity\Evaluation;
 use Tms\Bundle\FaqBundle\Entity\ConsumerSearch;
 use Tms\Bundle\FaqBundle\Entity\Faq;
 use Tms\Bundle\FaqBundle\Entity\Question;
+use Tms\Bundle\FaqBundle\Tools\StringTools;
 
 /**
  * Manager.
@@ -28,13 +30,15 @@ class Manager
     protected $responseManager;
     protected $evaluationManager;
     protected $consumerSearchManager;
+    protected $indexer;
 
     public function __construct(FaqManager $faqManager,
                                 QuestionManager $questionManager,
                                 QuestionCategoryManager $questionCategoryManager,
                                 ResponseManager $responseManager,
                                 EvaluationManager $evaluationManager,
-                                ConsumerSearchManager $consumerSearchManager)
+                                ConsumerSearchManager $consumerSearchManager,
+                                FaqIndexer $indexer)
     {
         $this->faqManager = $faqManager;
         $this->questionManager = $questionManager;
@@ -42,6 +46,7 @@ class Manager
         $this->responseManager = $responseManager;
         $this->evaluationManager = $evaluationManager;
         $this->consumerSearchManager = $consumerSearchManager;
+        $this->indexer = $indexer;
     }
 
     /**
@@ -102,6 +107,16 @@ class Manager
     public function getConsumerSearchManager()
     {
         return $this->consumerSearchManager;
+    }
+
+    /**
+     * Get Indexer
+     *
+     * @return FaqIndexer
+     */
+    public function getIndexer()
+    {
+        return $this->indexer;
     }
 
     /**
@@ -167,17 +182,20 @@ class Manager
         if (!$faq) {
             throw new EntityNotFoundException();
         }
-        $arrayResponses = $this->getResponseManager()->search($searchQuery." and object:response");
 
-        $resultFaq = new Faq();
+        $hits = $this->getIndexer()->search($searchQuery);
 
-        if (!is_null($arrayResponses)) {
-            foreach ($arrayResponses as $response) {
-                $question = $response->getQuestion();
-                $resultFaq->addQuestion($question);
+        $ids = array();
+        foreach ($hits as $hit) {
+            $ids[] = $hit->key;
+        }
+ 
+        foreach ($faq->getQuestions() as $question) {
+            if (!in_array($question->getId(), $ids)) {
+                $faq->removeQuestion($question);
             }
         }
 
-        return $resultFaq;
+        return $faq;
     }
 }

@@ -5,7 +5,6 @@ namespace Tms\Bundle\FaqBundle\Manager;
 use Tms\Bundle\FaqBundle\Entity\Response;
 use Tms\Bundle\FaqBundle\Event\ResponseEvent;
 use Tms\Bundle\FaqBundle\Event\ResponseEvents;
-use Tms\Bundle\FaqBundle\Indexer\ResponseIndexer;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
@@ -16,12 +15,9 @@ use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
  */
 class ResponseManager extends AbstractManager
 {
-    protected $indexer;
-
-    public function __construct(EntityManager $entityManager, ContainerAwareEventDispatcher $eventDispatcher, ResponseIndexer $responseIndexer)
+    public function __construct(EntityManager $entityManager, ContainerAwareEventDispatcher $eventDispatcher)
     {
         parent::__construct($entityManager, $eventDispatcher);
-        $this->indexer = $responseIndexer;
     }
 
     /**
@@ -105,32 +101,5 @@ class ResponseManager extends AbstractManager
         }
         $entity->setAverage($average);
         $this->update($entity);
-    }
-
-     /**
-     * Search entity via indexer
-     *
-     * @param string $query
-     *
-     * @return array Responses
-     */
-    public function search($query)
-    {
-        if(is_null($query)) {
-            return $this->findAll();
-        }
-
-        $hits = $this->indexer->search($query);
-
-        if(!$hits) {
-            return array();
-        }
-
-        $ids = array();
-        foreach ($hits as $hit) {
-            $ids[] = $hit->key;
-        }
-
-        return $this->findAllIn($ids);
     }
 }
