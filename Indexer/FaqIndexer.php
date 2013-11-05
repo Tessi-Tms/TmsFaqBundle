@@ -33,11 +33,13 @@ class FaqIndexer extends AbstractIndexer
         $document->addField(Field::unStored('message', StringTools::transformSpecialChars($mergedMessages), 'utf-8'));
         */
 
-        $tagValues = '';
         foreach ($entity->getTags() as $tag) {
-            $tagValues .= $tag->getValue().' ';
+            $document->addField(Field::unStored(
+                $tag->getKey(),
+                StringTools::transformSpecialChars($tag->getValue()),
+                'utf-8'
+            ));
         }
-        $document->addField(Field::unStored('tags', StringTools::transformSpecialChars($tagValues), 'utf-8'));
     }
 
     /**
