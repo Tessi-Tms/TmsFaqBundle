@@ -50,6 +50,6 @@ class FaqIndexer extends AbstractIndexer
     {
         $cleanQuery = StringTools::transformSpecialChars($query);
 
-        return parent::search('tags:'. $cleanQuery);
+        return parent::search('tags:'.$cleanQuery);
     }
 }
