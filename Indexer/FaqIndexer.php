@@ -22,7 +22,7 @@ class FaqIndexer extends AbstractIndexer
      */
     public function index($entity, Document $document)
     {
-        if(!$entity instanceof Question) {
+        if (!$entity instanceof Question) {
             throw new InvalidIndexableEntityException($entity);
         }
 
@@ -31,10 +31,16 @@ class FaqIndexer extends AbstractIndexer
         $document->addField(Field::text('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
 
         $mergedMessages = '';
-        foreach($entity->getResponses() as $response) {
+        foreach ($entity->getResponses() as $response) {
             $mergedMessages .= $response->getMessage();
         }
         $document->addField(Field::text('message', StringTools::transformSpecialChars($mergedMessages), 'utf-8'));
+
+        $tagValues = '';
+        foreach ($entity->getTags() as $tag) {
+            $tagValues .= $tag->getValue().' ';
+        }
+        $document->addField(Field::text('tags', StringTools::transformSpecialChars($tagValues), 'utf-8'));
     }
 
     /**
@@ -44,6 +50,6 @@ class FaqIndexer extends AbstractIndexer
     {
         $cleanQuery = StringTools::transformSpecialChars($query);
 
-        return parent::search($cleanQuery);
+        return parent::search('tags:'. $cleanQuery);
     }
 }
