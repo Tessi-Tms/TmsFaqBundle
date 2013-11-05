@@ -23,20 +23,20 @@ class FaqIndexer extends AbstractIndexer
 
         $document->addField(Field::unIndexed('key', $entity->getId()));
         //$document->addField(Field::text('object','faq'));
-        $document->addField(Field::unStored('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
-        $document->addField(Field::text('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
+        //$document->addField(Field::unStored('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
+        //$document->addField(Field::text('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
 
         $mergedMessages = '';
         foreach ($entity->getResponses() as $response) {
             $mergedMessages .= $response->getMessage();
         }
-        $document->addField(Field::unStored('message', StringTools::transformSpecialChars($mergedMessages), 'utf-8'));
+        //$document->addField(Field::unStored('message', StringTools::transformSpecialChars($mergedMessages), 'utf-8'));
 
         $tagValues = '';
         foreach ($entity->getTags() as $tag) {
             $tagValues .= $tag->getValue().' ';
         }
-        $document->addField(Field::unStored('tags', StringTools::transformSpecialChars($tagValues), 'utf-8'));
+        $document->addField(Field::text('tags', StringTools::transformSpecialChars($tagValues), 'utf-8'));
     }
 
     /**
