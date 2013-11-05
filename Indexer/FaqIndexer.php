@@ -4,12 +4,7 @@ namespace Tms\Bundle\FaqBundle\Indexer;
 
 use EWZ\Bundle\SearchBundle\Lucene\Document;
 use EWZ\Bundle\SearchBundle\Lucene\Field;
-/*
-use Zend\Search\Lucene\Index\Term;
-use Zend\Search\Lucene\Search\Query\Fuzzy as FuzzyQuery;
-use Zend\Search\Lucene\Search\Query\Term as TermQuery;
-use Zend\Search\Lucene\Search\Query\MultiTerm as MultiTermQuery;
-*/
+use Zend\Search\Lucene\Search\QueryParser;
 use Tms\Bundle\FaqBundle\Tools\StringTools;
 use Tms\Bundle\FaqBundle\Entity\Question;
 use Tms\Bundle\FaqBundle\Entity\Response;
@@ -26,21 +21,21 @@ class FaqIndexer extends AbstractIndexer
             throw new InvalidIndexableEntityException($entity);
         }
 
-        $document->addField(Field::keyword('key', $entity->getId()));
+        $document->addField(Field::unIndexed('key', $entity->getId()));
         //$document->addField(Field::text('object','faq'));
-        $document->addField(Field::text('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
+        $document->addField(Field::unStored('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
 
         $mergedMessages = '';
         foreach ($entity->getResponses() as $response) {
             $mergedMessages .= $response->getMessage();
         }
-        $document->addField(Field::text('message', StringTools::transformSpecialChars($mergedMessages), 'utf-8'));
+        $document->addField(Field::unStored('message', StringTools::transformSpecialChars($mergedMessages), 'utf-8'));
 
         $tagValues = '';
         foreach ($entity->getTags() as $tag) {
             $tagValues .= $tag->getValue().' ';
         }
-        $document->addField(Field::text('tags', StringTools::transformSpecialChars($tagValues), 'utf-8'));
+        $document->addField(Field::unStored('tags', StringTools::transformSpecialChars($tagValues), 'utf-8'));
     }
 
     /**
@@ -49,7 +44,8 @@ class FaqIndexer extends AbstractIndexer
     public function search($query)
     {
         $cleanQuery = StringTools::transformSpecialChars($query);
+        $userQuery = QueryParser::parse($cleanQuery);
 
-        return parent::search('tags:'.$cleanQuery);
+        return parent::search($userQuery);
     }
 }
