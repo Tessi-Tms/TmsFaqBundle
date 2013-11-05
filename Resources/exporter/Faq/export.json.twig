@@ -24,6 +24,12 @@
         {
             "id": "{{ question.id }}",
             "content": {{ question.content | json_encode }},
+            "tags": {
+                {% for tag in question.tags %}
+                {% if not loop.first %},{% endif %}
+                {{ tag.key | json_encode }}:{{ tag.value | json_encode }}
+                {% endfor %}
+            },
             "questionCategories": [
                 {% for questionCategory in question.questionCategories %}
                 {% if not loop.first %},{% endif %}

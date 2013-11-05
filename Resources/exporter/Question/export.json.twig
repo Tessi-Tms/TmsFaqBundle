@@ -18,5 +18,11 @@
             "average": "{{ response.average }}"
         }
         {% endfor %}
-    ]
+    ],
+    "tags": {
+        {% for tag in entity.tags %}
+        {% if not loop.first %},{% endif %}
+        {{ tag.key | json_encode }}:{{ tag.value | json_encode }}
+        {% endfor %}
+    }
 }
