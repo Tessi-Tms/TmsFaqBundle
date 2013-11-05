@@ -24,6 +24,7 @@ class FaqIndexer extends AbstractIndexer
         $document->addField(Field::unIndexed('key', $entity->getId()));
         //$document->addField(Field::text('object','faq'));
         $document->addField(Field::unStored('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
+        $document->addField(Field::text('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
 
         $mergedMessages = '';
         foreach ($entity->getResponses() as $response) {
@@ -44,8 +45,8 @@ class FaqIndexer extends AbstractIndexer
     public function search($query)
     {
         $cleanQuery = StringTools::transformSpecialChars($query);
-        $userQuery = QueryParser::parse($cleanQuery);
+        //$userQuery = QueryParser::parse($cleanQuery);
 
-        return parent::search($userQuery);
+        return parent::search('tags: '.$cleanQuery);
     }
 }
