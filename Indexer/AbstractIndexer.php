@@ -12,9 +12,6 @@ namespace Tms\Bundle\FaqBundle\Indexer;
 use EWZ\Bundle\SearchBundle\Lucene\LuceneSearch;
 use EWZ\Bundle\SearchBundle\Lucene\Document;
 use EWZ\Bundle\SearchBundle\Lucene\Lucene;
-use Zend\Search\Lucene\Index\Term as Term;
-use Zend\Search\Lucene\Search\Query\Term as QueryTerm;
-use Zend\Search\Lucene\Search\Query\MultiTerm as MultiTerm;
 
 abstract class AbstractIndexer implements IndexerInterface
 {
