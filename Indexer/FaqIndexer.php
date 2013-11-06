@@ -5,10 +5,9 @@ namespace Tms\Bundle\FaqBundle\Indexer;
 use EWZ\Bundle\SearchBundle\Lucene\Document;
 use EWZ\Bundle\SearchBundle\Lucene\Field;
 use Zend\Search\Lucene\Search\QueryParser;
-use Tms\Bundle\FaqBundle\Tools\StringTools;
 use Tms\Bundle\FaqBundle\Entity\Question;
 use Tms\Bundle\FaqBundle\Entity\Response;
-use Tms\Bundle\FaqBundle\Exception\InvalidIndexableEntityException;
+use Tms\Bundle\FaqBundle\Tools\StringTools;
 
 class FaqIndexer extends AbstractIndexer
 {
@@ -22,8 +21,9 @@ class FaqIndexer extends AbstractIndexer
         }
 
         $document->addField(Field::unIndexed('key', $entity->getId()));
+
         //$document->addField(Field::text('object','faq'));
-        //$document->addField(Field::unStored('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
+        $document->addField(Field::unStored('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
 
         /*
         $mergedMessages = '';
@@ -47,8 +47,8 @@ class FaqIndexer extends AbstractIndexer
      */
     public function search($query)
     {
-        $cleanQuery = StringTools::transformSpecialChars($query);
-        $userQuery = QueryParser::parse($cleanQuery);
+        $query = StringTools::transformSpecialChars($query);
+        $userQuery = QueryParser::parse($query);
 
         return parent::search($userQuery);
     }
