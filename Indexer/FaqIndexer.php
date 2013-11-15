@@ -21,8 +21,7 @@ class FaqIndexer extends AbstractIndexer
         }
 
         $document->addField(Field::unIndexed('key', $entity->getId()));
-
-        //$document->addField(Field::text('object','faq'));
+        $document->addField(Field::unStored('object', 'faq'));
         $document->addField(Field::unStored('content', StringTools::transformSpecialChars($entity->getContent()), 'utf-8'));
 
         /*
