@@ -47,8 +47,8 @@ class FaqIndexer extends AbstractIndexer
     public function search($query)
     {
         $query = StringTools::transformSpecialChars($query);
+        $query = $query." and object:faq";
         $userQuery = QueryParser::parse($query);
-
         return parent::search($userQuery);
     }
 }
