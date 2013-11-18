@@ -17,7 +17,11 @@ class QuestionType extends AbstractType
         $builder
             ->add('content')
             ->add('faq')
-            ->add('questionCategories')
+            ->add('questionCategories', 'entity', array(
+                'class' => 'TmsFaqBundle:QuestionCategory',
+                'multiple' => true,
+                'expanded' => true
+            ))
             ->add('tags', 'related_to_many_metadata_tags')
         ;
     }
