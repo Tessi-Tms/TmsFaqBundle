@@ -15,7 +15,7 @@ class QuestionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content')
+            ->add('content', 'wysiwyg_textarea')
             ->add('faq')
             ->add('questionCategories', 'entity', array(
                 'class' => 'TmsFaqBundle:QuestionCategory',

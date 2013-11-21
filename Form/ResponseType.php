@@ -15,7 +15,7 @@ class ResponseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('message')
+            ->add('message', 'wysiwyg_textarea')
             ->add('average')
             ->add('question')
         ;
