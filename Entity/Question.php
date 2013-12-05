@@ -10,6 +10,8 @@ namespace Tms\Bundle\FaqBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use IDCI\Bundle\SimpleMetadataBundle\Metadata\MetadatableInterface;
+use Tms\Bundle\SearchBundle\IndexableElement\IndexableElementInterface;
+use Tms\Bundle\FaqBundle\Tools\StringTools;
 
 /**
  * Question
@@ -17,7 +19,7 @@ use IDCI\Bundle\SimpleMetadataBundle\Metadata\MetadatableInterface;
  * @ORM\Entity(repositoryClass="\Tms\Bundle\FaqBundle\Entity\Repository\QuestionRepository")
  * @ORM\Table(name="faq_question")
  */
-class Question implements MetadatableInterface
+class Question implements MetadatableInterface, IndexableElementInterface
 {
     /**
      * @var integer
@@ -92,7 +94,7 @@ class Question implements MetadatableInterface
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -115,7 +117,7 @@ class Question implements MetadatableInterface
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
@@ -138,7 +140,7 @@ class Question implements MetadatableInterface
     /**
      * Get faq
      *
-     * @return \Tms\Bundle\FaqBundle\Entity\Faq 
+     * @return \Tms\Bundle\FaqBundle\Entity\Faq
      */
     public function getFaq()
     {
@@ -174,7 +176,7 @@ class Question implements MetadatableInterface
     /**
      * Get responses
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getResponses()
     {
@@ -207,7 +209,7 @@ class Question implements MetadatableInterface
     /**
      * Get questionCategories
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getQuestionCategories()
     {
@@ -240,7 +242,7 @@ class Question implements MetadatableInterface
     /**
      * Get tags
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTags()
     {
@@ -262,5 +264,43 @@ class Question implements MetadatableInterface
         }
 
         return false;
+    }
+
+    /**
+     * Useful for IndexableElementInterface
+     * This returns the tags in order to index them properly
+     *
+     * @return string
+     */
+    public function getIndexedTags()
+    {
+        $tags = array();
+        foreach ($this->getTags() as $tag) {
+            array_push(
+                $tags,
+                StringTools::transformSpecialChars($tag->getValue(), 'utf-8')
+            );
+        }
+
+        return implode($tags, ', ');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexedData()
+    {
+        $indexedData = array(
+            array(
+                'key' => 'content',
+                'value' => $this->getContent()
+            ),
+            array(
+                'key' => 'tags',
+                'value' => $this->getIndexedTags()
+            )
+        );
+
+        return $indexedData;
     }
 }
