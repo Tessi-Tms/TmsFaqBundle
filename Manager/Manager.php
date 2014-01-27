@@ -16,6 +16,7 @@ use Tms\Bundle\FaqBundle\Entity\ConsumerSearch;
 use Tms\Bundle\FaqBundle\Entity\Faq;
 use Tms\Bundle\FaqBundle\Entity\Question;
 use Tms\Bundle\FaqBundle\Tools\StringTools;
+use Tms\Bundle\SearchBundle\handler\SearchIndexHandler;
 
 /**
  * Manager.
@@ -30,13 +31,15 @@ class Manager
     protected $responseManager;
     protected $evaluationManager;
     protected $consumerSearchManager;
+    protected $searchIndexHandler;
 
     public function __construct(FaqManager $faqManager,
                                 QuestionManager $questionManager,
                                 QuestionCategoryManager $questionCategoryManager,
                                 ResponseManager $responseManager,
                                 EvaluationManager $evaluationManager,
-                                ConsumerSearchManager $consumerSearchManager)
+                                ConsumerSearchManager $consumerSearchManager,
+                                SearchIndexHandler $searchIndexHandler)
     {
         $this->faqManager = $faqManager;
         $this->questionManager = $questionManager;
@@ -44,6 +47,7 @@ class Manager
         $this->responseManager = $responseManager;
         $this->evaluationManager = $evaluationManager;
         $this->consumerSearchManager = $consumerSearchManager;
+        $this->searchIndexHandler = $searchIndexHandler;
     }
 
     /**
@@ -153,5 +157,38 @@ class Manager
         $this->getConsumerSearchManager()->add($entity);
 
         return $entity;
+    }
+
+    /**
+     *
+     * @param integer $customerId
+     * @param string $searchQuery
+     * @throws EntityNotFoundException
+     */
+    public function search($customerId, $searchQuery)
+    {
+        $faq = $this->getFaqManager()->findOneByCustomerId(array("customerId" => $customerId));
+        if (!$faq) {
+            throw new EntityNotFoundException();
+        }
+
+        $data = $this->searchIndexHandler->searchAndFetchEntity('tms_faq_question', $searchQuery);
+        $questions = array();
+        if (isset($data['data'])) {
+            $questions = $data['data'];
+        }
+
+        $ids = array();
+        foreach ($questions as $question) {
+            $ids[] = $question->getId();
+        }
+
+        foreach ($faq->getQuestions() as $question) {
+            if (!in_array($question->getId(), $ids)) {
+                $faq->removeQuestion($question);
+            }
+        }
+
+        return $faq;
     }
 }

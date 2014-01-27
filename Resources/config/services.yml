@@ -27,3 +27,4 @@ services:
             - @tms_faq.manager.response
             - @tms_faq.manager.evaluation
             - @tms_faq.manager.consumer_search
+            - @tms_search.handler
