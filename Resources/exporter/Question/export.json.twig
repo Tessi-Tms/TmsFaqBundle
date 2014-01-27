@@ -22,7 +22,7 @@
     "tags": {
         {% for tag in entity.tags %}
         {% if not loop.first %},{% endif %}
-        {{ tag.key | json_encode }}:{{ tag.value | json_encode }}
+        "{{ tag.key }}":"{{ tag.value }}"
         {% endfor %}
     }
 }
