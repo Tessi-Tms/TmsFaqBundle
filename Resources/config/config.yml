@@ -15,3 +15,19 @@ idci_exporter:
 # IDCI Metadata
 idci_simple_metadata:
     namespaces: [tags]
+
+# Search
+tms_search:
+    indexes:
+        tms_faq_question:
+            class: Tms\Bundle\FaqBundle\Entity\Question
+            indexer:
+                service_name: tms_search.indexer.elasticsearch
+                options:
+                    host: %tms_search_host%
+                    port: %tms_search_port%
+                    collection_name: question
+                events:
+                    create: tms_faq.question.post_create
+                    update: tms_faq.question.post_update
+                    delete: tms_faq.question.pre_delete
