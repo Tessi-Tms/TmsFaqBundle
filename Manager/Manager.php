@@ -30,15 +30,13 @@ class Manager
     protected $responseManager;
     protected $evaluationManager;
     protected $consumerSearchManager;
-    protected $indexer;
 
     public function __construct(FaqManager $faqManager,
                                 QuestionManager $questionManager,
                                 QuestionCategoryManager $questionCategoryManager,
                                 ResponseManager $responseManager,
                                 EvaluationManager $evaluationManager,
-                                ConsumerSearchManager $consumerSearchManager,
-                                FaqIndexer $indexer)
+                                ConsumerSearchManager $consumerSearchManager)
     {
         $this->faqManager = $faqManager;
         $this->questionManager = $questionManager;
@@ -46,7 +44,6 @@ class Manager
         $this->responseManager = $responseManager;
         $this->evaluationManager = $evaluationManager;
         $this->consumerSearchManager = $consumerSearchManager;
-        $this->indexer = $indexer;
     }
 
     /**
@@ -110,16 +107,6 @@ class Manager
     }
 
     /**
-     * Get Indexer
-     *
-     * @return FaqIndexer
-     */
-    public function getIndexer()
-    {
-        return $this->indexer;
-    }
-
-    /**
      * Create an evaluation for a given response
      *
      * @param string $responseId
@@ -166,36 +153,5 @@ class Manager
         $this->getConsumerSearchManager()->add($entity);
 
         return $entity;
-    }
-
-    
-    /**
-     * Search questions and match responses
-     *
-     * @param string $customerId
-     * @param string $searchQuery
-     * @return array
-     */
-    public function search($customerId, $searchQuery)
-    {
-        $faq = $this->getFaqManager()->findOneByCustomerId(array("customerId" => $customerId));
-        if (!$faq) {
-            throw new EntityNotFoundException();
-        }
-
-        $hits = $this->getIndexer()->search($searchQuery);
-
-        $ids = array();
-        foreach ($hits as $hit) {
-            $ids[] = $hit->key;
-        }
- 
-        foreach ($faq->getQuestions() as $question) {
-            if (!in_array($question->getId(), $ids)) {
-                $faq->removeQuestion($question);
-            }
-        }
-
-        return $faq;
     }
 }

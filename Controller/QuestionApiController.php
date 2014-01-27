@@ -27,7 +27,11 @@ class QuestionApiController extends Controller
     public function searchAction(Request $request, $query)
     {
         $format = $request->getRequestFormat();
-        $questions = $this->get('tms_faq.manager')->search($query);
+        $searchIndexHandler = $this->get('tms_search.handler');
+
+        $questions = array();
+        $data = $searchIndexHandler->searchAndFetchEntity('tms_faq_question', $query);
+        $questions = $data['data'];
         $export = $this->get('idci_exporter.manager')->export($questions, $format);
 
         $response = new Response();
