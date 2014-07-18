@@ -1,0 +1,16 @@
+Tms\Bundle\FaqBundle\Entity\Evaluation:
+    exclusion_policy: ALL
+
+    properties:
+        id:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        value:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        createdAt:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+            serialized_name: createdAt

@@ -1,0 +1,15 @@
+Tms\Bundle\FaqBundle\Entity\QuestionCategory:
+    exclusion_policy: ALL
+
+    properties:
+        id:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        name:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        slug:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]

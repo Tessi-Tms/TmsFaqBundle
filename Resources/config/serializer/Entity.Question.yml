@@ -1,0 +1,29 @@
+Tms\Bundle\FaqBundle\Entity\Question:
+    exclusion_policy: ALL
+
+    properties:
+        id:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        question:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        answer:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        average:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        countYep:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+            serialized_name: countYep
+
+        countNope:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+            serialized_name: countNope

@@ -1,0 +1,20 @@
+Tms\Bundle\FaqBundle\Entity\Faq:
+    exclusion_policy: ALL
+
+    properties:
+        id:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        title:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        enabled:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+
+        customerId:
+            expose: true
+            groups: [tms_rest.collection, tms_rest.item]
+            serialized_name: customerId
