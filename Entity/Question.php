@@ -2,8 +2,8 @@
 
 /**
  *
- *@author: Danielle HODIEB <danielle.hodieb@tessi.fr>
- *
+ * @author: Danielle HODIEB <danielle.hodieb@tessi.fr>
+ * @author: Pichet PUTH <pichet.puth@utt.fr>
  */
 
 namespace Tms\Bundle\FaqBundle\Entity;
@@ -11,7 +11,6 @@ namespace Tms\Bundle\FaqBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use IDCI\Bundle\SimpleMetadataBundle\Metadata\MetadatableInterface;
 use Tms\Bundle\SearchBundle\IndexableElement\IndexableElementInterface;
-use Tms\Bundle\FaqBundle\Tools\StringTools;
 
 /**
  * Question
@@ -24,8 +23,8 @@ class Question implements MetadatableInterface, IndexableElementInterface
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -35,7 +34,35 @@ class Question implements MetadatableInterface, IndexableElementInterface
      *
      * @ORM\Column(type="text")
      */
-    private $content;
+    private $question;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(type="text")
+     */
+    private $answer;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(type="decimal", precision=5, scale=2, options={"default" = 0})
+     */
+    private $average;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="count_yep", type="integer", options={"default" = 0})
+     */
+    private $countYep;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="count_nope", type="integer", options={"default" = 0})
+     */
+    private $countNope;
 
     /**
      * @ORM\ManyToOne(targetEntity="Faq", inversedBy="questions")
@@ -44,15 +71,15 @@ class Question implements MetadatableInterface, IndexableElementInterface
     private $faq;
 
     /**
-     * @ORM\OneToMany(targetEntity="Response", mappedBy="question", cascade={"all"})
-     */
-    private $responses;
-
-    /**
      * @ORM\ManyToMany(targetEntity="QuestionCategory", inversedBy="questions")
      * @ORM\JoinTable(name="faq_question_question_categories")
      */
-    private $questionCategories;
+    private $categories;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Evaluation", mappedBy="question")
+     */
+    private $evaluations;
 
     /**
      * @var array<Metadata>
@@ -67,18 +94,12 @@ class Question implements MetadatableInterface, IndexableElementInterface
 
     /**
      * toString
+     *
+     * @return string
      */
     public function __toString()
     {
-        return $this->getContent();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMetadatas()
-    {
-        return $this->getTags();
+        return sprintf('%s', $this->getQuestion());
     }
 
     /**
@@ -86,9 +107,12 @@ class Question implements MetadatableInterface, IndexableElementInterface
      */
     public function __construct()
     {
-        $this->responses = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->questionCategories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->evaluations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->average = 0;
+        $this->countYep = 0;
+        $this->countNope = 0;
     }
 
     /**
@@ -102,26 +126,118 @@ class Question implements MetadatableInterface, IndexableElementInterface
     }
 
     /**
-     * Set content
+     * Set question
      *
-     * @param string $content
+     * @param string $question
      * @return Question
      */
-    public function setContent($content)
+    public function setQuestion($question)
     {
-        $this->content = $content;
+        $this->question = $question;
 
         return $this;
     }
 
     /**
-     * Get content
+     * Get question
      *
      * @return string
      */
-    public function getContent()
+    public function getQuestion()
     {
-        return $this->content;
+        return $this->question;
+    }
+
+    /**
+     * Set answer
+     *
+     * @param string $answer
+     * @return Question
+     */
+    public function setAnswer($answer)
+    {
+        $this->answer = $answer;
+
+        return $this;
+    }
+
+    /**
+     * Get answer
+     *
+     * @return string
+     */
+    public function getAnswer()
+    {
+        return $this->answer;
+    }
+
+    /**
+     * Set average
+     *
+     * @param string $average
+     * @return Question
+     */
+    public function setAverage($average)
+    {
+        $this->average = $average;
+
+        return $this;
+    }
+
+    /**
+     * Get average
+     *
+     * @return string
+     */
+    public function getAverage()
+    {
+        return $this->average;
+    }
+
+    /**
+     * Set countYep
+     *
+     * @param integer $countYep
+     * @return Question
+     */
+    public function setCountYep($countYep)
+    {
+        $this->countYep = $countYep;
+
+        return $this;
+    }
+
+    /**
+     * Get countYep
+     *
+     * @return integer
+     */
+    public function getCountYep()
+    {
+        return $this->countYep;
+    }
+
+    /**
+     * Set countNope
+     *
+     * @param integer $countNope
+     * @return Question
+     */
+    public function setCountNope($countNope)
+    {
+        $this->countNope = $countNope;
+
+        return $this;
+    }
+
+    /**
+     * Get countNope
+     *
+     * @return integer
+     */
+    public function getCountNope()
+    {
+        return $this->countNope;
     }
 
     /**
@@ -148,72 +264,69 @@ class Question implements MetadatableInterface, IndexableElementInterface
     }
 
     /**
-     * Add responses
+     * Add categories
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\Response $responses
+     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $category
      * @return Question
      */
-    public function addResponse(\Tms\Bundle\FaqBundle\Entity\Response $responses)
+    public function addCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $category)
     {
-        if (!$responses->getQuestion()) {
-            $responses->setQuestion($this);
-        }
-        $this->responses[] = $responses;
+        $this->categories[] = $category;
 
         return $this;
     }
 
     /**
-     * Remove responses
+     * Remove categories
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\Response $responses
+     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $category
      */
-    public function removeResponse(\Tms\Bundle\FaqBundle\Entity\Response $responses)
+    public function removeCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $category)
     {
-        $this->responses->removeElement($responses);
+        $this->categories->removeElement($category);
     }
 
     /**
-     * Get responses
+     * Get categories
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getResponses()
+    public function getCategories()
     {
-        return $this->responses;
+        return $this->categories;
     }
 
     /**
-     * Add questionCategories
+     * Add evaluations
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories
+     * @param \Tms\Bundle\FaqBundle\Entity\Evaluation $evaluation
      * @return Question
      */
-    public function addQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories)
+    public function addEvaluation(\Tms\Bundle\FaqBundle\Entity\Evaluation $evaluation)
     {
-        $this->questionCategories[] = $questionCategories;
+        $this->evaluations[] = $evaluation;
 
         return $this;
     }
 
     /**
-     * Remove questionCategories
+     * Remove evaluations
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories
+     * @param \Tms\Bundle\FaqBundle\Entity\Evaluation $evaluation
      */
-    public function removeQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories)
+    public function removeEvaluation(\Tms\Bundle\FaqBundle\Entity\Evaluation $evaluation)
     {
-        $this->questionCategories->removeElement($questionCategories);
+        $this->evaluations->removeElement($evaluation);
     }
 
     /**
-     * Get questionCategories
+     * Get evaluations
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getQuestionCategories()
+    public function getEvaluations()
     {
-        return $this->questionCategories;
+        return $this->evaluations;
     }
 
     /**
@@ -247,60 +360,5 @@ class Question implements MetadatableInterface, IndexableElementInterface
     public function getTags()
     {
         return $this->tags;
-    }
-
-    /**
-     * Has tags
-     *
-     * @param array $tags
-     * @return boolean
-     */
-    public function hasTags($tags)
-    {
-        foreach ($this->getTags() as $tag) {
-            if (in_array($tag->getKey(), $tags)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Useful for IndexableElementInterface
-     * This returns the tags in order to index them properly
-     *
-     * @return string
-     */
-    public function getIndexedTags()
-    {
-        $tags = array();
-        foreach ($this->getTags() as $tag) {
-            array_push(
-                $tags,
-                StringTools::transformSpecialChars($tag->getValue(), 'utf-8')
-            );
-        }
-
-        return implode($tags, ', ');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIndexedData()
-    {
-        $indexedData = array(
-            array(
-                'key' => 'content',
-                'value' => $this->getContent()
-            ),
-            array(
-                'key' => 'tags',
-                'value' => $this->getIndexedTags()
-            )
-        );
-
-        return $indexedData;
     }
 }

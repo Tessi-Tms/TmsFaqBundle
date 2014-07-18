@@ -2,7 +2,8 @@
 
 /**
  *
- *@author: Danielle HODIEB <danielle.hodieb@tessi.fr>
+ * @author: Danielle HODIEB <danielle.hodieb@tessi.fr>
+ * @author: Pichet PUTH <>pichet.puth@utt.fr
  *
  */
 
@@ -21,8 +22,8 @@ class Faq
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -42,13 +43,6 @@ class Faq
     private $enabled;
 
     /**
-     * @var array
-     *
-     * @ORM\Column(name="display_from_rules", type="json_array", nullable=true)
-     */
-    private $displayFromRules;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="customer_id", type="string", length=32, unique=true)
@@ -56,26 +50,23 @@ class Faq
     private $customerId;
 
     /**
-     * @ORM\OneToMany(targetEntity="QuestionCategory", mappedBy="faq", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="QuestionCategory", mappedBy="faq")
      */
-    private $questionCategories;
+    private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="faq", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="faq")
      */
     private $questions;
 
     /**
-     * @var array
-     */
-    public $tagsFilter = null;
-
-    /**
      * toString
+     *
+     * @return string
      */
     public function __toString()
     {
-        return $this->getCustomerId();
+        return sprintf('%s', $this->getTitle());
     }
 
     /**
@@ -83,15 +74,14 @@ class Faq
      */
     public function __construct()
     {
-        $this->questionCategories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
         $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->tagsFilter = null;
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -114,7 +104,7 @@ class Faq
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -137,34 +127,11 @@ class Faq
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
         return $this->enabled;
-    }
-
-    /**
-     * Set displayFromRules
-     *
-     * @param array $displayFromRules
-     * @return Faq
-     */
-    public function setDisplayFromRules($displayFromRules)
-    {
-        $this->displayFromRules = $displayFromRules;
-
-        return $this;
-    }
-
-    /**
-     * Get displayFromRules
-     *
-     * @return array 
-     */
-    public function getDisplayFromRules()
-    {
-        return $this->displayFromRules;
     }
 
     /**
@@ -183,7 +150,7 @@ class Faq
     /**
      * Get customerId
      *
-     * @return string 
+     * @return string
      */
     public function getCustomerId()
     {
@@ -191,47 +158,47 @@ class Faq
     }
 
     /**
-     * Add questionCategories
+     * Add categories
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories
+     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $category
      * @return Faq
      */
-    public function addQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories)
+    public function addCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $category)
     {
-        $this->questionCategories[] = $questionCategories;
+        $this->categories[] = $category;
 
         return $this;
     }
 
     /**
-     * Remove questionCategories
+     * Remove categories
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories
+     * @param \Tms\Bundle\FaqBundle\Entity\QuestionCategory $category
      */
-    public function removeQuestionCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $questionCategories)
+    public function removeCategorie(\Tms\Bundle\FaqBundle\Entity\QuestionCategory $category)
     {
-        $this->questionCategories->removeElement($questionCategories);
+        $this->categories->removeElement($category);
     }
 
     /**
-     * Get questionCategories
+     * Get categories
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getQuestionCategories()
+    public function getCategories()
     {
-        return $this->questionCategories;
+        return $this->categories;
     }
 
     /**
      * Add questions
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\Question $questions
+     * @param \Tms\Bundle\FaqBundle\Entity\Question $question
      * @return Faq
      */
-    public function addQuestion(\Tms\Bundle\FaqBundle\Entity\Question $questions)
+    public function addQuestion(\Tms\Bundle\FaqBundle\Entity\Question $question)
     {
-        $this->questions[] = $questions;
+        $this->questions[] = $question;
 
         return $this;
     }
@@ -239,31 +206,20 @@ class Faq
     /**
      * Remove questions
      *
-     * @param \Tms\Bundle\FaqBundle\Entity\Question $questions
+     * @param \Tms\Bundle\FaqBundle\Entity\Question $question
      */
-    public function removeQuestion(\Tms\Bundle\FaqBundle\Entity\Question $questions)
+    public function removeQuestion(\Tms\Bundle\FaqBundle\Entity\Question $question)
     {
-        $this->questions->removeElement($questions);
+        $this->questions->removeElement($question);
     }
 
     /**
      * Get questions
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getQuestions()
     {
-        if (null === $this->tagsFilter) {
-            return $this->questions;
-        }
-
-        $questions = array();
-        foreach ($this->questions as $question) {
-            if ($question->hasTags($this->tagsFilter)) {
-                $questions[] = $question;
-            }
-        }
-
-        return $questions;
+        return $this->questions;
     }
 }

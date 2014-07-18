@@ -2,8 +2,8 @@
 
 /**
  *
- *@author: Danielle HODIEB <danielle.hodieb@tessi.fr>
- *
+ * @author: Danielle HODIEB <danielle.hodieb@tessi.fr>
+ * @author: Pichet PUTH <pichet.puth@utt.fr>
  */
 
 namespace Tms\Bundle\FaqBundle\Entity;
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Evaluation
  *
  * @ORM\Entity
- * @ORM\Table(name="evaluation")
+ * @ORM\Table(name="faq_evaluation")
  * @ORM\HasLifecycleCallbacks()
  */
 class Evaluation
@@ -22,8 +22,8 @@ class Evaluation
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -36,25 +36,17 @@ class Evaluation
     private $value;
 
     /**
-     * @var \DateTime
+     * @var datetime
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Response", inversedBy="evaluations")
-     * @ORM\JoinColumn(name="response_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="evaluations")
+     * @ORM\JoinColumn(name="question_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $response;
-
-    /**
-     * toString
-     */
-    public function __toString()
-    {
-        return $this->getValue();
-    }
+    private $question;
 
     /**
      * On create
@@ -72,7 +64,7 @@ class Evaluation
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -88,18 +80,41 @@ class Evaluation
     public function setValue($value)
     {
         $this->value = $value;
-    
+
         return $this;
     }
 
     /**
      * Get value
      *
-     * @return integer 
+     * @return integer
      */
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Set question
+     *
+     * @param \Tms\Bundle\FaqBundle\Entity\Question $question
+     * @return Evaluation
+     */
+    public function setQuestion(\Tms\Bundle\FaqBundle\Entity\Question $question = null)
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * Get question
+     *
+     * @return \Tms\Bundle\FaqBundle\Entity\Question
+     */
+    public function getQuestion()
+    {
+        return $this->question;
     }
 
     /**
@@ -111,40 +126,17 @@ class Evaluation
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-
-    /**
-     * Set response
-     *
-     * @param \Tms\Bundle\FaqBundle\Entity\Response $response
-     * @return Evaluation
-     */
-    public function setResponse(\Tms\Bundle\FaqBundle\Entity\Response $response = null)
-    {
-        $this->response = $response;
-    
-        return $this;
-    }
-
-    /**
-     * Get response
-     *
-     * @return \Tms\Bundle\FaqBundle\Entity\Response 
-     */
-    public function getResponse()
-    {
-        return $this->response;
     }
 }
