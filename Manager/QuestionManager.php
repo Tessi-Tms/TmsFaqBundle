@@ -1,24 +1,20 @@
 <?php
+
+/**
+ * @author Danielle HODIEB <danielle.hodieb@tessi.fr>
+ * @author Pichet PUTH <pichet.puth@utt.fr>
+ *
+ *
+ */
+
 namespace Tms\Bundle\FaqBundle\Manager;
 
 use Tms\Bundle\FaqBundle\Entity\Question;
 use Tms\Bundle\FaqBundle\Event\QuestionEvent;
 use Tms\Bundle\FaqBundle\Event\QuestionEvents;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
-/**
- * Question manager.
- *
- * @author Danielle HODIEB <danielle.hodieb@tessi.fr>
- */
 class QuestionManager extends AbstractManager
 {
-    public function __construct(EntityManager $entityManager, ContainerAwareEventDispatcher $eventDispatcher)
-    {
-        parent::__construct($entityManager, $eventDispatcher);
-    }
-
     /**
      * {@inheritdoc}
      */

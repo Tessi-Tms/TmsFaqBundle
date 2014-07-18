@@ -1,16 +1,16 @@
 <?php
 
+/**
+ * @author: Danielle HODIEB <danielle.hodieb@tessi.fr>
+ *
+ */
+
 namespace Tms\Bundle\FaqBundle\Manager;
 
 use Tms\Bundle\FaqBundle\Entity\Faq;
 use Tms\Bundle\FaqBundle\Event\FaqEvent;
 use Tms\Bundle\FaqBundle\Event\FaqEvents;
 
-/**
- * Faq manager.
- *
- * @author Danielle HODIEB <danielle.hodieb@tessi.fr>
- */
 class FaqManager extends AbstractManager
 {
     /**
@@ -34,7 +34,7 @@ class FaqManager extends AbstractManager
         parent::add($entity);
 
         $this->getEventDispatcher()->dispatch(
-           FaqEvents::POST_CREATE,
+            FaqEvents::POST_CREATE,
             new FaqEvent($entity)
         );
     }

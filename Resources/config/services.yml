@@ -17,14 +17,3 @@ services:
     tms_faq.manager.consumer_search:
         class: Tms\Bundle\FaqBundle\Manager\ConsumerSearchManager
         arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
-
-    tms_faq.manager:
-        class: Tms\Bundle\FaqBundle\Manager\Manager
-        arguments:
-            - @tms_faq.manager.faq
-            - @tms_faq.manager.question
-            - @tms_faq.manager.question_category
-            - @tms_faq.manager.response
-            - @tms_faq.manager.evaluation
-            - @tms_faq.manager.consumer_search
-            - @tms_search.handler

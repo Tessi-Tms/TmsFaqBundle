@@ -1,16 +1,16 @@
 <?php
 
+/**
+ * @author: Danielle HODIEB <danielle.hodieb@tessi.fr>
+ *
+ */
+
 namespace Tms\Bundle\FaqBundle\Manager;
 
 use Tms\Bundle\FaqBundle\Entity\QuestionCategory;
 use Tms\Bundle\FaqBundle\Event\QuestionCategoryEvent;
 use Tms\Bundle\FaqBundle\Event\QuestionCategoryEvents;
 
-/**
- * QuestionCategory manager.
- *
- * @author Danielle HODIEB <danielle.hodieb@tessi.fr>
- */
 class QuestionCategoryManager extends AbstractManager
 {
     /**
@@ -50,6 +50,7 @@ class QuestionCategoryManager extends AbstractManager
         );
 
         parent::update($entity);
+
         $this->getEventDispatcher()->dispatch(
             QuestionCategoryEvents::POST_UPDATE,
             new QuestionCategoryEvent($entity)

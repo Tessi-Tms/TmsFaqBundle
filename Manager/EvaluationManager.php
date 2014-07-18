@@ -1,16 +1,16 @@
 <?php
 
+/**
+ * @author: Danielle HODIEB <danielle.hodieb@tessi.fr>
+ *
+ */
+
 namespace Tms\Bundle\FaqBundle\Manager;
 
 use Tms\Bundle\FaqBundle\Entity\Evaluation;
 use Tms\Bundle\FaqBundle\Event\EvaluationEvent;
 use Tms\Bundle\FaqBundle\Event\EvaluationEvents;
 
-/**
- * Evaluation manager.
- *
- * @author Danielle HODIEB <danielle.hodieb@tessi.fr>
- */
 class EvaluationManager extends AbstractManager
 {
     /**

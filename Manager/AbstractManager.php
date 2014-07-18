@@ -1,21 +1,28 @@
 <?php
 
+/**
+ * @author: Danielle HODIEB <danielle.hodieb@tessi.fr>
+ * @author: Pichet PUTH <pichet.puth@utt.fr>
+ *
+ */
+
 namespace Tms\Bundle\FaqBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Abstract manager.
- *
- * @author Danielle HODIEB <danielle.hodieb@tessi.fr>
- */
 abstract class AbstractManager
 {
     protected $entityManager;
     protected $eventDispatcher;
 
-    public function __construct(EntityManager $entityManager, ContainerAwareEventDispatcher $eventDispatcher)
+    /**
+     * Constructor
+     *
+     * @param EntityManager $entityManager
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(EntityManager $entityManager, EventDispatcherInterface $eventDispatcher)
     {
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
@@ -34,7 +41,7 @@ abstract class AbstractManager
     /**
      * Get EventDispatcher
      *
-     * @return ContainerAwareEventDispatcher
+     * @return EventDispatcherInterface
      */
     public function getEventDispatcher()
     {
