@@ -15,17 +15,14 @@ class QuestionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content', 'wysiwyg_textarea')
+            ->add('question', 'wysiwyg_textarea')
+            ->add('answer', 'wysiwyg_textarea')
             ->add('faq')
-            ->add('questionCategories', 'entity', array(
-                'class' => 'TmsFaqBundle:QuestionCategory',
-                'multiple' => true,
-                'expanded' => true
-            ))
+            ->add('categories')
             ->add('tags', 'related_to_many_metadata_tags')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

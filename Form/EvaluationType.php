@@ -16,10 +16,10 @@ class EvaluationType extends AbstractType
     {
         $builder
             ->add('value')
-            ->add('response')
+            ->add('question')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
