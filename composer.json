@@ -17,7 +17,10 @@
         "symfony/framework-bundle": ">=2.3",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
-        "twig/twig": "*"
+        "twig/twig": "*",
+        "tms/search-bundle": "dev-master",
+        "idci/simple-metadata-bundle": "dev-master",
+        "elasticsearch/elasticsearch": "~0.4"
     },
     "autoload": {
         "psr-0": { "Tms\\Bundle\\FaqBundle": "" }
