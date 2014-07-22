@@ -14,7 +14,7 @@ use Tms\Bundle\FaqBundle\Tools\StringTools;
 /**
  * QuestionCategory
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Tms\Bundle\FaqBundle\Entity\Repository\QuestionCategoryRepository")
  * @ORM\Table(name="faq_question_category", uniqueConstraints={
  *     @ORM\UniqueConstraint(name="faq_question_category", columns={"name","faq_id"})
  * })
@@ -111,20 +111,6 @@ class QuestionCategory
     public function __construct()
     {
         $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * onCreate
-     * @ORM\PrePersist()
-     */
-    public function onCreate()
-    {
-        $this->setSlug(StringTools::slugify($this->__toString()));
-        $now = new \DateTime("now");
-        $this
-            ->setCreatedAt($now)
-            ->setUpdatedAt($now)
-        ;
     }
 
     /**

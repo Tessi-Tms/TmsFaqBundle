@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Faq
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Tms\Bundle\FaqBundle\Entity\Repository\FaqRepository")
  * @ORM\Table(name="faq")
  */
 class Faq

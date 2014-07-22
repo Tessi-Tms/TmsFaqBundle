@@ -14,22 +14,6 @@ use Doctrine\ORM\EntityRepository;
 /**
  * ResponseRepository
  */
-class ResponseRepository extends EntityRepository
+class ResponseRepository extends AbstractEntityRepository
 {
-    /**
-     * Get search Responses
-     *
-     * @param array $ids
-     * @return array
-     */
-    public function findAllIn($ids)
-    {
-        $qb = $this->createQueryBuilder('response');
-
-        return $qb
-            ->where($qb->expr()->in('response.id', $ids))
-            ->getQuery()
-            ->getResult()
-        ;
-    }
 }
