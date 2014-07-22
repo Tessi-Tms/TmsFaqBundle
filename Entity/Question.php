@@ -18,7 +18,8 @@ use Tms\Bundle\SearchBundle\IndexableElement\IndexableElementInterface;
  * @ORM\Entity(repositoryClass="\Tms\Bundle\FaqBundle\Entity\Repository\QuestionRepository")
  * @ORM\Table(name="faq_question")
  */
-class Question implements MetadatableInterface, IndexableElementInterface
+class Question
+//implements MetadatableInterface, IndexableElementInterface
 {
     /**
      * @var integer
