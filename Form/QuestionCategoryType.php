@@ -16,7 +16,6 @@ class QuestionCategoryType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('faq')
             ->add('icon', 'related_to_one_media', array(
                 'data' => $builder->getData()->getIcon()
             ))
