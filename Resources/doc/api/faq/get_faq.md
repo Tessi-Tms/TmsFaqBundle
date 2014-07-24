@@ -1,0 +1,2 @@
+TmsFaqBundle API: [GET] Faq
+===========================

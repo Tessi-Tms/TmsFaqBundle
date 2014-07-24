@@ -50,3 +50,8 @@ php app/console doctrine:schema:update --force
 ```
 
 Now the Bundle is installed.
+
+Documentation
+=============
+
+[Read the Documentation](Resources/doc/index.md)
