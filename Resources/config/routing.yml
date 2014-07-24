@@ -1,0 +1,21 @@
+# API REST
+
+faq:
+    type:         rest
+    resource:     Tms\Bundle\FaqBundle\Controller\Rest\ApiFaqController
+    name_prefix:  api_faq_
+
+question_category:
+    type:         rest
+    resource:     Tms\Bundle\FaqBundle\Controller\Rest\ApiQuestionCategoryController
+    name_prefix:  api_question_category_
+
+question:
+    type:         rest
+    resource:     Tms\Bundle\FaqBundle\Controller\Rest\ApiQuestionController
+    name_prefix:  api_question_
+
+evaluation:
+    type:         rest
+    resource:     Tms\Bundle\FaqBundle\Controller\Rest\ApiEvaluationController
+    name_prefix:  api_evaluation_
