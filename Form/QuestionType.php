@@ -17,7 +17,6 @@ class QuestionType extends AbstractType
         $builder
             ->add('question', 'wysiwyg_textarea')
             ->add('answer', 'wysiwyg_textarea')
-            ->add('faq')
             ->add('categories')
             ->add('tags', 'related_to_many_metadata_tags')
         ;
