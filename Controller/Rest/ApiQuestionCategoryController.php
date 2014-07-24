@@ -36,7 +36,7 @@ class ApiQuestionCategoryController extends FOSRestController
      * @param integer $page
      * @param array   $sort
      */
-    public function getQuestionCategoriesAction(
+    public function getQuestioncategoriesAction(
         $limit      = null,
         $offset     = null,
         $page       = null,
@@ -83,7 +83,7 @@ class ApiQuestionCategoryController extends FOSRestController
      *
      * @param integer $id
      */
-    public function getQuestionCategoryAction($id)
+    public function getQuestioncategoryAction($id)
     {
         try {
             $view = $this->view(
