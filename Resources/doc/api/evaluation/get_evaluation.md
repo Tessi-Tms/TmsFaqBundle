@@ -1,5 +1,5 @@
 TmsFaqBundle API: [GET] Evaluation
-==================================.
+==================================
 
 Retrieve one evaluation
 
