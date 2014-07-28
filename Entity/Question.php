@@ -17,6 +17,7 @@ use Tms\Bundle\SearchBundle\IndexableElement\IndexableElementInterface;
  *
  * @ORM\Entity(repositoryClass="\Tms\Bundle\FaqBundle\Entity\Repository\QuestionRepository")
  * @ORM\Table(name="faq_question")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Question
 //implements MetadatableInterface, IndexableElementInterface
@@ -117,6 +118,55 @@ class Question
     }
 
     /**
+     * Update average
+     *
+     * @ORM\PreUpdate()
+     */
+    public function updateAverage()
+    {
+        $this->setAverage($this->computeAverage());
+    }
+
+    /**
+     * Compute average
+     *
+     * @return float
+     */
+    protected function computeAverage()
+    {
+        $sum = 0;
+        $evaluations = $this->getEvaluations();
+
+        if(count($evaluations) > 0) {
+            foreach ($evaluations as $evaluation) {
+                $sum = $sum + $evaluation->getValue();
+            }
+
+            return $sum / count($evaluations);
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Update CountYep
+     *
+     */
+    public function updateCountYep()
+    {
+        //TODO
+    }
+
+    /**
+     * Update CountNope
+     *
+     */
+    public function updateCountNope()
+    {
+        //TODO
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -188,7 +238,7 @@ class Question
     /**
      * Get average
      *
-     * @return string
+     * @return float
      */
     public function getAverage()
     {
