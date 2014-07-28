@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @author: Danielle HODIEB <danielle.hodieb@tessi.fr>
- *
+ * @author Pichet Puth <pichet.puth@utt.fr>
  */
 
 namespace Tms\Bundle\FaqBundle\Manager;
@@ -10,6 +9,7 @@ namespace Tms\Bundle\FaqBundle\Manager;
 use Tms\Bundle\FaqBundle\Entity\Faq;
 use Tms\Bundle\FaqBundle\Event\FaqEvent;
 use Tms\Bundle\FaqBundle\Event\FaqEvents;
+use Tms\Bundle\FaqBundle\FaqOwnerInterface;
 
 class FaqManager extends AbstractManager
 {
@@ -73,5 +73,63 @@ class FaqManager extends AbstractManager
             FaqEvents::POST_DELETE,
             new FaqEvent($entity)
         );
+    }
+
+    /**
+     * Get the FaqOwner object
+     *
+     * @param string $objectClassName
+     * @param string $objectId
+     * @return FaqOwnerInterface
+     */
+    public function getFaqOwnerObject($objectClassName, $objectId)
+    {
+        return $this
+            ->getEntityManager()
+            ->getRepository($objectClassName)
+            ->findOneBy(array('id' => $objectId))
+        ;
+    }
+
+    /**
+     * Get the class name of FaqOwnerInterface
+     *
+     * @param FaqOwnerInterface $faqOwner
+     * @return string
+     */
+    public function getClassName(FaqOwnerInterface $faqOwner)
+    {
+        $reflecion = new \ReflectionClass($faqOwner);
+
+        return $reflecion->getName();
+    }
+
+    /**
+     * Generate a Hash from a FaqOwnerInterface
+     *
+     * @param FaqOwnerInterface $faqOwner
+     * @return string
+     */
+    public function generateHash(FaqOwnerInterface $faqOwner)
+    {
+        return md5(sprintf('%s - %s',
+            $this->getClassName($faqOwner),
+            $faqOwner->getId()
+        ));
+    }
+
+    /**
+     * Fetch an object (FaqOwnerInterface) related to a faq and create the association
+     *
+     * @param Faq $faq
+     */
+    public function fetchObject(Faq & $faq)
+    {
+        $faqOwner = $this->getFaqOwnerObject(
+            $faq->getObjectClassName(),
+            $faq->getObjectId()
+        );
+
+        $faq->setObject($faqOwner);
     }
 }
