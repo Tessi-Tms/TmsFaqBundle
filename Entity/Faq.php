@@ -45,9 +45,23 @@ class Faq
     /**
      * @var string
      *
-     * @ORM\Column(name="customer_id", type="string", length=32, unique=true)
+     * @ORM\Column(type="string", length=255)
      */
-    private $customerId;
+    private $hash;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="object_class_name", type="string", length=255)
+     */
+    private $objectClassName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="object_id", type="string", length=64)
+     */
+    private $objectId;
 
     /**
      * @ORM\OneToMany(targetEntity="QuestionCategory", mappedBy="faq")
@@ -58,6 +72,11 @@ class Faq
      * @ORM\OneToMany(targetEntity="Question", mappedBy="faq")
      */
     private $questions;
+
+    /**
+     * @var FaqOwnerInterface
+     */
+    private $object;
 
     /**
      * toString
@@ -76,6 +95,29 @@ class Faq
     {
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
         $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get Object
+     *
+     * @return FaqOwnerInterface
+     */
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    /**
+     * Set Object
+     *
+     * @param  FaqOwnerInterface $object
+     * @return Faq
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
+
+        return $this;
     }
 
     /**
@@ -135,26 +177,72 @@ class Faq
     }
 
     /**
-     * Set customerId
+     * Set hash
      *
-     * @param string $customerId
+     * @param string $hash
      * @return Faq
      */
-    public function setCustomerId($customerId)
+    public function setHash($hash)
     {
-        $this->customerId = $customerId;
+        $this->hash = $hash;
 
         return $this;
     }
 
     /**
-     * Get customerId
+     * Get hash
      *
      * @return string
      */
-    public function getCustomerId()
+    public function getHash()
     {
-        return $this->customerId;
+        return $this->hash;
+    }
+
+    /**
+     * Set objectClassName
+     *
+     * @param string $objectClassName
+     * @return Faq
+     */
+    public function setObjectClassName($objectClassName)
+    {
+        $this->objectClassName = $objectClassName;
+
+        return $this;
+    }
+
+    /**
+     * Get objectClassName
+     *
+     * @return string
+     */
+    public function getObjectClassName()
+    {
+        return $this->objectClassName;
+    }
+
+    /**
+     * Set objectId
+     *
+     * @param string $objectId
+     * @return Faq
+     */
+    public function setObjectId($objectId)
+    {
+        $this->objectId = $objectId;
+
+        return $this;
+    }
+
+    /**
+     * Get objectId
+     *
+     * @return string
+     */
+    public function getObjectId()
+    {
+        return $this->objectId;
     }
 
     /**
