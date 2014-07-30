@@ -8,14 +8,17 @@ faq:
 question_category:
     type:         rest
     resource:     Tms\Bundle\FaqBundle\Controller\Rest\ApiQuestionCategoryController
-    name_prefix:  api_question_category_
+    name_prefix:  api_faq_question_category_
+    prefix:       /faq
 
 question:
     type:         rest
     resource:     Tms\Bundle\FaqBundle\Controller\Rest\ApiQuestionController
-    name_prefix:  api_question_
+    name_prefix:  api_faq_question_
+    prefix:       /faq
 
 evaluation:
     type:         rest
     resource:     Tms\Bundle\FaqBundle\Controller\Rest\ApiEvaluationController
-    name_prefix:  api_evaluation_
+    name_prefix:  api_faq_evaluation_
+    prefix:       /faq
