@@ -7,8 +7,8 @@ List all evaluations
 |             | Values
 |-------------|-------
 | **Method**  | GET
-| **Path**    | /evaluations
-| **Formats** | json
+| **Path**    | /faq/evaluations
+| **Formats** | json, xml
 | **Secured** | false
 
 ## HTTP Request parameters
@@ -33,74 +33,193 @@ List all evaluations
 ```json
 {
     "metadata": {
-        "type":"Tms\\Bundle\\FaqBundle\\Entity\\Evaluation",
-        "serializerContextGroup":"tms_rest.collection",
-        "page":1,
-        "pageCount":2,
-        "totalCount":2,
-        "limit":20,
-        "offset":0
+        "type": "Tms\\Bundle\\FaqBundle\\Entity\\Evaluation",
+        "serializerContextGroup": "tms_rest.collection",
+        "page": 1,
+        "pageCount": 2,
+        "totalCount": 3,
+        "limit": 2,
+        "offset": 0
     },
     "data": [
         {
             "metadata": {
-                "type":"Tms\\Bundle\\FaqBundle\\Entity\\Evaluation",
-                "serializerContextGroup":"tms_rest.item"
+                "type": "Tms\\Bundle\\FaqBundle\\Entity\\Evaluation",
+                "serializerContextGroup": "tms_rest.item"
             },
             "data": {
-                "id":1,
-                "value":5,
-                "createdAt":"2014-07-17T00:00:00+0200"
+                "id": 10,
+                "value": 1,
+                "createdAt": "2014-07-30T03:12:32+0200"
             },
             "links": {
                 "self": {
-                    "rel":"self",
-                    "href":"http:\/\/operation-manager.tessi\/app_dev.php\/api\/evaluations\/1.json"
+                    "rel": "self",
+                    "href": "http://operation-manager.tessi/app_dev.php/api/faq/evaluations/10.json"
                 }
             },
-            "actions":[]
+            "actions": []
         },
         {
             "metadata": {
-                "type":"Tms\\Bundle\\FaqBundle\\Entity\\Evaluation",
-                "serializerContextGroup":"tms_rest.item"
+                "type": "Tms\\Bundle\\FaqBundle\\Entity\\Evaluation",
+                "serializerContextGroup": "tms_rest.item"
             },
             "data": {
-                "id":2,
-                "value":4,
-                "createdAt":"2014-07-16T04:24:11+0200"
+                "id": 11,
+                "value": 10,
+                "createdAt": "2014-07-31T03:08:33+0200"
             },
             "links": {
                 "self": {
-                    "rel":"self",
-                    "href":"http:\/\/operation-manager.tessi\/app_dev.php\/api\/evaluations\/2.json"
+                    "rel": "self",
+                    "href": "http://operation-manager.tessi/app_dev.php/api/faq/evaluations/11.json"
                 }
             },
-            "actions":[]
+            "actions": []
         }
     ],
     "links": {
         "self": {
-            "rel":"self",
-            "href":"http:\/\/operation-manager.tessi\/app_dev.php\/api\/evaluations?page=1&limit=20&offset=0"
+            "rel": "self",
+            "href": "http://operation-manager.tessi/app_dev.php/api/faq/evaluations?page=1&limit=2&offset=0"
         },
         "nextPage": {
-            "rel":"nav",
-            "href":""
+            "rel": "nav",
+            "href": "http://operation-manager.tessi/app_dev.php/api/faq/evaluations?page=2&limit=2&offset=0"
         },
         "previousPage": {
-            "rel":"nav",
-            "href":""
+            "rel": "nav",
+            "href": ""
         },
         "firstPage": {
-            "rel":"nav",
-            "href":"http:\/\/operation-manager.tessi\/app_dev.php\/api\/evaluations?page=1&limit=20&offset=0"
+            "rel": "nav",
+            "href": "http://operation-manager.tessi/app_dev.php/api/faq/evaluations?page=1&limit=2&offset=0"
         },
         "lastPage": {
-            "rel":"nav",
-            "href":"http:\/\/operation-manager.tessi\/app_dev.php\/api\/evaluations?page=1&limit=20&offset=0"
+            "rel": "nav",
+            "href": "http://operation-manager.tessi/app_dev.php/api/faq/evaluations?page=2&limit=2&offset=0"
         }
     },
-    "actions":[]
+    "actions": []
 }
+```
+
+### xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<result>
+    <entry>
+        <entry>
+            <![CDATA[Tms\Bundle\FaqBundle\Entity\Evaluation]]>
+        </entry>
+        <entry>
+            <![CDATA[tms_rest.collection]]>
+        </entry>
+        <entry>1</entry>
+        <entry>2</entry>
+        <entry>3</entry>
+        <entry>2</entry>
+        <entry>0</entry>
+    </entry>
+    <entry>
+        <entry>
+            <entry>
+                <entry>
+                    <![CDATA[Tms\Bundle\FaqBundle\Entity\Evaluation]]>
+                </entry>
+                <entry>
+                    <![CDATA[tms_rest.item]]>
+                </entry>
+            </entry>
+            <entry>
+                <id>10</id>
+                <value>1</value>
+                <createdAt>
+                    <![CDATA[2014-07-30T03:12:32+0200]]>
+                </createdAt>
+            </entry>
+            <entry>
+                <entry>
+                    <entry>
+                        <![CDATA[self]]>
+                    </entry>
+                    <entry>
+                        <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/evaluations/10.xml]]>
+                    </entry>
+                </entry>
+            </entry>
+            <entry/></entry>
+        <entry>
+            <entry>
+                <entry>
+                    <![CDATA[Tms\Bundle\FaqBundle\Entity\Evaluation]]>
+                </entry>
+                <entry>
+                    <![CDATA[tms_rest.item]]>
+                </entry>
+            </entry>
+            <entry>
+                <id>11</id>
+                <value>10</value>
+                <createdAt>
+                    <![CDATA[2014-07-31T03:08:33+0200]]>
+                </createdAt>
+            </entry>
+            <entry>
+                <entry>
+                    <entry>
+                        <![CDATA[self]]>
+                    </entry>
+                    <entry>
+                        <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/evaluations/11.xml]]>
+                    </entry>
+                </entry>
+            </entry>
+            <entry/></entry>
+    </entry>
+    <entry>
+        <entry>
+            <entry>
+                <![CDATA[self]]>
+            </entry>
+            <entry>
+                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/evaluations.xml?page=1&limit=2&offset=0]]>
+            </entry>
+        </entry>
+        <entry>
+            <entry>
+                <![CDATA[nav]]>
+            </entry>
+            <entry>
+                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/evaluations.xml?page=2&limit=2&offset=0]]>
+            </entry>
+        </entry>
+        <entry>
+            <entry>
+                <![CDATA[nav]]>
+            </entry>
+            <entry>
+                <![CDATA[]]>
+            </entry>
+        </entry>
+        <entry>
+            <entry>
+                <![CDATA[nav]]>
+            </entry>
+            <entry>
+                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/evaluations.xml?page=1&limit=2&offset=0]]>
+            </entry>
+        </entry>
+        <entry>
+            <entry>
+                <![CDATA[nav]]>
+            </entry>
+            <entry>
+                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/evaluations.xml?page=2&limit=2&offset=0]]>
+            </entry>
+        </entry>
+    </entry>
+    <entry/>
+</result>
 ```

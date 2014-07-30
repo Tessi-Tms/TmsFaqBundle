@@ -8,7 +8,7 @@ Retrieve Faq question categories
 |-------------|-------
 | **Method**  | GET
 | **Path**    | /faqs/{id}/questioncategories.{_format}
-| **Formats** | json|xml
+| **Formats** | json, xml
 | **Secured** | false
 
 ## HTTP Request parameters

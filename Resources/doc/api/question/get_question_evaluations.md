@@ -9,7 +9,7 @@ Retrieve Question evaluations
 |-------------|-------
 | **Method**  | GET
 | **Path**    | /faq/questions/{id}/evaluations.{_format}
-| **Formats** | json|xml
+| **Formats** | json, xml
 | **Secured** | false
 
 ## HTTP Request parameters

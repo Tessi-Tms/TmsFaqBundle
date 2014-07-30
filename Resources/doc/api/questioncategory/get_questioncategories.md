@@ -8,7 +8,7 @@ List all question categories
 |-------------|-------
 | **Method**  | GET
 | **Path**    | /faq/questioncategories.{_format}
-| **Formats** | json|xml
+| **Formats** | json, xml
 | **Secured** | false
 
 ## HTTP Request parameters

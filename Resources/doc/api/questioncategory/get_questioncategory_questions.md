@@ -8,7 +8,7 @@ Retrieve Questions category questions
 |-------------|-------
 | **Method**  | GET
 | **Path**    | /faq/questioncategories/{id}/questions.{_format}
-| **Formats** | json|xml
+| **Formats** | json, xml
 | **Secured** | false
 
 ## HTTP Request parameters

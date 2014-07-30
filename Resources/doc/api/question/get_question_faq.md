@@ -9,7 +9,7 @@ Retrieve Question Faq
 |-------------|-------
 | **Method**  | GET
 | **Path**    | /faq/questions/{id}/faq.{_format}
-| **Formats** | json|xml
+| **Formats** | json, xml
 | **Secured** | false
 
 ## HTTP Request parameters
