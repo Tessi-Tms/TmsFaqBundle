@@ -381,26 +381,26 @@ class Question
     }
 
     /**
-     * Add tags
+     * Add tag
      *
-     * @param \IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tags
+     * @param \IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag
      * @return Question
      */
-    public function addTag(\IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tags)
+    public function addTag(\IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag)
     {
-        $this->tags[] = $tags;
+        $this->tags[] = $tag;
 
         return $this;
     }
 
     /**
-     * Remove tags
+     * Remove tag
      *
      * @param \IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tags
      */
-    public function removeTag(\IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tags)
+    public function removeTag(\IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata $tag)
     {
-        $this->tags->removeElement($tags);
+        $this->tags->removeElement($tag);
     }
 
     /**
