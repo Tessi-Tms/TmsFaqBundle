@@ -22,7 +22,7 @@ No request parameters
 | 404  | Not found (wrong id)
 | 500  | Server error
 
-## HTTP Response codes
+## HTTP Response content examples
 ### json
 ```json
 {
