@@ -27,12 +27,14 @@ class ApiFaqController extends FOSRestController
      * Retrieve a set of Faq
      *
      * @QueryParam(name="customer_id", nullable=true, description="(optional) Customer")
+     * @QueryParam(name="enabled", requirements="[0,1]", nullable=true, description="(optional) enabled Customer")
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
      * @QueryParam(name="page", requirements="\d+", strict=true, nullable=true, description="(optional) Page number")
      * @QueryParam(name="sort", array=true, nullable=true, description="(optional) Sort")
      *
      * @param integer $customer_id
+     * @param boolean $enabled
      * @param integer $limit
      * @param integer $offset
      * @param integer $page
@@ -40,6 +42,7 @@ class ApiFaqController extends FOSRestController
      */
     public function getFaqsAction(
         $customer_id = null,
+        $enabled     = null,
         $limit       = null,
         $offset      = null,
         $page        = null,
@@ -69,7 +72,8 @@ class ApiFaqController extends FOSRestController
                         ->getEntityClass()
                 )
                 ->setCriteria(array(
-                    'hash' => $hash
+                    'hash'    => $hash,
+                    'enabled' => isset($enabled) ? (bool)$enabled : null
                 ))
                 ->setSort($sort)
                 ->setLimit($limit)
