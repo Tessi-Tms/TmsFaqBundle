@@ -119,8 +119,6 @@ class Question
 
     /**
      * Update average
-     *
-     * @ORM\PreUpdate()
      */
     public function updateAverage()
     {
@@ -149,21 +147,19 @@ class Question
     }
 
     /**
-     * Update CountYep
-     *
+     * Add Yep
      */
-    public function updateCountYep()
+    public function addYep()
     {
-        //TODO
+        $this->setCountYep($this->getCountYep() + 1);
     }
 
     /**
-     * Update CountNope
-     *
+     * Add Nope
      */
-    public function updateCountNope()
+    public function addNope()
     {
-        //TODO
+        $this->setCountNope($this->getCountNope() + 1);
     }
 
     /**
