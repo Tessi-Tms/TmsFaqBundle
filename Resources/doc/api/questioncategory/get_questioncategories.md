@@ -14,6 +14,7 @@ List all question categories
 ## HTTP Request parameters
 | Name     | Optional | Default | Requirements | Description
 |----------|----------|---------|--------------|------------
+| faq_id   | true     |         | \d+          | Id of the Faq associated with question categories
 | limit    | true     | 20      | \d+          | Pagination limit
 | offset   | true     | 0       | \d+          | Pagination offet
 | page     | true     |         |              |

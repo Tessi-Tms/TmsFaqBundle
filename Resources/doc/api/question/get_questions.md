@@ -12,12 +12,14 @@ List all questions
 | **Secured** | false
 
 ## HTTP Request parameters
-| Name     | Optional | Default | Requirements | Description
-|----------|----------|---------|--------------|------------
-| limit    | true     | 20      | \d+          | Pagination limit
-| offset   | true     | 0       | \d+          | Pagination offet
-| page     | true     |         |              |
-| sort     | true     |         |              |
+| Name                 | Optional | Default | Requirements | Description
+|----------------------|----------|---------|--------------|------------
+| faq_id               | true     |         | \d+          | Id of the Faq associated with questions
+| question_category_id | true     |         | \d+          | Id of the question category associated with questions
+| limit                | true     | 20      | \d+          | Pagination limit
+| offset               | true     | 0       | \d+          | Pagination offet
+| page                 | true     |         |              |
+| sort                 | true     |         |              |
 
 ## HTTP Response codes
 | Code | Description

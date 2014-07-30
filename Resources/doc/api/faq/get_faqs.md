@@ -12,12 +12,13 @@ List all Faqs
 | **Secured** | false
 
 ## HTTP Request parameters
-| Name     | Optional | Default | Requirements | Description
-|----------|----------|---------|--------------|------------
-| limit    | true     | 20      | \d+          | Pagination limit
-| offset   | true     | 0       | \d+          | Pagination offet
-| page     | true     |         |              |
-| sort     | true     |         |              |
+| Name        | Optional | Default | Requirements | Description
+|-------------|----------|---------|--------------|------------
+| customer_id | true     |         | \d+          | Id of a customer associated with a Faq
+| limit       | true     | 20      | \d+          | Pagination limit
+| offset      | true     | 0       | \d+          | Pagination offet
+| page        | true     |         |              |
+| sort        | true     |         |              |
 
 ## HTTP Response codes
 | Code | Description
