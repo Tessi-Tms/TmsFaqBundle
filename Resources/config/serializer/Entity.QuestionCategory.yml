@@ -13,3 +13,7 @@ Tms\Bundle\FaqBundle\Entity\QuestionCategory:
         slug:
             expose: true
             groups: [tms_rest.collection, tms_rest.item]
+
+        questions:
+            expose: true
+            groups: [tms_rest.item]

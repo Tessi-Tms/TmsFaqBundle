@@ -14,6 +14,10 @@ Tms\Bundle\FaqBundle\Entity\Faq:
             expose: true
             groups: [tms_rest.collection, tms_rest.item]
 
+        categories:
+            expose: true
+            groups: [tms_rest.item]
+
         customerId:
             expose: true
             groups: [tms_rest.collection, tms_rest.item]
