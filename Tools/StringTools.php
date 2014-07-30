@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ *
  * @author: Danielle HODIEB <danielle.hodieb@tessi.fr>
  * @license: GPL
  *

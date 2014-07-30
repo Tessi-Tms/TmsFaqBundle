@@ -2,7 +2,7 @@
 
 /**
  *
- *@author: Danielle HODIEB <danielle.hodieb@tessi.fr>
+ * @author Danielle HODIEB <danielle.hodieb@tessi.fr>
  *
  */
 namespace Tms\Bundle\FaqBundle\Exception;

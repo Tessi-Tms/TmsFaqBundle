@@ -2,8 +2,8 @@
 
 /**
  *
- * @author: Danielle HODIEB <danielle.hodieb@tessi.fr>
- * @author: Pichet PUTH <pichet.puth@utt.fr>
+ * @author Danielle HODIEB <danielle.hodieb@tessi.fr>
+ * @author Pichet PUTH <pichet.puth@utt.fr>
  */
 
 namespace Tms\Bundle\FaqBundle\Entity;
