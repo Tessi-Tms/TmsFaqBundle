@@ -34,7 +34,7 @@ class ApiFaqController extends FOSRestController
      * @QueryParam(name="sort", array=true, nullable=true, description="(optional) Sort")
      *
      * @param integer $customer_id
-     * @param boolean $enabled
+     * @param string  $enabled
      * @param integer $limit
      * @param integer $offset
      * @param integer $page
