@@ -1,34 +1,33 @@
-TmsFaqBundle API: [GET] Question categories
-===========================================
+TmsFaqBundle API: [GET] Question question categories
+====================================================
 
-List all question categories
+Retrieve Question question categories
+
 
 ## General
 |             | Values
 |-------------|-------
 | **Method**  | GET
-| **Path**    | /faq/questioncategories.{_format}
+| **Path**    | /faq/questions/{id}/questioncategories.{_format}
 | **Formats** | json|xml
 | **Secured** | false
 
 ## HTTP Request parameters
-| Name     | Optional | Default | Requirements | Description
-|----------|----------|---------|--------------|------------
-| faq_id   | true     |         | \d+          | Id of the Faq associated with question categories
-| limit    | true     | 20      | \d+          | Pagination limit
-| offset   | true     | 0       | \d+          | Pagination offet
-| page     | true     |         |              |
-| sort     | true     |         |              |
+| Name                 | Optional | Default | Requirements | Description
+|----------------------|----------|---------|--------------|------------
+| limit                | true     | 20      | \d+          | Pagination limit
+| offset               | true     | 0       | \d+          | Pagination offet
+| page                 | true     |         |              |
+| sort                 | true     |         |              |
 
 ## HTTP Response codes
 | Code | Description
 |------|------------
 | 200  | Ok
-| 400  | Bad request (wrong query parameters)
+| 404  | Not found (wrong path)
 | 500  | Server error
 
 ## HTTP Response content examples
-
 ### json
 ```json
 {
@@ -36,10 +35,11 @@ List all question categories
         "type": "Tms\\Bundle\\FaqBundle\\Entity\\QuestionCategory",
         "serializerContextGroup": "tms_rest.collection",
         "page": 1,
-        "pageCount": 2,
-        "totalCount": 3,
-        "limit": 2,
-        "offset": 0
+        "pageCount": 1,
+        "totalCount": 1,
+        "limit": 20,
+        "offset": 0,
+        "id": "33"
     },
     "data": [
         {
@@ -55,25 +55,7 @@ List all question categories
             "links": {
                 "self": {
                     "rel": "self",
-                    "href": "http://operation-manager.tessi/app_dev.php/api/faq/questioncategories/20.json"
-                }
-            },
-            "actions": []
-        },
-        {
-            "metadata": {
-                "type": "Tms\\Bundle\\FaqBundle\\Entity\\QuestionCategory",
-                "serializerContextGroup": "tms_rest.item"
-            },
-            "data": {
-                "id": 21,
-                "name": "Modalités",
-                "slug": "modalites"
-            },
-            "links": {
-                "self": {
-                    "rel": "self",
-                    "href": "http://operation-manager.tessi/app_dev.php/api/faq/questioncategories/21.json"
+                    "href": "http://operation-manager.tessi/app_dev.php/api/faq/questioncategories/20"
                 }
             },
             "actions": []
@@ -82,11 +64,11 @@ List all question categories
     "links": {
         "self": {
             "rel": "self",
-            "href": "http://operation-manager.tessi/app_dev.php/api/faq/questioncategories?page=1&limit=2&offset=0"
+            "href": "http://operation-manager.tessi/app_dev.php/api/faq/questions/33/questioncategories?page=1&limit=20&offset=0"
         },
         "nextPage": {
             "rel": "nav",
-            "href": "http://operation-manager.tessi/app_dev.php/api/faq/questioncategories?page=2&limit=2&offset=0"
+            "href": ""
         },
         "previousPage": {
             "rel": "nav",
@@ -94,11 +76,11 @@ List all question categories
         },
         "firstPage": {
             "rel": "nav",
-            "href": "http://operation-manager.tessi/app_dev.php/api/faq/questioncategories?page=1&limit=2&offset=0"
+            "href": "http://operation-manager.tessi/app_dev.php/api/faq/questions/33/questioncategories?page=1&limit=20&offset=0"
         },
         "lastPage": {
             "rel": "nav",
-            "href": "http://operation-manager.tessi/app_dev.php/api/faq/questioncategories?page=2&limit=2&offset=0"
+            "href": "http://operation-manager.tessi/app_dev.php/api/faq/questions/33/questioncategories?page=1&limit=20&offset=0"
         }
     },
     "actions": []
@@ -117,10 +99,13 @@ List all question categories
             <![CDATA[tms_rest.collection]]>
         </entry>
         <entry>1</entry>
-        <entry>2</entry>
-        <entry>3</entry>
-        <entry>2</entry>
+        <entry>1</entry>
+        <entry>1</entry>
+        <entry>20</entry>
         <entry>0</entry>
+        <entry>
+            <![CDATA[33]]>
+        </entry>
     </entry>
     <entry>
         <entry>
@@ -152,35 +137,6 @@ List all question categories
                 </entry>
             </entry>
             <entry/></entry>
-        <entry>
-            <entry>
-                <entry>
-                    <![CDATA[Tms\Bundle\FaqBundle\Entity\QuestionCategory]]>
-                </entry>
-                <entry>
-                    <![CDATA[tms_rest.item]]>
-                </entry>
-            </entry>
-            <entry>
-                <id>21</id>
-                <name>
-                    <![CDATA[Modalités]]>
-                </name>
-                <slug>
-                    <![CDATA[modalites]]>
-                </slug>
-            </entry>
-            <entry>
-                <entry>
-                    <entry>
-                        <![CDATA[self]]>
-                    </entry>
-                    <entry>
-                        <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questioncategories/21.xml]]>
-                    </entry>
-                </entry>
-            </entry>
-            <entry/></entry>
     </entry>
     <entry>
         <entry>
@@ -188,15 +144,7 @@ List all question categories
                 <![CDATA[self]]>
             </entry>
             <entry>
-                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questioncategories.xml?page=1&limit=2&offset=0]]>
-            </entry>
-        </entry>
-        <entry>
-            <entry>
-                <![CDATA[nav]]>
-            </entry>
-            <entry>
-                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questioncategories.xml?page=2&limit=2&offset=0]]>
+                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questions/33/questioncategories.xml?page=1&limit=20&offset=0]]>
             </entry>
         </entry>
         <entry>
@@ -212,7 +160,7 @@ List all question categories
                 <![CDATA[nav]]>
             </entry>
             <entry>
-                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questioncategories.xml?page=1&limit=2&offset=0]]>
+                <![CDATA[]]>
             </entry>
         </entry>
         <entry>
@@ -220,7 +168,15 @@ List all question categories
                 <![CDATA[nav]]>
             </entry>
             <entry>
-                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questioncategories.xml?page=2&limit=2&offset=0]]>
+                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questions/33/questioncategories.xml?page=1&limit=20&offset=0]]>
+            </entry>
+        </entry>
+        <entry>
+            <entry>
+                <![CDATA[nav]]>
+            </entry>
+            <entry>
+                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questions/33/questioncategories.xml?page=1&limit=20&offset=0]]>
             </entry>
         </entry>
     </entry>

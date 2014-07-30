@@ -1,80 +1,79 @@
-TmsFaqBundle API: [GET] Faqs
-============================
+TmsFaqBundle API: [GET] Question evaluations
+============================================
 
-List all Faqs
+Retrieve Question evaluations
+
 
 ## General
 |             | Values
 |-------------|-------
 | **Method**  | GET
-| **Path**    | /faqs.{_format}
+| **Path**    | /faq/questions/{id}/evaluations.{_format}
 | **Formats** | json|xml
 | **Secured** | false
 
 ## HTTP Request parameters
-| Name        | Optional | Default | Requirements | Description
-|-------------|----------|---------|--------------|------------
-| customer_id | true     |         | \d+          | Id of a customer associated with a Faq
-| enabled     | true     |         | [0,1]        | Enabled Faq (true or false)
-| limit       | true     | 20      | \d+          | Pagination limit
-| offset      | true     | 0       | \d+          | Pagination offet
-| page        | true     |         |              |
-| sort        | true     |         |              |
+| Name                 | Optional | Default | Requirements | Description
+|----------------------|----------|---------|--------------|------------
+| limit                | true     | 20      | \d+          | Pagination limit
+| offset               | true     | 0       | \d+          | Pagination offet
+| page                 | true     |         |              |
+| sort                 | true     |         |              |
 
 ## HTTP Response codes
 | Code | Description
 |------|------------
 | 200  | Ok
-| 400  | Bad request (wrong query parameters)
+| 404  | Not found (wrong path)
 | 500  | Server error
 
 ## HTTP Response content examples
-
 ### json
 ```json
 {
     "metadata": {
-        "type": "Tms\\Bundle\\FaqBundle\\Entity\\Faq",
+        "type": "Tms\\Bundle\\FaqBundle\\Entity\\Evaluation",
         "serializerContextGroup": "tms_rest.collection",
         "page": 1,
         "pageCount": 2,
         "totalCount": 2,
         "limit": 20,
-        "offset": 0
+        "offset": 0,
+        "id": "33"
     },
     "data": [
         {
             "metadata": {
-                "type": "Tms\\Bundle\\FaqBundle\\Entity\\Faq",
+                "type": "Tms\\Bundle\\FaqBundle\\Entity\\Evaluation",
                 "serializerContextGroup": "tms_rest.item"
             },
             "data": {
-                "id": 22,
-                "title": "FAQ SFR",
-                "enabled": true
+                "id": 10,
+                "value": 1,
+                "createdAt": "2014-07-30T03:12:32+0200"
             },
             "links": {
                 "self": {
                     "rel": "self",
-                    "href": "http://operation-manager.tessi/app_dev.php/api/faqs/22.json"
+                    "href": "http://operation-manager.tessi/app_dev.php/api/faq/evaluations/10"
                 }
             },
             "actions": []
         },
         {
             "metadata": {
-                "type": "Tms\\Bundle\\FaqBundle\\Entity\\Faq",
+                "type": "Tms\\Bundle\\FaqBundle\\Entity\\Evaluation",
                 "serializerContextGroup": "tms_rest.item"
             },
             "data": {
-                "id": 23,
-                "title": "Test",
-                "enabled": true
+                "id": 12,
+                "value": 2,
+                "createdAt": "2014-07-10T04:11:30+0200"
             },
             "links": {
                 "self": {
                     "rel": "self",
-                    "href": "http://operation-manager.tessi/app_dev.php/api/faqs/23.json"
+                    "href": "http://operation-manager.tessi/app_dev.php/api/faq/evaluations/12"
                 }
             },
             "actions": []
@@ -83,7 +82,7 @@ List all Faqs
     "links": {
         "self": {
             "rel": "self",
-            "href": "http://operation-manager.tessi/app_dev.php/api/faqs?page=1&limit=20&offset=0"
+            "href": "http://operation-manager.tessi/app_dev.php/api/faq/questions/33/evaluations?page=1&limit=20&offset=0"
         },
         "nextPage": {
             "rel": "nav",
@@ -95,11 +94,11 @@ List all Faqs
         },
         "firstPage": {
             "rel": "nav",
-            "href": "http://operation-manager.tessi/app_dev.php/api/faqs?page=1&limit=20&offset=0"
+            "href": "http://operation-manager.tessi/app_dev.php/api/faq/questions/33/evaluations?page=1&limit=20&offset=0"
         },
         "lastPage": {
             "rel": "nav",
-            "href": "http://operation-manager.tessi/app_dev.php/api/faqs?page=1&limit=20&offset=0"
+            "href": "http://operation-manager.tessi/app_dev.php/api/faq/questions/33/evaluations?page=1&limit=20&offset=0"
         }
     },
     "actions": []
@@ -112,7 +111,7 @@ List all Faqs
 <result>
     <entry>
         <entry>
-            <![CDATA[Tms\Bundle\FaqBundle\Entity\Faq]]>
+            <![CDATA[Tms\Bundle\FaqBundle\Entity\Evaluation]]>
         </entry>
         <entry>
             <![CDATA[tms_rest.collection]]>
@@ -122,23 +121,26 @@ List all Faqs
         <entry>2</entry>
         <entry>20</entry>
         <entry>0</entry>
+        <entry>
+            <![CDATA[33]]>
+        </entry>
     </entry>
     <entry>
         <entry>
             <entry>
                 <entry>
-                    <![CDATA[Tms\Bundle\FaqBundle\Entity\Faq]]>
+                    <![CDATA[Tms\Bundle\FaqBundle\Entity\Evaluation]]>
                 </entry>
                 <entry>
                     <![CDATA[tms_rest.item]]>
                 </entry>
             </entry>
             <entry>
-                <id>22</id>
-                <title>
-                    <![CDATA[FAQ SFR]]>
-                </title>
-                <enabled>true</enabled>
+                <id>10</id>
+                <value>1</value>
+                <createdAt>
+                    <![CDATA[2014-07-30T03:12:32+0200]]>
+                </createdAt>
             </entry>
             <entry>
                 <entry>
@@ -146,7 +148,7 @@ List all Faqs
                         <![CDATA[self]]>
                     </entry>
                     <entry>
-                        <![CDATA[http://operation-manager.tessi/app_dev.php/api/faqs/22.xml]]>
+                        <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/evaluations/10.xml]]>
                     </entry>
                 </entry>
             </entry>
@@ -154,18 +156,18 @@ List all Faqs
         <entry>
             <entry>
                 <entry>
-                    <![CDATA[Tms\Bundle\FaqBundle\Entity\Faq]]>
+                    <![CDATA[Tms\Bundle\FaqBundle\Entity\Evaluation]]>
                 </entry>
                 <entry>
                     <![CDATA[tms_rest.item]]>
                 </entry>
             </entry>
             <entry>
-                <id>23</id>
-                <title>
-                    <![CDATA[Test]]>
-                </title>
-                <enabled>true</enabled>
+                <id>12</id>
+                <value>2</value>
+                <createdAt>
+                    <![CDATA[2014-07-10T04:11:30+0200]]>
+                </createdAt>
             </entry>
             <entry>
                 <entry>
@@ -173,7 +175,7 @@ List all Faqs
                         <![CDATA[self]]>
                     </entry>
                     <entry>
-                        <![CDATA[http://operation-manager.tessi/app_dev.php/api/faqs/23.xml]]>
+                        <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/evaluations/12.xml]]>
                     </entry>
                 </entry>
             </entry>
@@ -185,7 +187,7 @@ List all Faqs
                 <![CDATA[self]]>
             </entry>
             <entry>
-                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faqs.xml?page=1&limit=20&offset=0]]>
+                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questions/33/evaluations.xml?page=1&limit=20&offset=0]]>
             </entry>
         </entry>
         <entry>
@@ -209,7 +211,7 @@ List all Faqs
                 <![CDATA[nav]]>
             </entry>
             <entry>
-                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faqs.xml?page=1&limit=20&offset=0]]>
+                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questions/33/evaluations.xml?page=1&limit=20&offset=0]]>
             </entry>
         </entry>
         <entry>
@@ -217,7 +219,7 @@ List all Faqs
                 <![CDATA[nav]]>
             </entry>
             <entry>
-                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faqs.xml?page=1&limit=20&offset=0]]>
+                <![CDATA[http://operation-manager.tessi/app_dev.php/api/faq/questions/33/evaluations.xml?page=1&limit=20&offset=0]]>
             </entry>
         </entry>
     </entry>
