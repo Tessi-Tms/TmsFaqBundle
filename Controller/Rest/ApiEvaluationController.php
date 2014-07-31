@@ -13,6 +13,8 @@ namespace Tms\Bundle\FaqBundle\Controller\Rest;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Util\Codes;
 use JMS\Serializer\SerializationContext;
 use Tms\Bundle\RestBundle\Formatter\AbstractHypermediaFormatter;
@@ -90,31 +92,34 @@ class ApiEvaluationController extends FOSRestController
      * [GET] /evaluations/{id}
      * Retrieve an Question
      *
+     * @Route(requirements={"id" = "\d+"})
+     *
      * @param integer $id
      */
     public function getEvaluationAction($id)
     {
         try {
             $view = $this->view(
-            $this
-                ->get('tms_rest.formatter.factory')
-                ->create(
-                    'item',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat(),
-                    $id
-                )
-                ->setObjectManager(
-                    $this->get('doctrine.orm.entity_manager'),
-                    $this
-                        ->get('tms_faq.manager.evaluation')
-                        ->getEntityClass()
-                )
-                ->addEmbedded(
-                    'question',
-                    'api_faq_evaluation_get_evaluation_question'
-                )
-                ->format(),
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'item',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat(),
+                        $id
+                    )
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.evaluation')
+                            ->getEntityClass()
+                    )
+                    ->addEmbedded(
+                        'question',
+                        'api_faq_evaluation_get_evaluation_question'
+                    )
+                    ->format()
+                ,
                 Codes::HTTP_OK
             );
 
@@ -139,6 +144,8 @@ class ApiEvaluationController extends FOSRestController
      * [GET] /evaluations/{id}/question
      * Retrieve question associated with question
      *
+     * @Route(requirements={"id" = "\d+"})
+     *
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
      * @QueryParam(name="page", requirements="\d+", strict=true, nullable=true, description="(optional) Page number")
@@ -160,35 +167,36 @@ class ApiEvaluationController extends FOSRestController
     {
         try {
             $view = $this->view(
-            $this
-                ->get('tms_rest.formatter.factory')
-                ->create(
-                    'orm_collection',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat()
-                )
-                ->setObjectManager(
-                    $this->get('doctrine.orm.entity_manager'),
-                    $this
-                        ->get('tms_faq.manager.question')
-                        ->getEntityClass()
-                )
-                ->addItemRoute(
-                    $this
-                        ->get('tms_faq.manager.question')
-                        ->getEntityClass(),
-                    'api_faq_question_get_question'
-                )
-                ->setCriteria(array(
-                    'evaluations' => array(
-                        'id' => $id
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'orm_collection',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat()
                     )
-                ))
-                ->setSort($sort)
-                ->setLimit($limit)
-                ->setOffset($offset)
-                ->setPage($page)
-                ->format(),
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.question')
+                            ->getEntityClass()
+                    )
+                    ->addItemRoute(
+                        $this
+                            ->get('tms_faq.manager.question')
+                            ->getEntityClass(),
+                        'api_faq_question_get_question'
+                    )
+                    ->setCriteria(array(
+                        'evaluations' => array(
+                            'id' => $id
+                        )
+                    ))
+                    ->setSort($sort)
+                    ->setLimit($limit)
+                    ->setOffset($offset)
+                    ->setPage($page)
+                    ->format()
+                ,
                 Codes::HTTP_OK
             );
 
@@ -212,47 +220,32 @@ class ApiEvaluationController extends FOSRestController
     /**
      * [POST] /evaluations
      *
-     * Create Evaluations
+     * Create an Evaluation
+     *
+     * @RequestParam(name="value", requirements="\d+", nullable=false, description="Offer name")
+     * @RequestParam(name="question_id", requirements="\d+", nullable=false, description="Offer name")
+     *
+     * @param integer $value
+     * @param integer $question_id
      */
-    public function postEvaluationsAction()
+    public function postEvaluationsAction($value, $question_id)
     {
-        $datas = $this->get('request')->request->all();
-
-        if (!isset($datas['datas'])) {
-            throw new EvaluationException(sprintf(
-                'Missing parameters : %s',
-                json_encode($datas)
-            ));
-        }
-
-        $decodedDatas = $this->get('tms_faq.manager.evaluation')->decodeData($datas['datas']);
-
         try {
-            foreach ($decodedDatas as $decodedData) {
-                $evaluation = new Evaluation();
-
-                if(!isset($decodedData['question_id']) || !isset($decodedData['value'])) {
-                    throw new EvaluationException(sprintf(
-                        'Missing parameters : %s',
-                        json_encode($datas)
-                    ));
-                }
-
-                $question = $this->get('tms_faq.manager.question')->findOneById($decodedData['question_id']);
-                if (null === $question) {
-                    throw new QuestionException(sprintf(
-                        'Question entity not found : %s',
-                        $decodedData['question_id'])
-                    );
-                }
-
-                $evaluation
-                    ->setQuestion($question)
-                    ->setValue(isset($decodedData['value']) ? $decodedData['value'] : null)
-                ;
-
-                $this->get('tms_faq.manager.evaluation')->add($evaluation);
+            $question = $this->get('tms_faq.manager.question')->findOneById($question_id);
+            if (null === $question) {
+                throw new QuestionException(sprintf(
+                    'Question entity not found : %s',
+                    $decodedData['question_id'])
+                );
             }
+            $evaluation = new Evaluation();
+            $evaluation
+                ->setQuestion($question)
+                ->setValue($value)
+            ;
+
+            $this->get('tms_faq.manager.evaluation')->add($evaluation);
+
         } catch(\Exception $e) {
             return $this->handleView($this->view(
                 array('message' => $e->getMessage()),

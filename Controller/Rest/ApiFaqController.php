@@ -13,6 +13,7 @@ namespace Tms\Bundle\FaqBundle\Controller\Rest;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Util\Codes;
 use JMS\Serializer\SerializationContext;
 use Tms\Bundle\RestBundle\Formatter\AbstractHypermediaFormatter;
@@ -98,35 +99,38 @@ class ApiFaqController extends FOSRestController
      * [GET] /faqs/{id}
      * Retrieve a Faq
      *
+     * @Route(requirements={"id" = "\d+"})
+     *
      * @param integer $id
      */
     public function getFaqAction($id)
     {
         try {
             $view = $this->view(
-            $this
-                ->get('tms_rest.formatter.factory')
-                ->create(
-                    'item',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat(),
-                    $id
-                )
-                ->setObjectManager(
-                    $this->get('doctrine.orm.entity_manager'),
-                    $this
-                        ->get('tms_faq.manager.faq')
-                        ->getEntityClass()
-                )
-                ->addEmbedded(
-                    'categories',
-                    'api_faq_get_faq_questioncategories'
-                )
-                ->addEmbedded(
-                    'questions',
-                    'api_faq_get_faq_questions'
-                )
-                ->format(),
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'item',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat(),
+                        $id
+                    )
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.faq')
+                            ->getEntityClass()
+                    )
+                    ->addEmbedded(
+                        'categories',
+                        'api_faq_get_faq_questioncategories'
+                    )
+                    ->addEmbedded(
+                        'questions',
+                        'api_faq_get_faq_questions'
+                    )
+                    ->format()
+                ,
                 Codes::HTTP_OK
             );
 
@@ -151,6 +155,8 @@ class ApiFaqController extends FOSRestController
      * [GET] /faqs/{id}/questioncategories
      * Retrieve question categories of a faq
      *
+     * @Route(requirements={"id" = "\d+"})
+     *
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
      * @QueryParam(name="page", requirements="\d+", strict=true, nullable=true, description="(optional) Page number")
@@ -172,35 +178,36 @@ class ApiFaqController extends FOSRestController
     {
         try {
             $view = $this->view(
-            $this
-                ->get('tms_rest.formatter.factory')
-                ->create(
-                    'orm_collection',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat()
-                )
-                ->setObjectManager(
-                    $this->get('doctrine.orm.entity_manager'),
-                    $this
-                        ->get('tms_faq.manager.question_category')
-                        ->getEntityClass()
-                )
-                ->addItemRoute(
-                    $this
-                        ->get('tms_faq.manager.question_category')
-                        ->getEntityClass(),
-                    'api_faq_question_category_get_questioncategory'
-                )
-                ->setCriteria(array(
-                    'faq' => array(
-                        'id' => $id
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'orm_collection',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat()
                     )
-                ))
-                ->setSort($sort)
-                ->setLimit($limit)
-                ->setOffset($offset)
-                ->setPage($page)
-                ->format(),
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.question_category')
+                            ->getEntityClass()
+                    )
+                    ->addItemRoute(
+                        $this
+                            ->get('tms_faq.manager.question_category')
+                            ->getEntityClass(),
+                        'api_faq_question_category_get_questioncategory'
+                    )
+                    ->setCriteria(array(
+                        'faq' => array(
+                            'id' => $id
+                        )
+                    ))
+                    ->setSort($sort)
+                    ->setLimit($limit)
+                    ->setOffset($offset)
+                    ->setPage($page)
+                    ->format()
+                ,
                 Codes::HTTP_OK
             );
 
@@ -225,6 +232,8 @@ class ApiFaqController extends FOSRestController
      * [GET] /faqs/{id}/questions
      * Retrieve question of a faq
      *
+     * @Route(requirements={"id" = "\d+"})
+     *
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
      * @QueryParam(name="page", requirements="\d+", strict=true, nullable=true, description="(optional) Page number")
@@ -246,35 +255,36 @@ class ApiFaqController extends FOSRestController
     {
         try {
             $view = $this->view(
-            $this
-                ->get('tms_rest.formatter.factory')
-                ->create(
-                    'orm_collection',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat()
-                )
-                ->setObjectManager(
-                    $this->get('doctrine.orm.entity_manager'),
-                    $this
-                        ->get('tms_faq.manager.question')
-                        ->getEntityClass()
-                )
-                ->addItemRoute(
-                    $this
-                        ->get('tms_faq.manager.question')
-                        ->getEntityClass(),
-                    'api_faq_question_get_question'
-                )
-                ->setCriteria(array(
-                    'faq' => array(
-                        'id' => $id
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'orm_collection',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat()
                     )
-                ))
-                ->setSort($sort)
-                ->setLimit($limit)
-                ->setOffset($offset)
-                ->setPage($page)
-                ->format(),
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.question')
+                            ->getEntityClass()
+                    )
+                    ->addItemRoute(
+                        $this
+                            ->get('tms_faq.manager.question')
+                            ->getEntityClass(),
+                        'api_faq_question_get_question'
+                    )
+                    ->setCriteria(array(
+                        'faq' => array(
+                            'id' => $id
+                        )
+                    ))
+                    ->setSort($sort)
+                    ->setLimit($limit)
+                    ->setOffset($offset)
+                    ->setPage($page)
+                    ->format()
+                ,
                 Codes::HTTP_OK
             );
 

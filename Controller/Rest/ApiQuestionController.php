@@ -12,6 +12,8 @@ namespace Tms\Bundle\FaqBundle\Controller\Rest;
 
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations\Route;
+use FOS\RestBundle\Controller\Annotations\Patch;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Util\Codes;
@@ -91,6 +93,8 @@ class ApiQuestionController extends FOSRestController
      * [GET] /questions/{id}
      * Retrieve an Question
      *
+     * @Route(requirements={"id" = "\d+"})
+     *
      * @param integer $id
      */
     public function getQuestionAction($id)
@@ -123,7 +127,8 @@ class ApiQuestionController extends FOSRestController
                         'evaluations',
                         'api_faq_question_get_question_evaluations'
                     )
-                    ->format(),
+                    ->format()
+                ,
                 Codes::HTTP_OK
             );
 
@@ -147,6 +152,8 @@ class ApiQuestionController extends FOSRestController
     /**
      * [GET] /questions/{id}/faq
      * Retrieve faq associated with question
+     *
+     * @Route(requirements={"id" = "\d+"})
      *
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
@@ -223,6 +230,8 @@ class ApiQuestionController extends FOSRestController
      * [GET] /questions/{id}/questioncategories
      * Retrieve question categories associated with question
      *
+     * @Route(requirements={"id" = "\d+"})
+     *
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
      * @QueryParam(name="page", requirements="\d+", strict=true, nullable=true, description="(optional) Page number")
@@ -298,6 +307,8 @@ class ApiQuestionController extends FOSRestController
      * [GET] /questions/{id}/evaluations
      * Retrieve evaluations of a question
      *
+     * @Route(requirements={"id" = "\d+"})
+     *
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
      * @QueryParam(name="page", requirements="\d+", strict=true, nullable=true, description="(optional) Page number")
@@ -370,16 +381,15 @@ class ApiQuestionController extends FOSRestController
     }
 
     /**
-     * [PATCH] /questions/{id}
-     *
+     * [PATCH] /questions/{id}/yepnope/{value}
      * Update a question entity
      *
-     * @QueryParam(name="value", strict=true , description="Value of count yep or count nope")
+     * @patch("/questions/{id}/yepnope/{value}", requirements={"id" = "\d+", "value" = "(yep|nope)"})
      *
      * @param integer $id
      * @param integer $value
      */
-    public function patchQuestionAction($id, $value)
+    public function patchQuestionYepNopeAction($id, $value)
     {
         $entity = $this->get('tms_faq.manager.question')->findOneById($id);
         if (!$entity) {
@@ -392,10 +402,6 @@ class ApiQuestionController extends FOSRestController
             $entity->addYep();
         } else if ($value === "nope") {
             $entity->addNope();
-        } else {
-            $view = $this->view(array(), Codes::HTTP_BAD_REQUEST);
-
-            return $this->handleView($view);
         }
 
         $this->get('tms_faq.manager.question')->update($entity);
