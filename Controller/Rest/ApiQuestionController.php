@@ -13,6 +13,7 @@ namespace Tms\Bundle\FaqBundle\Controller\Rest;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Util\Codes;
 use JMS\Serializer\SerializationContext;
 use Tms\Bundle\RestBundle\Formatter\AbstractHypermediaFormatter;
@@ -96,33 +97,33 @@ class ApiQuestionController extends FOSRestController
     {
         try {
             $view = $this->view(
-            $this
-                ->get('tms_rest.formatter.factory')
-                ->create(
-                    'item',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat(),
-                    $id
-                )
-                ->setObjectManager(
-                    $this->get('doctrine.orm.entity_manager'),
-                    $this
-                        ->get('tms_faq.manager.question')
-                        ->getEntityClass()
-                )
-                ->addEmbedded(
-                    'faq',
-                    'api_faq_question_get_question_faq'
-                )
-                ->addEmbedded(
-                    'categories',
-                    'api_faq_question_get_question_questioncategories'
-                )
-                ->addEmbedded(
-                    'evaluations',
-                    'api_faq_question_get_question_evaluations'
-                )
-                ->format(),
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'item',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat(),
+                        $id
+                    )
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.question')
+                            ->getEntityClass()
+                    )
+                    ->addEmbedded(
+                        'faq',
+                        'api_faq_question_get_question_faq'
+                    )
+                    ->addEmbedded(
+                        'categories',
+                        'api_faq_question_get_question_questioncategories'
+                    )
+                    ->addEmbedded(
+                        'evaluations',
+                        'api_faq_question_get_question_evaluations'
+                    )
+                    ->format(),
                 Codes::HTTP_OK
             );
 
@@ -168,35 +169,36 @@ class ApiQuestionController extends FOSRestController
     {
         try {
             $view = $this->view(
-            $this
-                ->get('tms_rest.formatter.factory')
-                ->create(
-                    'orm_collection',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat()
-                )
-                ->setObjectManager(
-                    $this->get('doctrine.orm.entity_manager'),
-                    $this
-                        ->get('tms_faq.manager.faq')
-                        ->getEntityClass()
-                )
-                ->addItemRoute(
-                    $this
-                        ->get('tms_faq.manager.faq')
-                        ->getEntityClass(),
-                    'api_faq_get_faq'
-                )
-                ->setCriteria(array(
-                    'questions' => array(
-                        'id' => $id
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'orm_collection',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat()
                     )
-                ))
-                ->setSort($sort)
-                ->setLimit($limit)
-                ->setOffset($offset)
-                ->setPage($page)
-                ->format(),
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.faq')
+                            ->getEntityClass()
+                    )
+                    ->addItemRoute(
+                        $this
+                            ->get('tms_faq.manager.faq')
+                            ->getEntityClass(),
+                        'api_faq_get_faq'
+                    )
+                    ->setCriteria(array(
+                        'questions' => array(
+                            'id' => $id
+                        )
+                    ))
+                    ->setSort($sort)
+                    ->setLimit($limit)
+                    ->setOffset($offset)
+                    ->setPage($page)
+                    ->format()
+                ,
                 Codes::HTTP_OK
             );
 
@@ -242,35 +244,36 @@ class ApiQuestionController extends FOSRestController
     {
         try {
             $view = $this->view(
-            $this
-                ->get('tms_rest.formatter.factory')
-                ->create(
-                    'orm_collection',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat()
-                )
-                ->setObjectManager(
-                    $this->get('doctrine.orm.entity_manager'),
-                    $this
-                        ->get('tms_faq.manager.question_category')
-                        ->getEntityClass()
-                )
-                ->addItemRoute(
-                    $this
-                        ->get('tms_faq.manager.question_category')
-                        ->getEntityClass(),
-                    'api_faq_question_category_get_questioncategory'
-                )
-                ->setCriteria(array(
-                    'questions' => array(
-                        'id' => $id
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'orm_collection',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat()
                     )
-                ))
-                ->setSort($sort)
-                ->setLimit($limit)
-                ->setOffset($offset)
-                ->setPage($page)
-                ->format(),
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.question_category')
+                            ->getEntityClass()
+                    )
+                    ->addItemRoute(
+                        $this
+                            ->get('tms_faq.manager.question_category')
+                            ->getEntityClass(),
+                        'api_faq_question_category_get_questioncategory'
+                    )
+                    ->setCriteria(array(
+                        'questions' => array(
+                            'id' => $id
+                        )
+                    ))
+                    ->setSort($sort)
+                    ->setLimit($limit)
+                    ->setOffset($offset)
+                    ->setPage($page)
+                    ->format()
+                ,
                 Codes::HTTP_OK
             );
 
@@ -316,35 +319,36 @@ class ApiQuestionController extends FOSRestController
     {
         try {
             $view = $this->view(
-            $this
-                ->get('tms_rest.formatter.factory')
-                ->create(
-                    'orm_collection',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat()
-                )
-                ->setObjectManager(
-                    $this->get('doctrine.orm.entity_manager'),
-                    $this
-                        ->get('tms_faq.manager.evaluation')
-                        ->getEntityClass()
-                )
-                ->addItemRoute(
-                    $this
-                        ->get('tms_faq.manager.evaluation')
-                        ->getEntityClass(),
-                    'api_faq_evaluation_get_evaluation'
-                )
-                ->setCriteria(array(
-                    'question' => array(
-                        'id' => $id
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'orm_collection',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat()
                     )
-                ))
-                ->setSort($sort)
-                ->setLimit($limit)
-                ->setOffset($offset)
-                ->setPage($page)
-                ->format(),
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.evaluation')
+                            ->getEntityClass()
+                    )
+                    ->addItemRoute(
+                        $this
+                            ->get('tms_faq.manager.evaluation')
+                            ->getEntityClass(),
+                        'api_faq_evaluation_get_evaluation'
+                    )
+                    ->setCriteria(array(
+                        'question' => array(
+                            'id' => $id
+                        )
+                    ))
+                    ->setSort($sort)
+                    ->setLimit($limit)
+                    ->setOffset($offset)
+                    ->setPage($page)
+                    ->format()
+                ,
                 Codes::HTTP_OK
             );
 
@@ -363,5 +367,39 @@ class ApiQuestionController extends FOSRestController
                 $e->getStatusCode()
             ));
         }
+    }
+
+    /**
+     * [PATCH] /questions/{id}
+     *
+     * Update a question entity
+     *
+     * @QueryParam(name="value", strict=true , description="Value of count yep or count nope")
+     *
+     * @param integer $id
+     * @param integer $value
+     */
+    public function patchQuestionAction($id, $value)
+    {
+        $entity = $this->get('tms_faq.manager.question')->findOneById($id);
+        if (!$entity) {
+            $view = $this->view(array(), Codes::HTTP_NOT_FOUND);
+
+            return $this->handleView($view);
+        }
+
+        if ($value === "yep") {
+            $entity->addYep();
+        } else if ($value === "nope") {
+            $entity->addNope();
+        } else {
+            $view = $this->view(array(), Codes::HTTP_BAD_REQUEST);
+
+            return $this->handleView($view);
+        }
+
+        $this->get('tms_faq.manager.question')->update($entity);
+
+        return $this->handleView($this->view(array(), codes::HTTP_OK));
     }
 }

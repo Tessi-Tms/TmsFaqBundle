@@ -16,6 +16,10 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Util\Codes;
 use JMS\Serializer\SerializationContext;
 use Tms\Bundle\RestBundle\Formatter\AbstractHypermediaFormatter;
+use Tms\Bundle\FaqBundle\Entity\Evaluation;
+use Tms\Bundle\FaqBundle\Exception\EvaluationException;
+use Tms\Bundle\FaqBundle\Entity\Question;
+use Tms\Bundle\FaqBundle\Exception\QuestionException;
 
 /**
  * Evaluation API REST controller
@@ -203,5 +207,63 @@ class ApiEvaluationController extends FOSRestController
                 $e->getStatusCode()
             ));
         }
+    }
+
+    /**
+     * [POST] /evaluations
+     *
+     * Create Evaluations
+     */
+    public function postEvaluationsAction()
+    {
+        $datas = $this->get('request')->request->all();
+
+        if (!isset($datas['datas'])) {
+            throw new EvaluationException(sprintf(
+                'Missing parameters : %s',
+                json_encode($datas)
+            ));
+        }
+
+        $decodedDatas = $this->get('tms_faq.manager.evaluation')->decodeData($datas['datas']);
+
+        try {
+            foreach ($decodedDatas as $decodedData) {
+                $evaluation = new Evaluation();
+
+                if(!isset($decodedData['question_id']) || !isset($decodedData['value'])) {
+                    throw new EvaluationException(sprintf(
+                        'Missing parameters : %s',
+                        json_encode($datas)
+                    ));
+                }
+
+                $question = $this->get('tms_faq.manager.question')->findOneById($decodedData['question_id']);
+                if (null === $question) {
+                    throw new QuestionException(sprintf(
+                        'Question entity not found : %s',
+                        $decodedData['question_id'])
+                    );
+                }
+
+                $evaluation
+                    ->setQuestion($question)
+                    ->setValue(isset($decodedData['value']) ? $decodedData['value'] : null)
+                ;
+
+                $this->get('tms_faq.manager.evaluation')->add($evaluation);
+            }
+        } catch(\Exception $e) {
+            return $this->handleView($this->view(
+                array('message' => $e->getMessage()),
+                Codes::HTTP_INTERNAL_SERVER_ERROR
+            ));
+
+        }
+
+        return $this->handleView($this->view(
+            null,
+            Codes::HTTP_CREATED
+        ));
     }
 }
