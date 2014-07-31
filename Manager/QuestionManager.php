@@ -36,7 +36,7 @@ class QuestionManager extends AbstractManager
         parent::add($entity);
 
         $this->getEventDispatcher()->dispatch(
-           QuestionEvents::POST_CREATE,
+            QuestionEvents::POST_CREATE,
             new QuestionEvent($entity)
         );
     }
