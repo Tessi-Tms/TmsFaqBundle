@@ -393,7 +393,13 @@ class ApiQuestionController extends FOSRestController
     {
         $entity = $this->get('tms_faq.manager.question')->findOneById($id);
         if (!$entity) {
-            $view = $this->view(array(), Codes::HTTP_NOT_FOUND);
+            $view = $this->view(
+                array('message' => sprintf(
+                    'Not found Question entity %s',
+                    $id
+                )),
+                Codes::HTTP_NOT_FOUND
+            );
 
             return $this->handleView($view);
         }

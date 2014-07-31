@@ -233,10 +233,13 @@ class ApiEvaluationController extends FOSRestController
         try {
             $question = $this->get('tms_faq.manager.question')->findOneById($question_id);
             if (null === $question) {
-                throw new QuestionException(sprintf(
-                    'Question entity not found : %s',
-                    $decodedData['question_id'])
-                );
+                return $this->handleView($this->view(
+                    array('message' => sprintf(
+                        'Not found Question entity (id : %s) to associated with this Evaluation.',
+                        $question_id
+                    )),
+                    Codes::HTTP_NOT_FOUND
+                ));
             }
             $evaluation = new Evaluation();
             $evaluation
