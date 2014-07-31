@@ -35,5 +35,5 @@ API List
 |--------|-----------------------------------------------------------|------------
 | GET    | [/faq/evaluations](api/evaluation/get_evaluations.md)     | List all evaluations
 | GET    | [/faq/evaluations/{id}](api/evaluation/get_evaluation.md) | Retrieve one evaluation
-| GET    | [/faq/evaluations/{id}/question.{_format}](api/evaluation/get_evaluation_question.md) | Retrieve Evaluation question
+| GET    | [/faq/evaluations/{id}/question.{_format}](api/evaluation/get_evaluation_question.md) | Retrieve evaluation question
 | POST   | [/faq/evaluations](api/evaluation/post_evaluation.md)    | Create an evaluation
