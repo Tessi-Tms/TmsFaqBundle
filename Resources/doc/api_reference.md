@@ -28,6 +28,7 @@ API List
 | GET    | [/faq/questions/{id}/faq.{_format}](api/question/get_question_faq.md) | Retrieve Question Faq
 | GET    | [/faq/questions/{id}/questioncategories.{_format}](api/question/get_question_questioncategories.md) | Retrieve Question question categories
 | GET    | [/faq/questions/{id}/evaluations.{_format}](api/question/get_question_evaluations.md) | Retrieve Question evaluations
+| PATCH  | [/questions/{id}/yepnope/{value}](api/question/patch_question_yepnope.md) | Update partially a question (countYep or countNope parameters)
 
 ### Evaluation
 | Method | Path                                                      | Description
@@ -35,3 +36,4 @@ API List
 | GET    | [/faq/evaluations](api/evaluation/get_evaluations.md)     | List all evaluations
 | GET    | [/faq/evaluations/{id}](api/evaluation/get_evaluation.md) | Retrieve one evaluation
 | GET    | [/faq/evaluations/{id}/question.{_format}](api/evaluation/get_evaluation_question.md) | Retrieve Evaluation question
+| POST   | [/faq/evaluations](api/evaluation/post_evaluation.md)    | Create an evaluation
