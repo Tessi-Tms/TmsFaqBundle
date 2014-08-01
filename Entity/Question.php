@@ -19,8 +19,8 @@ use Tms\Bundle\SearchBundle\IndexableElement\IndexableElementInterface;
  * @ORM\Table(name="faq_question")
  * @ORM\HasLifecycleCallbacks()
  */
-class Question
-//implements MetadatableInterface, IndexableElementInterface
+class Question implements MetadatableInterface
+//, IndexableElementInterface
 {
     /**
      * @var integer
@@ -407,5 +407,15 @@ class Question
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Get Metadatas
+     *
+     * @return array<Metadatas>
+     */
+    public function getMetadatas()
+    {
+        return $this->getTags();
     }
 }

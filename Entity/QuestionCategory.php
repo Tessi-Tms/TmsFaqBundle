@@ -88,6 +88,23 @@ class QuestionCategory
     }
 
     /**
+     * Get tags
+     *
+     * @return array
+     */
+    public function getTags()
+    {
+        $tags = array();
+        foreach ($this->getQuestions() as $question) {
+            foreach ($question->getTags() as $tag) {
+                $tags[$tag->getKey()] = $tag->getValue();
+            }
+        }
+
+        return $tags;
+    }
+
+    /**
      * onCreate
      * @ORM\PrePersist()
      */
