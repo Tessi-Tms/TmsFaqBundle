@@ -18,9 +18,9 @@
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/twig": "*",
-        "tms/search-bundle": "1.0.*",
         "idci/simple-metadata-bundle": "1.0.*",
-        "elasticsearch/elasticsearch": "~0.4"
+        "elasticsearch/elasticsearch": "~0.4",
+        "tms/search-bundle": "1.0.*"
     },
     "autoload": {
         "psr-0": { "Tms\\Bundle\\FaqBundle": "" }

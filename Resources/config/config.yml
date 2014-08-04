@@ -1,17 +1,3 @@
-# IDCI exporter
-idci_exporter:
-    entities:
-        faqs:
-            class: "Tms\\Bundle\\FaqBundle\\Entity\\Faq"
-        evaluations:
-            class: "Tms\\Bundle\\FaqBundle\\Entity\\Evaluation"
-        consumerSearchs:
-            class: "Tms\\Bundle\\FaqBundle\\Entity\\ConsumerSearch"
-        questions:
-            class: "Tms\\Bundle\\FaqBundle\\Entity\\Question"
-        responses:
-            class: "Tms\\Bundle\\FaqBundle\\Entity\\Response"
-
 # IDCI Metadata
 idci_simple_metadata:
     namespaces: [tags]
@@ -26,8 +12,4 @@ tms_search:
                 options:
                     host: %tms_search_host%
                     port: %tms_search_port%
-                    collection_name: question
-                events:
-                    create: tms_faq.question.post_create
-                    update: tms_faq.question.post_update
-                    delete: tms_faq.question.pre_delete
+                    collection_name: tms_faq_question

@@ -19,8 +19,7 @@ use Tms\Bundle\SearchBundle\IndexableElement\IndexableElementInterface;
  * @ORM\Table(name="faq_question")
  * @ORM\HasLifecycleCallbacks()
  */
-class Question implements MetadatableInterface
-//, IndexableElementInterface
+class Question implements MetadatableInterface, IndexableElementInterface
 {
     /**
      * @var integer
@@ -417,5 +416,41 @@ class Question implements MetadatableInterface
     public function getMetadatas()
     {
         return $this->getTags();
+    }
+
+    /**
+     * Get indexed tags
+     *
+     * @return string
+     */
+    public function getIndexedTags()
+    {
+        $tags = array();
+        foreach ($this->getTags() as $tag) {
+            $tags[] = $tag->getValue();
+        }
+
+        return implode($tags, ', ');
+    }
+
+    /**
+     * Get the data to index of an indexable element
+     *
+     * @return array
+     */
+    public function getIndexedData()
+    {
+        $indexedData = array(
+            array(
+                'key'   => 'question',
+                'value' => $this->getQuestion()
+            ),
+            array(
+                'key'     => 'tags',
+                'value'   => $this->getIndexedTags()
+            ),
+        );
+
+        return $indexedData;
     }
 }
