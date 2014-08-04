@@ -31,6 +31,7 @@ class ApiQuestionController extends FOSRestController
      *
      * @QueryParam(name="faq_id", requirements="\d+", strict=true, nullable=true, description="(optional) Faq id")
      * @QueryParam(name="question_category_id", requirements="\d+", strict=true, nullable=true, description="(optional) Question category id")
+     * @QueryParam(name="tags", array=true, nullable=true, description="(optional) Question tags" )
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
      * @QueryParam(name="page", requirements="\d+", strict=true, nullable=true, description="(optional) Page number")
@@ -38,6 +39,7 @@ class ApiQuestionController extends FOSRestController
      *
      * @param integer $faq_id
      * @param string  $question_category_id
+     * @param array   $tags
      * @param integer $limit
      * @param integer $offset
      * @param integer $page
@@ -46,36 +48,66 @@ class ApiQuestionController extends FOSRestController
     public function getQuestionsAction(
         $faq_id               = null,
         $question_category_id = null,
+        $tags                 = array(),
         $limit                = null,
         $offset               = null,
         $page                 = null,
         $sort                 = null
     )
     {
+        $formatter =  $this->get('tms_rest.formatter.factory')
+            ->create(
+                'orm_collection',
+                $this->getRequest()->get('_route'),
+                $this->getRequest()->getRequestFormat()
+            )
+            ->setObjectManager(
+                $this->get('doctrine.orm.entity_manager'),
+                $this
+                    ->get('tms_faq.manager.question')
+                    ->getEntityClass()
+            )
+            ->setCriteria(array(
+                'faq'        => $faq_id,
+                'categories' => array('id' => $question_category_id)
+            ))
+            ->setSort($sort)
+            ->setLimit($limit)
+            ->setOffset($offset)
+            ->setPage($page)
+        ;
+
+        if (isset($tags[0])) {
+            // Create the ElasticSearch Query
+            $queryParts = array();
+            foreach ($tags as $tag) {
+                $queryParts[] = sprintf('tags: %s', $tag);
+            }
+            $query = implode(" AND ", $queryParts);
+            $data = $this->container
+                ->get('tms_search.handler')
+                ->search('tms_faq_question', $query)
+            ;
+
+            // Retrieve question id's from the search result
+            $ids = array();
+            foreach ($data['data'] as $question) {
+                $ids[] = $question['id'];
+            }
+
+            if (isset($ids[0])) {
+                /*
+                $formatter->initQueryBuilder(
+                    'findById',
+                    'question',
+                    array('id' => $ids)
+                );
+                */
+            }
+        }
+
         $view = $this->view(
-            $this
-                ->get('tms_rest.formatter.factory')
-                ->create(
-                    'orm_collection',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat()
-                )
-                ->setObjectManager(
-                    $this->get('doctrine.orm.entity_manager'),
-                    $this
-                        ->get('tms_faq.manager.question')
-                        ->getEntityClass()
-                )
-                ->setCriteria(array(
-                    'faq'        => $faq_id,
-                    'categories' => array('id' => $question_category_id)
-                ))
-                ->setSort($sort)
-                ->setLimit($limit)
-                ->setOffset($offset)
-                ->setPage($page)
-                ->format()
-            ,
+            $formatter->format(),
             Codes::HTTP_OK
         );
 
