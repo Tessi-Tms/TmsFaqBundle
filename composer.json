@@ -12,6 +12,12 @@
             "homepage": "http://www.tessi.fr"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Tessi-Tms/TmsRestBundle.git"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
         "symfony/framework-bundle": ">=2.3",
@@ -20,6 +26,7 @@
         "twig/twig": "*",
         "idci/simple-metadata-bundle": "1.0.*",
         "elasticsearch/elasticsearch": "~0.4",
+        "tms/rest-bundle": "dev-master",
         "tms/search-bundle": "1.0.*"
     },
     "autoload": {
