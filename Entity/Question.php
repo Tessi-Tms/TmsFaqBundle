@@ -442,12 +442,16 @@ class Question implements MetadatableInterface, IndexableElementInterface
     {
         $indexedData = array(
             array(
+                'key'   => 'faq_id',
+                'value' => $this->getFaq()->getId()
+            ),
+            array(
                 'key'   => 'question',
                 'value' => $this->getQuestion()
             ),
             array(
-                'key'     => 'tags',
-                'value'   => $this->getIndexedTags()
+                'key'   => 'tags',
+                'value' => $this->getIndexedTags()
             ),
         );
 

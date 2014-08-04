@@ -55,28 +55,7 @@ class ApiQuestionController extends FOSRestController
         $sort                 = null
     )
     {
-        $formatter =  $this->get('tms_rest.formatter.factory')
-            ->create(
-                'orm_collection',
-                $this->getRequest()->get('_route'),
-                $this->getRequest()->getRequestFormat()
-            )
-            ->setObjectManager(
-                $this->get('doctrine.orm.entity_manager'),
-                $this
-                    ->get('tms_faq.manager.question')
-                    ->getEntityClass()
-            )
-            ->setCriteria(array(
-                'faq'        => $faq_id,
-                'categories' => array('id' => $question_category_id)
-            ))
-            ->setSort($sort)
-            ->setLimit($limit)
-            ->setOffset($offset)
-            ->setPage($page)
-        ;
-
+        $ids = array();
         if (isset($tags[0])) {
             // Create the ElasticSearch Query
             $queryParts = array();
@@ -90,21 +69,33 @@ class ApiQuestionController extends FOSRestController
             ;
 
             // Retrieve question id's from the search result
-            $ids = array();
             foreach ($data['data'] as $question) {
                 $ids[] = $question['id'];
             }
-
-            if (isset($ids[0])) {
-                /*
-                $formatter->initQueryBuilder(
-                    'findById',
-                    'question',
-                    array('id' => $ids)
-                );
-                */
-            }
         }
+
+        $formatter =  $this->get('tms_rest.formatter.factory')
+            ->create(
+                'orm_collection',
+                $this->getRequest()->get('_route'),
+                $this->getRequest()->getRequestFormat()
+            )
+            ->setObjectManager(
+                $this->get('doctrine.orm.entity_manager'),
+                $this
+                    ->get('tms_faq.manager.question')
+                    ->getEntityClass()
+            )
+            ->setCriteria(array(
+                'id'         => $ids,
+                'faq'        => $faq_id,
+                'categories' => array('id' => $question_category_id)
+            ))
+            ->setSort($sort)
+            ->setLimit($limit)
+            ->setOffset($offset)
+            ->setPage($page)
+        ;
 
         $view = $this->view(
             $formatter->format(),
