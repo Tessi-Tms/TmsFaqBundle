@@ -62,7 +62,7 @@ class ApiQuestionController extends FOSRestController
             foreach ($tags as $tag) {
                 $queryParts[] = sprintf('tags: %s', $tag);
             }
-            $query = implode(" AND ", $queryParts);
+            $query = implode(" OR ", $queryParts);
             $data = $this->container
                 ->get('tms_search.handler')
                 ->search('tms_faq_question', $query)
