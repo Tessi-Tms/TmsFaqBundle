@@ -25,9 +25,8 @@
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/twig": "*",
         "idci/simple-metadata-bundle": "1.0.*",
-        "elasticsearch/elasticsearch": "~0.4",
-        "tms/rest-bundle": "dev-master",
-        "tms/search-bundle": "1.0.*"
+        "friendsofsymfony/elastica-bundle": "3.0.*@alpha",
+        "tms/rest-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Tms\\Bundle\\FaqBundle": "" }
