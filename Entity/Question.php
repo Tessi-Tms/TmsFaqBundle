@@ -450,6 +450,10 @@ class Question implements MetadatableInterface, IndexableElementInterface
                 'value' => $this->getQuestion()
             ),
             array(
+                'key'   => 'aswer',
+                'value' => $this->getAnswer()
+            ),
+            array(
                 'key'   => 'tags',
                 'value' => $this->getIndexedTags()
             ),
