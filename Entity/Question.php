@@ -10,7 +10,7 @@ namespace Tms\Bundle\FaqBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use IDCI\Bundle\SimpleMetadataBundle\Metadata\MetadatableInterface;
-use Tms\Bundle\SearchBundle\IndexableElement\IndexableElementInterface;
+use Tms\Bundle\FaqBundle\Tools\StringTools;
 
 /**
  * Question
@@ -19,7 +19,7 @@ use Tms\Bundle\SearchBundle\IndexableElement\IndexableElementInterface;
  * @ORM\Table(name="faq_question")
  * @ORM\HasLifecycleCallbacks()
  */
-class Question implements MetadatableInterface, IndexableElementInterface
+class Question implements MetadatableInterface
 {
     /**
      * @var integer
@@ -114,6 +114,46 @@ class Question implements MetadatableInterface, IndexableElementInterface
         $this->average = 0;
         $this->countYep = 0;
         $this->countNope = 0;
+    }
+
+    /**
+     * Get Faq id
+     *
+     * @return integer
+     */
+    public function getFaqId()
+    {
+        return $this->getFaq()->getId();
+    }
+
+    /**
+     * Get Categories id
+     *
+     * @return array
+     */
+    public function getCategoriesId()
+    {
+        $ids = array();
+        foreach ($this->getCategories() as $category) {
+            $ids[] = $category->getId();
+        }
+
+        return $ids;
+    }
+
+    /**
+     * Get Tags Value
+     *
+     * @return array
+     */
+    public function getTagsValue()
+    {
+        $values = array();
+        foreach ($this->getTags() as $tag) {
+            $values[] = StringTools::slugify($tag->getValue());
+        }
+
+        return $values;
     }
 
     /**
@@ -416,49 +456,5 @@ class Question implements MetadatableInterface, IndexableElementInterface
     public function getMetadatas()
     {
         return $this->getTags();
-    }
-
-    /**
-     * Get indexed tags
-     *
-     * @return string
-     */
-    public function getIndexedTags()
-    {
-        $tags = array();
-        foreach ($this->getTags() as $tag) {
-            $tags[] = $tag->getValue();
-        }
-
-        return implode($tags, ', ');
-    }
-
-    /**
-     * Get the data to index of an indexable element
-     *
-     * @return array
-     */
-    public function getIndexedData()
-    {
-        $indexedData = array(
-            array(
-                'key'   => 'faq_id',
-                'value' => $this->getFaq()->getId()
-            ),
-            array(
-                'key'   => 'question',
-                'value' => $this->getQuestion()
-            ),
-            array(
-                'key'   => 'aswer',
-                'value' => $this->getAnswer()
-            ),
-            array(
-                'key'   => 'tags',
-                'value' => $this->getIndexedTags()
-            ),
-        );
-
-        return $indexedData;
     }
 }

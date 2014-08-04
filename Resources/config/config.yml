@@ -2,14 +2,30 @@
 idci_simple_metadata:
     namespaces: [tags]
 
-# Search
-tms_search:
+
+# FOS Elastica
+fos_elastica:
+    clients:
+        default:
+          host: %elasticsearch_host%
+          port: %elasticsearch_port%
     indexes:
-        tms_faq_question:
-            class: Tms\Bundle\FaqBundle\Entity\Question
-            indexer:
-                service_name: tms_search.indexer.elasticsearch
-                options:
-                    host: %tms_search_host%
-                    port: %tms_search_port%
-                    collection_name: tms_faq_question
+        tms_faq:
+            types:
+                question:
+                    mappings:
+                        faqId:        ~
+                        categoriesId: ~
+                        tagsValue:    { boost: 5 }
+                        question:     { boost: 3 }
+                        answer:       { boost: 1 }
+                    persistence:
+                        # the driver can be orm, mongodb or propel
+                        driver: orm
+                        model: Tms\Bundle\FaqBundle\Entity\Question
+                        provider: ~
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        listener:
+                            immediate: ~
+                        finder: ~

@@ -56,21 +56,22 @@ class ApiQuestionController extends FOSRestController
     )
     {
         $ids = array();
+        $elasticaType = $this->get('fos_elastica.index.tms_faq.question');
         if (isset($tags[0])) {
-            // Create the ElasticSearch Query
-            $queryParts = array();
+            $queryBool = new \Elastica\Query\Bool();
             foreach ($tags as $tag) {
-                $queryParts[] = sprintf('tags: %s', $tag);
+                $queryTerm = new \Elastica\Query\Term();
+                $queryTerm->setTerm('tagsValue', $tag);
+                $queryBool->addShould($queryTerm);
             }
-            $query = implode(" OR ", $queryParts);
-            $data = $this->container
-                ->get('tms_search.handler')
-                ->search('tms_faq_question', $query)
-            ;
 
-            // Retrieve question id's from the search result
-            foreach ($data['data'] as $question) {
-                $ids[] = $question['id'];
+            $query = new \Elastica\Query();
+            $query->setQuery($queryBool);
+            $query->setLimit($limit);
+
+            $resultSet = $elasticaType->search($query);
+            foreach ($resultSet as $result) {
+                $ids[] = $result->getId();
             }
         }
 
