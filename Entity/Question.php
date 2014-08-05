@@ -73,7 +73,10 @@ class Question implements MetadatableInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="QuestionCategory", inversedBy="questions")
-     * @ORM\JoinTable(name="faq_question_question_categories")
+     * @ORM\JoinTable(name="faq_question_question_categories",
+     *     joinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id", onDelete="cascade")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="cascade")}
+     * )
      */
     private $categories;
 
