@@ -183,7 +183,8 @@ class ApiFaqController extends FOSRestController
                     ->create(
                         'orm_collection',
                         $this->getRequest()->get('_route'),
-                        $this->getRequest()->getRequestFormat()
+                        $this->getRequest()->getRequestFormat(),
+                        array('id' => $id)
                     )
                     ->setObjectManager(
                         $this->get('doctrine.orm.entity_manager'),
@@ -260,7 +261,8 @@ class ApiFaqController extends FOSRestController
                     ->create(
                         'orm_collection',
                         $this->getRequest()->get('_route'),
-                        $this->getRequest()->getRequestFormat()
+                        $this->getRequest()->getRequestFormat(),
+                        array('id' => $id)
                     )
                     ->setObjectManager(
                         $this->get('doctrine.orm.entity_manager'),
