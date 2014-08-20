@@ -31,7 +31,8 @@ class ApiQuestionController extends FOSRestController
      *
      * @QueryParam(name="faq_id", requirements="\d+", strict=true, nullable=true, description="(optional) Faq id")
      * @QueryParam(name="question_category_id", requirements="\d+", strict=true, nullable=true, description="(optional) Question category id")
-     * @QueryParam(name="tags", array=true, nullable=true, description="(optional) Question tags" )
+     * @QueryParam(name="tags", array=true, nullable=true, description="(optional) Question tags")
+     * @QueryParam(name="search", nullable=true, description="(optional) Question full text search")
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
      * @QueryParam(name="page", requirements="\d+", strict=true, nullable=true, description="(optional) Page number")
@@ -40,6 +41,7 @@ class ApiQuestionController extends FOSRestController
      * @param integer $faq_id
      * @param string  $question_category_id
      * @param array   $tags
+     * @param string  $search
      * @param integer $limit
      * @param integer $offset
      * @param integer $page
@@ -49,6 +51,7 @@ class ApiQuestionController extends FOSRestController
         $faq_id               = null,
         $question_category_id = null,
         $tags                 = array(),
+        $search               = null,
         $limit                = null,
         $offset               = null,
         $page                 = null,
@@ -57,14 +60,26 @@ class ApiQuestionController extends FOSRestController
     {
         $ids = array();
         $elasticaType = $this->get('fos_elastica.index.tms_faq.question');
+        $queryBool = new \Elastica\Query\Bool();
+        $isQueryable = false;
+
         if (isset($tags[0])) {
-            $queryBool = new \Elastica\Query\Bool();
+            $isQueryable = true;
             foreach ($tags as $tag) {
                 $queryTerm = new \Elastica\Query\Term();
                 $queryTerm->setTerm('tagsValue', $tag);
                 $queryBool->addShould($queryTerm);
             }
+        }
 
+        if (null !== $search) {
+            $isQueryable = true;
+            $queryString = new \Elastica\Query\QueryString();
+            $queryString->setQuery($search);
+            $queryBool->addShould($queryString);
+        }
+
+        if ($isQueryable) {
             $query = new \Elastica\Query();
             $query->setQuery($queryBool);
             $query->setLimit($limit);
