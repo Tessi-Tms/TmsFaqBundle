@@ -19,6 +19,7 @@ class QuestionType extends AbstractType
             ->add('answer', 'wysiwyg_textarea')
             ->add('categories')
             ->add('tags', 'related_to_many_metadata_tags')
+            ->add('faq')
         ;
     }
 
