@@ -4,19 +4,19 @@ Tms\Bundle\FaqBundle\Entity\QuestionCategory:
     properties:
         id:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
         name:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
         slug:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
-        questions:
+        icon:
             expose: true
-            groups: [tms_rest.item]
+            groups: [tms_rest.item, tms_modelio]
 
     virtual_properties:
         getTags:

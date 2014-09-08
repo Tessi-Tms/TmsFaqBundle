@@ -4,21 +4,30 @@ Tms\Bundle\FaqBundle\Entity\Faq:
     properties:
         id:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
         title:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
         enabled:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
+
+        hash:
+            expose: true
+            groups: [tms_rest.item, tms_modelio]
+
+        objectClassName:
+            expose: true
+            groups: [tms_rest.item, tms_modelio]
+            serialized_name: objectClassName
+
+        objectId:
+            expose: true
+            groups: [tms_rest.item, tms_modelio]
+            serialized_name: objectId
 
         categories:
             expose: true
             groups: [tms_rest.item]
-
-        customerId:
-            expose: true
-            groups: [tms_rest.collection, tms_rest.item]
-            serialized_name: customerId

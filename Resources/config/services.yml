@@ -17,10 +17,3 @@ services:
     tms_faq.manager.consumer_search:
         class: Tms\Bundle\FaqBundle\Manager\ConsumerSearchManager
         arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
-
-    ## Event subscriber
-    tms_faq.subscriber.evaluation_subscriber:
-        class: Tms\Bundle\FaqBundle\Event\Subscriber\EvaluationSubscriber
-        arguments: [@tms_faq.manager.question]
-        tags:
-            - { name: kernel.event_subscriber }

@@ -4,30 +4,30 @@ Tms\Bundle\FaqBundle\Entity\Question:
     properties:
         id:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
         question:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
         answer:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
         average:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
         countYep:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
             serialized_name: countYep
 
         countNope:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
             serialized_name: countNope
 
         tags:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]

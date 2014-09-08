@@ -4,13 +4,13 @@ Tms\Bundle\FaqBundle\Entity\Evaluation:
     properties:
         id:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
         value:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
 
         createdAt:
             expose: true
-            groups: [tms_rest.collection, tms_rest.item]
+            groups: [tms_rest.collection, tms_rest.item, tms_modelio]
             serialized_name: createdAt

@@ -72,7 +72,7 @@ class Question implements MetadatableInterface
     private $faq;
 
     /**
-     * @ORM\ManyToMany(targetEntity="QuestionCategory", inversedBy="questions")
+     * @ORM\ManyToMany(targetEntity="QuestionCategory", inversedBy="questions", cascade={"all"})
      * @ORM\JoinTable(name="faq_question_question_categories",
      *     joinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id", onDelete="cascade")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="cascade")}
@@ -161,6 +161,9 @@ class Question implements MetadatableInterface
 
     /**
      * Update average
+     *
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
      */
     public function updateAverage()
     {
