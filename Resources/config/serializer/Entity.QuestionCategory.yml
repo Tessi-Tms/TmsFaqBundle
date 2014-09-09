@@ -18,6 +18,10 @@ Tms\Bundle\FaqBundle\Entity\QuestionCategory:
             expose: true
             groups: [tms_rest.item, tms_modelio]
 
+        questions:
+            expose: true
+            groups: [tms_rest.item]
+
     virtual_properties:
         getTags:
             groups: [tms_rest.collection, tms_rest.item]
