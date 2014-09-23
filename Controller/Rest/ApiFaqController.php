@@ -113,7 +113,7 @@ class ApiFaqController extends FOSRestController
                         'item',
                         $this->getRequest()->get('_route'),
                         $this->getRequest()->getRequestFormat(),
-                        $id
+                         array('id' => $id)
                     )
                     ->setObjectManager(
                         $this->get('doctrine.orm.entity_manager'),
@@ -199,9 +199,7 @@ class ApiFaqController extends FOSRestController
                         'api_faq_question_category_get_questioncategory'
                     )
                     ->setCriteria(array(
-                        'faq' => array(
-                            'id' => $id
-                        )
+                        'faq' => $id
                     ))
                     ->setSort($sort)
                     ->setLimit($limit)

@@ -26,7 +26,7 @@
         "twig/twig": "*",
         "idci/simple-metadata-bundle": "1.0.*",
         "friendsofsymfony/elastica-bundle": "3.0.*@alpha",
-        "tms/rest-bundle": "1.1.*"
+        "tms/rest-bundle": "1.2.*"
     },
     "autoload": {
         "psr-0": { "Tms\\Bundle\\FaqBundle": "" }

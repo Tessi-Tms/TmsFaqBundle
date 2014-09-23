@@ -106,7 +106,7 @@ class ApiEvaluationController extends FOSRestController
                         'item',
                         $this->getRequest()->get('_route'),
                         $this->getRequest()->getRequestFormat(),
-                        $id
+                        array('id' => $id)
                     )
                     ->setObjectManager(
                         $this->get('doctrine.orm.entity_manager'),
@@ -187,9 +187,7 @@ class ApiEvaluationController extends FOSRestController
                         'api_faq_question_get_question'
                     )
                     ->setCriteria(array(
-                        'evaluations' => array(
-                            'id' => $id
-                        )
+                        'evaluations' => $id
                     ))
                     ->setSort($sort)
                     ->setLimit($limit)
@@ -254,7 +252,6 @@ class ApiEvaluationController extends FOSRestController
                 array('message' => $e->getMessage()),
                 Codes::HTTP_INTERNAL_SERVER_ERROR
             ));
-
         }
 
         return $this->handleView($this->view(
