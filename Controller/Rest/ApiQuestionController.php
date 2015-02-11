@@ -107,6 +107,9 @@ class ApiQuestionController extends FOSRestController
                 'faq'        => $faq_id,
                 'categories' => array('id' => $question_category_id)
             ))
+            ->setExtraQuery(array(
+                'faq_id' => $faq_id
+            ))
             ->setSort($sort)
             ->setLimit($limit)
             ->setOffset($offset)

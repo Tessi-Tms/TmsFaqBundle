@@ -50,7 +50,7 @@ class ApiFaqController extends FOSRestController
         $sort        = null
     )
     {
-        $hash = null;
+        $hash = false;
         if (null !== $customer_id) {
             $customer = $this->get('tms_operation.manager.customer')->findOneById($customer_id);
             if (null !== $customer) {
