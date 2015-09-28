@@ -16,7 +16,8 @@ use Tms\Bundle\FaqBundle\Tools\StringTools;
  *
  * @ORM\Entity(repositoryClass="\Tms\Bundle\FaqBundle\Entity\Repository\QuestionCategoryRepository")
  * @ORM\Table(name="faq_question_category", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="faq_question_category", columns={"name","faq_id"})
+ *     @ORM\UniqueConstraint(name="faq_question_category_name", columns={"name", "faq_id"}),
+ *     @ORM\UniqueConstraint(name="faq_question_category_slug", columns={"slug", "faq_id"})
  * })
  * @ORM\HasLifecycleCallbacks()
  */
@@ -41,7 +42,7 @@ class QuestionCategory
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=128, unique=true)
+     * @ORM\Column(type="string", length=128)
      */
     private $slug;
 
