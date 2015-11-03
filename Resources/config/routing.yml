@@ -5,12 +5,6 @@ faq:
     resource:     Tms\Bundle\FaqBundle\Controller\Rest\ApiFaqController
     name_prefix:  api_faq_
 
-question_category:
-    type:         rest
-    resource:     Tms\Bundle\FaqBundle\Controller\Rest\ApiQuestionCategoryController
-    name_prefix:  api_faq_question_category_
-    prefix:       /faq
-
 question:
     type:         rest
     resource:     Tms\Bundle\FaqBundle\Controller\Rest\ApiQuestionController

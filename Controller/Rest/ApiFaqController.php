@@ -27,14 +27,12 @@ class ApiFaqController extends FOSRestController
      * [GET] /faqs
      * Retrieve a set of Faq
      *
-     * @QueryParam(name="customer_id", nullable=true, description="(optional) Customer")
      * @QueryParam(name="enabled", requirements="[0,1]", nullable=true, description="(optional) enabled Customer")
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
      * @QueryParam(name="page", requirements="\d+", strict=true, nullable=true, description="(optional) Page number")
      * @QueryParam(name="sort", array=true, nullable=true, description="(optional) Sort")
      *
-     * @param integer $customer_id
      * @param string  $enabled
      * @param integer $limit
      * @param integer $offset
@@ -42,7 +40,6 @@ class ApiFaqController extends FOSRestController
      * @param array   $sort
      */
     public function getFaqsAction(
-        $customer_id = null,
         $enabled     = null,
         $limit       = null,
         $offset      = null,
@@ -50,14 +47,6 @@ class ApiFaqController extends FOSRestController
         $sort        = null
     )
     {
-        $hash = false;
-        if (null !== $customer_id) {
-            $customer = $this->get('tms_operation.manager.customer')->findOneById($customer_id);
-            if (null !== $customer) {
-                $hash = $this->get('tms_faq.manager.faq')->generateHash($customer);
-            }
-        }
-
         $view = $this->view(
             $this
                 ->get('tms_rest.formatter.factory')
@@ -73,7 +62,9 @@ class ApiFaqController extends FOSRestController
                         ->getEntityClass()
                 )
                 ->setCriteria(array(
-                    'hash'    => $hash,
+                    'enabled' => isset($enabled) ? (bool)$enabled : null
+                ))
+                ->setExtraQuery(array(
                     'enabled' => isset($enabled) ? (bool)$enabled : null
                 ))
                 ->setSort($sort)
@@ -113,7 +104,7 @@ class ApiFaqController extends FOSRestController
                         'item',
                         $this->getRequest()->get('_route'),
                         $this->getRequest()->getRequestFormat(),
-                         array('id' => $id)
+                        array('id' => $id)
                     )
                     ->setObjectManager(
                         $this->get('doctrine.orm.entity_manager'),
@@ -196,7 +187,8 @@ class ApiFaqController extends FOSRestController
                         $this
                             ->get('tms_faq.manager.question_category')
                             ->getEntityClass(),
-                        'api_faq_question_category_get_questioncategory'
+                        'api_faq_get_faq_questioncategory',
+                        array('faq_id' => $id)
                     )
                     ->setCriteria(array(
                         'faq' => $id
@@ -228,17 +220,74 @@ class ApiFaqController extends FOSRestController
     }
 
     /**
+     * [GET] /faqs/{faq_id}/questioncategories/{id}
+     * Retrieve a question category of a faq
+     *
+     * @Route(requirements={"faq_id" = "\d+", "id" = "\d+"})
+     *
+     * @param integer $faq_id
+     * @param integer $id
+     */
+    public function getFaqQuestioncategoryAction($faq_id, $id)
+    {
+        try {
+            $view = $this->view(
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'item',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat(),
+                        array(
+                            'faq_id' => $faq_id,
+                            'id'     => $id,
+                        ),
+                        array('id' => $id)
+                    )
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.question_category')
+                            ->getEntityClass()
+                    )
+                    ->format()
+                ,
+                Codes::HTTP_OK
+            );
+
+            $serializationContext = SerializationContext::create()
+                ->setGroups(array(
+                    AbstractHypermediaFormatter::SERIALIZER_CONTEXT_GROUP_ITEM
+                ))
+            ;
+            $view->setSerializationContext($serializationContext);
+
+            return $this->handleView($view);
+
+        } catch(NotFoundHttpException $e) {
+            return $this->handleView($this->view(
+                array(),
+                $e->getStatusCode()
+            ));
+        }
+    }
+
+    /**
      * [GET] /faqs/{id}/questions
      * Retrieve question of a faq
      *
      * @Route(requirements={"id" = "\d+"})
      *
+     * @QueryParam(name="tags", array=true, nullable=true, description="(optional) Question tags")
+     * @QueryParam(name="search", nullable=true, description="(optional) Question full text search")
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
      * @QueryParam(name="offset", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination offset")
      * @QueryParam(name="page", requirements="\d+", strict=true, nullable=true, description="(optional) Page number")
      * @QueryParam(name="sort", array=true, nullable=true, description="(optional) Sort")
      *
      * @param integer $id
+     * @param array   $tags
+     * @param string  $search
      * @param integer $limit
      * @param integer $offset
      * @param integer $page
@@ -246,6 +295,8 @@ class ApiFaqController extends FOSRestController
      */
     public function getFaqQuestionsAction(
         $id,
+        $tags   = array(),
+        $search = null,
         $limit  = null,
         $offset = null,
         $page   = null,
@@ -253,6 +304,38 @@ class ApiFaqController extends FOSRestController
     )
     {
         try {
+            $ids = array();
+            $elasticaType = $this->get('fos_elastica.index.tms_faq.question');
+            $queryBool = new \Elastica\Query\Bool();
+            $isQueryable = false;
+
+            if (isset($tags[0])) {
+                $isQueryable = true;
+                foreach ($tags as $tag) {
+                    $queryTerm = new \Elastica\Query\Term();
+                    $queryTerm->setTerm('tagsValue', $tag);
+                    $queryBool->addShould($queryTerm);
+                }
+            }
+
+            if (null !== $search) {
+                $isQueryable = true;
+                $queryString = new \Elastica\Query\QueryString();
+                $queryString->setQuery($search);
+                $queryBool->addShould($queryString);
+            }
+
+            if ($isQueryable) {
+                $query = new \Elastica\Query();
+                $query->setQuery($queryBool);
+                $query->setLimit($limit);
+
+                $resultSet = $elasticaType->search($query);
+                foreach ($resultSet as $result) {
+                    $ids[] = $result->getId();
+                }
+            }
+
             $view = $this->view(
                 $this
                     ->get('tms_rest.formatter.factory')
@@ -275,9 +358,12 @@ class ApiFaqController extends FOSRestController
                         'api_faq_question_get_question'
                     )
                     ->setCriteria(array(
-                        'faq' => array(
-                            'id' => $id
-                        )
+                        'id'  => $ids,
+                        'faq' => $id,
+                    ))
+                    ->setExtraQuery(array(
+                        'tags'   => $tags,
+                        'search' => $search,
                     ))
                     ->setSort($sort)
                     ->setLimit($limit)
@@ -291,6 +377,61 @@ class ApiFaqController extends FOSRestController
             $serializationContext = SerializationContext::create()
                 ->setGroups(array(
                     AbstractHypermediaFormatter::SERIALIZER_CONTEXT_GROUP_COLLECTION
+                ))
+            ;
+            $view->setSerializationContext($serializationContext);
+
+            return $this->handleView($view);
+
+        } catch(NotFoundHttpException $e) {
+            return $this->handleView($this->view(
+                array(),
+                $e->getStatusCode()
+            ));
+        }
+    }
+
+    /**
+     * [GET] /faqs/{faq_id}/questions/{id}
+     * Retrieve a Question of a faq
+     *
+     * @Route(requirements={"faq_id" = "\d+", "id" = "\d+"})
+     *
+     * @param integer $id
+     */
+    public function getFaqQuestionAction($faq_id, $id)
+    {
+        try {
+            $view = $this->view(
+                $this
+                    ->get('tms_rest.formatter.factory')
+                    ->create(
+                        'item',
+                        $this->getRequest()->get('_route'),
+                        $this->getRequest()->getRequestFormat(),
+                        array(
+                            'faq_id' => $faq_id,
+                            'id'     => $id,
+                        )
+                    )
+                    ->setObjectManager(
+                        $this->get('doctrine.orm.entity_manager'),
+                        $this
+                            ->get('tms_faq.manager.question')
+                            ->getEntityClass()
+                    )
+                    ->addEmbedded(
+                        'evaluations',
+                        'api_faq_question_get_question_evaluations'
+                    )
+                    ->format()
+                ,
+                Codes::HTTP_OK
+            );
+
+            $serializationContext = SerializationContext::create()
+                ->setGroups(array(
+                    AbstractHypermediaFormatter::SERIALIZER_CONTEXT_GROUP_ITEM
                 ))
             ;
             $view->setSerializationContext($serializationContext);
