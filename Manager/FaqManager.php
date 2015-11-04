@@ -113,7 +113,7 @@ class FaqManager extends AbstractManager
     public function generateHash(FaqOwnerInterface $faqOwner)
     {
         return md5(sprintf('%s - %s',
-            $this->getClassName($faqOwner),
+            \Doctrine\Common\Util\ClassUtils::getRealClass($this->getClassName($faqOwner)),
             $faqOwner->getId()
         ));
     }
