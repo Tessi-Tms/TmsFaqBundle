@@ -278,6 +278,7 @@ class ApiFaqController extends FOSRestController
      *
      * @Route(requirements={"id" = "\d+"})
      *
+     * @QueryParam(name="question_category_id", requirements="\d+", strict=true, nullable=true, description="(optional) Question category id")
      * @QueryParam(name="tags", array=true, nullable=true, description="(optional) Question tags")
      * @QueryParam(name="search", nullable=true, description="(optional) Question full text search")
      * @QueryParam(name="limit", requirements="\d+", strict=true, nullable=true, description="(optional) Pagination limit")
@@ -286,6 +287,7 @@ class ApiFaqController extends FOSRestController
      * @QueryParam(name="sort", array=true, nullable=true, description="(optional) Sort")
      *
      * @param integer $id
+     * @param string  $question_category_id
      * @param array   $tags
      * @param string  $search
      * @param integer $limit
@@ -295,12 +297,13 @@ class ApiFaqController extends FOSRestController
      */
     public function getFaqQuestionsAction(
         $id,
-        $tags   = array(),
-        $search = null,
-        $limit  = null,
-        $offset = null,
-        $page   = null,
-        $sort   = null
+        $question_category_id = null,
+        $tags                 = array(),
+        $search               = null,
+        $limit                = null,
+        $offset               = null,
+        $page                 = null,
+        $sort                 = null
     )
     {
         try {
@@ -358,8 +361,9 @@ class ApiFaqController extends FOSRestController
                         'api_faq_question_get_question'
                     )
                     ->setCriteria(array(
-                        'id'  => $ids,
-                        'faq' => $id,
+                        'id'         => $ids,
+                        'faq'        => $id,
+                        'categories' => array('id' => $question_category_id)
                     ))
                     ->setExtraQuery(array(
                         'tags'   => $tags,
