@@ -17,3 +17,9 @@ services:
     tms_faq.manager.consumer_search:
         class: Tms\Bundle\FaqBundle\Manager\ConsumerSearchManager
         arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+
+    tms_faq.event.subscriber.serializer:
+        class: Tms\Bundle\FaqBundle\Event\Subscriber\SerializerSubscriber
+        arguments: [@tms_faq.manager.faq]
+        tags:
+            - { name: jms_serializer.event_subscriber }
