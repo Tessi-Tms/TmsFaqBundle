@@ -13,10 +13,10 @@ class FaqSubscriberCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $dispatcherDefinition = $container->getDefinition('event_dispatcher');
+        $dispatcherDefinition = $container->findDefinition('event_dispatcher');
 
         $taggedServices = $container->findTaggedServiceIds('tms_faq.event.subscriber');
-        foreach ($taggedServices as $id => $tagAttributes) 
+        foreach ($taggedServices as $id => $tagAttributes)
         {
             $dispatcherDefinition->addMethodCall(
                 'addSubscriber',
