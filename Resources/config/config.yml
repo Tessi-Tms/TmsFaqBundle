@@ -26,6 +26,5 @@ fos_elastica:
                         provider: ~
                         # listener and finder are not supported by
                         # propel and should be removed
-                        listener:
-                            immediate: ~
+                        listener: ~
                         finder: ~
