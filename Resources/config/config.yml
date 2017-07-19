@@ -16,9 +16,9 @@ fos_elastica:
                     mappings:
                         faqId:        ~
                         categoriesId: ~
-                        tagsValue:    { boost: 5 }
-                        question:     { boost: 3 }
-                        answer:       { boost: 1 }
+                        tagsValue:    { type: text, boost: 5 }
+                        question:     { type: text, boost: 3 }
+                        answer:       { type: text, boost: 1 }
                     persistence:
                         # the driver can be orm, mongodb or propel
                         driver: orm
