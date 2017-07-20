@@ -331,7 +331,7 @@ class ApiFaqController extends FOSRestController
             if ($isQueryable) {
                 $query = new \Elastica\Query();
                 $query->setQuery($queryBool);
-                $query->setLimit($limit);
+                $query->setSize($limit);
 
                 $resultSet = $elasticaType->search($query);
                 foreach ($resultSet as $result) {
