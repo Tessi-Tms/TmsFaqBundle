@@ -13,7 +13,7 @@ fos_elastica:
         tms_faq:
             types:
                 question:
-                    mappings:
+                    properties:
                         faqId:        ~
                         categoriesId: ~
                         tagsValue:    { type: text, boost: 5 }
