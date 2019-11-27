@@ -16,6 +16,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/Tessi-Tms/TmsRestBundle.git"
+        },
+        {
+           "type": "vcs",
+           "url": "https://github.com/Tessi-Tms/FOSElasticaBundle.git"
         }
     ],
     "require": {
@@ -25,7 +29,7 @@
         "doctrine/doctrine-bundle":         "~1.2",
         "twig/twig":                        "~1.0",
         "idci/simple-metadata-bundle":      "~1.0",
-        "friendsofsymfony/elastica-bundle": "~4.0",
+        "friendsofsymfony/elastica-bundle": "dev-master",
         "tms/rest-bundle":                  "~1.2"
     },
     "autoload": {
