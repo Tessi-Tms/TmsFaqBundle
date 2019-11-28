@@ -1,25 +1,30 @@
 services:
     tms_faq.manager.faq:
         class: Tms\Bundle\FaqBundle\Manager\FaqManager
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
+
     tms_faq.manager.question:
         class: Tms\Bundle\FaqBundle\Manager\QuestionManager
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
+
     tms_faq.manager.question_category:
         class: Tms\Bundle\FaqBundle\Manager\QuestionCategoryManager
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
+
     tms_faq.manager.response:
         class: Tms\Bundle\FaqBundle\Manager\ResponseManager
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
+
     tms_faq.manager.evaluation:
         class: Tms\Bundle\FaqBundle\Manager\EvaluationManager
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
+
     tms_faq.manager.consumer_search:
         class: Tms\Bundle\FaqBundle\Manager\ConsumerSearchManager
-        arguments: [@doctrine.orm.entity_manager, @event_dispatcher]
+        arguments: ["@doctrine.orm.entity_manager", "@event_dispatcher"]
 
     tms_faq.event.subscriber.serializer:
         class: Tms\Bundle\FaqBundle\Event\Subscriber\SerializerSubscriber
-        arguments: [@tms_faq.manager.faq]
+        arguments: ["@tms_faq.manager.faq"]
         tags:
             - { name: jms_serializer.event_subscriber }

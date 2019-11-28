@@ -7,8 +7,8 @@ idci_simple_metadata:
 fos_elastica:
     clients:
         default:
-          host: %elasticsearch_host%
-          port: %elasticsearch_port%
+          host: "%elasticsearch_host%"
+          port: "%elasticsearch_port%"
     indexes:
         tms_faq:
             types:
