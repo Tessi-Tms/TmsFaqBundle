@@ -27,10 +27,18 @@ class FaqQuestionCategoryType extends QuestionCategoryType
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'tms_bundle_faqbundle_faqquestioncategorytype';
+    }
+
+    /**
      * @return string
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_faqquestioncategorytype';
+        return $this->getBlockPrefix();
     }
 }

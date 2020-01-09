@@ -5,6 +5,7 @@ namespace Tms\Bundle\FaqBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tms\Bundle\MediaClientBundle\Form\Type\RelatedToOneMediaType;
 
 class QuestionCategoryType extends AbstractType
 {
@@ -16,7 +17,7 @@ class QuestionCategoryType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('icon', 'related_to_one_media', array(
+            ->add('icon', RelatedToOneMediaType::class, array(
                 'data' => $builder->getData()->getIcon()
             ))
             ->add('faq')

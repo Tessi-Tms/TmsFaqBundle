@@ -3,34 +3,14 @@
 namespace Tms\Bundle\FaqBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type as Types;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Tms\Bundle\FaqBundle\Manager\FaqManager;
 
 class FaqType extends AbstractType
 {
-    protected $faqManager;
-
-    /**
-     * Constructor
-     *
-     * @param FaqManager $faqManager
-     */
-    public function __construct(FaqManager $faqManager)
-    {
-        $this->faqManager = $faqManager;
-    }
-
-    /**
-     * Get faq manager
-     *
-     * @return FaqManager
-     */
-    public function getFaqManager()
-    {
-        return $this->faqManager;
-    }
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -41,16 +21,31 @@ class FaqType extends AbstractType
 
         $builder
             ->add('title')
-            ->add('enabled', 'checkbox', array('required' => false))
-            ->add('objectClassName', 'hidden', array(
-                'data' => $this->getFaqManager()->getClassName($object)
+            ->add('enabled', Types\CheckboxType::class, array('required' => false))
+            ->add('objectClassName', Types\HiddenType::class, array(
+                'data' => $options['manager']->getClassName($object)
             ))
-            ->add('objectId', 'hidden', array(
+            ->add('objectId', Types\HiddenType::class, array(
                 'data' => $object->getId()
             ))
-            ->add('hash', 'hidden', array(
-                'data' => $this->getFaqManager()->generateHash($object)
+            ->add('hash', Types\HiddenType::class, array(
+                'data' => $options['manager']->generateHash($object)
             ))
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefaults(array(
+                'data_class' => 'Tms\Bundle\FaqBundle\Entity\Faq',
+            ))
+            ->setRequired(array('object', 'manager'))
+            ->setAllowedTypes('object', 'Tms\Bundle\FaqBundle\FaqOwnerInterface')
+            ->setAllowedTypes('manager', 'Tms\Bundle\FaqBundle\Manager\FaqManager')
         ;
     }
 
@@ -59,13 +54,15 @@ class FaqType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver
-            ->setDefaults(array(
-                'data_class' => 'Tms\Bundle\FaqBundle\Entity\Faq',
-            ))
-            ->setRequired(array('object'))
-            ->setAllowedTypes(array('object' => 'Tms\Bundle\FaqBundle\FaqOwnerInterface'))
-        ;
+        $this->configureOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'tms_bundle_faqbundle_faqtype';
     }
 
     /**
@@ -73,6 +70,6 @@ class FaqType extends AbstractType
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_faqtype';
+        return $this->getBlockPrefix();
     }
 }

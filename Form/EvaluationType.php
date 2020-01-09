@@ -31,10 +31,18 @@ class EvaluationType extends AbstractType
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'tms_bundle_faqbundle_evaluationtype';
+    }
+
+    /**
      * @return string
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_evaluationtype';
+        return $this->getBlockPrefix();
     }
 }

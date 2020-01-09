@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Tms\Bundle\FaqBundle\Exception\MissingRelatedEntityException;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class FaqQuestionType extends QuestionType
 {
@@ -23,7 +24,7 @@ class FaqQuestionType extends QuestionType
 
         parent::buildForm($builder, $options);
         $builder
-            ->add('categories', 'entity', array(
+            ->add('categories', EntityType::class, array(
                 'multiple' => true,
                 'expanded' => true,
                 'class' => 'TmsFaqBundle:QuestionCategory',
@@ -40,10 +41,18 @@ class FaqQuestionType extends QuestionType
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'tms_bundle_faqbundle_faqquestiontype';
+    }
+
+    /**
      * @return string
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_faqquestiontype';
+        return $this->getBlockPrefix();
     }
 }

@@ -2,9 +2,13 @@
 
 namespace Tms\Bundle\FaqBundle\Form;
 
+use IDCI\Bundle\SimpleMetadataBundle\Form\Type\RelatedToManyMetadataType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Tms\Bundle\MediaClientBundle\Form\Type\RelatedToOneMediaType;
+use Tms\Bundle\WebAdminTemplateBundle\Form\Type\WysiwygTextareaType;
 
 class QuestionType extends AbstractType
 {
@@ -15,18 +19,18 @@ class QuestionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('question', 'wysiwyg_textarea')
-            ->add('answer', 'wysiwyg_textarea')
+            ->add('question', WysiwygTextareaType::class)
+            ->add('answer', WysiwygTextareaType::class)
             ->add('categories')
-            ->add('tags', 'related_to_many_metadata_tags')
+            ->add('tags', RelatedToManyMetadataType::class)
             ->add('faq')
         ;
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Tms\Bundle\FaqBundle\Entity\Question'
@@ -34,10 +38,26 @@ class QuestionType extends AbstractType
     }
 
     /**
+     * @param OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'tms_bundle_faqbundle_questiontype';
+    }
+
+    /**
      * @return string
      */
     public function getName()
     {
-        return 'tms_bundle_faqbundle_questiontype';
+        return $this->getBlockPrefix();
     }
 }
