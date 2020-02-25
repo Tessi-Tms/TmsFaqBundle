@@ -45,6 +45,7 @@ class ApiEvaluationController extends FOSRestController
      * @param array   $sort
      */
     public function getEvaluationsAction(
+        Request $request,
         $question_id = null,
         $limit       = null,
         $offset      = null,
@@ -57,8 +58,8 @@ class ApiEvaluationController extends FOSRestController
                 ->get('tms_rest.formatter.factory')
                 ->create(
                     'orm_collection',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat()
+                    $request->get('_route'),
+                    $request->getRequestFormat()
                 )
                 ->setObjectManager(
                     $this->get('doctrine.orm.entity_manager'),
@@ -96,7 +97,7 @@ class ApiEvaluationController extends FOSRestController
      *
      * @param integer $id
      */
-    public function getEvaluationAction($id)
+    public function getEvaluationAction(Request $request, $id)
     {
         try {
             $view = $this->view(
@@ -104,8 +105,8 @@ class ApiEvaluationController extends FOSRestController
                     ->get('tms_rest.formatter.factory')
                     ->create(
                         'item',
-                        $this->getRequest()->get('_route'),
-                        $this->getRequest()->getRequestFormat(),
+                        $request->get('_route'),
+                        $request->getRequestFormat(),
                         array('id' => $id)
                     )
                     ->setObjectManager(

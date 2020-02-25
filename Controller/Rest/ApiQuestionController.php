@@ -48,6 +48,7 @@ class ApiQuestionController extends FOSRestController
      * @param array   $sort
      */
     public function getQuestionsAction(
+        Request $request,
         $faq_id               = null,
         $question_category_id = null,
         $tags                 = array(),
@@ -93,8 +94,8 @@ class ApiQuestionController extends FOSRestController
         $formatter =  $this->get('tms_rest.formatter.factory')
             ->create(
                 'orm_collection',
-                $this->getRequest()->get('_route'),
-                $this->getRequest()->getRequestFormat()
+                $request->get('_route'),
+                $request->getRequestFormat()
             )
             ->setObjectManager(
                 $this->get('doctrine.orm.entity_manager'),
@@ -139,7 +140,7 @@ class ApiQuestionController extends FOSRestController
      *
      * @param integer $id
      */
-    public function getQuestionAction($id)
+    public function getQuestionAction(Request $request, $id)
     {
         try {
             $view = $this->view(
@@ -147,8 +148,8 @@ class ApiQuestionController extends FOSRestController
                     ->get('tms_rest.formatter.factory')
                     ->create(
                         'item',
-                        $this->getRequest()->get('_route'),
-                        $this->getRequest()->getRequestFormat(),
+                        $request->get('_route'),
+                        $request->getRequestFormat(),
                         array('id' => $id)
                     )
                     ->setObjectManager(
@@ -201,6 +202,7 @@ class ApiQuestionController extends FOSRestController
      * @param array   $sort
      */
     public function getQuestionEvaluationsAction(
+        Request $request,
         $id,
         $limit  = null,
         $offset = null,
@@ -214,8 +216,8 @@ class ApiQuestionController extends FOSRestController
                     ->get('tms_rest.formatter.factory')
                     ->create(
                         'orm_collection',
-                        $this->getRequest()->get('_route'),
-                        $this->getRequest()->getRequestFormat(),
+                        $request->get('_route'),
+                        $request->getRequestFormat(),
                         array('id' => $id)
                     )
                     ->setObjectManager(
@@ -268,7 +270,7 @@ class ApiQuestionController extends FOSRestController
      * @param integer $id
      * @param integer $value
      */
-    public function patchQuestionYepNopeAction($id, $value)
+    public function patchQuestionYepNopeAction(Request $request, $id, $value)
     {
         $entity = $this->get('tms_faq.manager.question')->findOneById($id);
         if (!$entity) {

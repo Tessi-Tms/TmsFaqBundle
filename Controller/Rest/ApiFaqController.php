@@ -40,6 +40,7 @@ class ApiFaqController extends FOSRestController
      * @param array   $sort
      */
     public function getFaqsAction(
+        Request $request,
         $enabled     = null,
         $limit       = null,
         $offset      = null,
@@ -52,8 +53,8 @@ class ApiFaqController extends FOSRestController
                 ->get('tms_rest.formatter.factory')
                 ->create(
                     'orm_collection',
-                    $this->getRequest()->get('_route'),
-                    $this->getRequest()->getRequestFormat()
+                    $request->get('_route'),
+                    $request->getRequestFormat()
                 )
                 ->setObjectManager(
                     $this->get('doctrine.orm.entity_manager'),
@@ -94,7 +95,7 @@ class ApiFaqController extends FOSRestController
      *
      * @param integer $id
      */
-    public function getFaqAction($id)
+    public function getFaqAction(Request $request, $id)
     {
         try {
             $view = $this->view(
@@ -102,8 +103,8 @@ class ApiFaqController extends FOSRestController
                     ->get('tms_rest.formatter.factory')
                     ->create(
                         'item',
-                        $this->getRequest()->get('_route'),
-                        $this->getRequest()->getRequestFormat(),
+                        $request->get('_route'),
+                        $request->getRequestFormat(),
                         array('id' => $id)
                     )
                     ->setObjectManager(
@@ -160,6 +161,7 @@ class ApiFaqController extends FOSRestController
      * @param array   $sort
      */
     public function getFaqQuestioncategoriesAction(
+        Request $request,
         $id,
         $limit  = null,
         $offset = null,
@@ -173,8 +175,8 @@ class ApiFaqController extends FOSRestController
                     ->get('tms_rest.formatter.factory')
                     ->create(
                         'orm_collection',
-                        $this->getRequest()->get('_route'),
-                        $this->getRequest()->getRequestFormat(),
+                        $request->get('_route'),
+                        $request->getRequestFormat(),
                         array('id' => $id)
                     )
                     ->setObjectManager(
@@ -228,7 +230,7 @@ class ApiFaqController extends FOSRestController
      * @param integer $faq_id
      * @param integer $id
      */
-    public function getFaqQuestioncategoryAction($faq_id, $id)
+    public function getFaqQuestioncategoryAction(Request $request, $faq_id, $id)
     {
         try {
             $view = $this->view(
@@ -236,8 +238,8 @@ class ApiFaqController extends FOSRestController
                     ->get('tms_rest.formatter.factory')
                     ->create(
                         'item',
-                        $this->getRequest()->get('_route'),
-                        $this->getRequest()->getRequestFormat(),
+                        $request->get('_route'),
+                        $request->getRequestFormat(),
                         array(
                             'faq_id' => $faq_id,
                             'id'     => $id,
@@ -296,6 +298,7 @@ class ApiFaqController extends FOSRestController
      * @param array   $sort
      */
     public function getFaqQuestionsAction(
+        Request $request,
         $id,
         $question_category_id = null,
         $tags                 = array(),
@@ -344,8 +347,8 @@ class ApiFaqController extends FOSRestController
                     ->get('tms_rest.formatter.factory')
                     ->create(
                         'orm_collection',
-                        $this->getRequest()->get('_route'),
-                        $this->getRequest()->getRequestFormat(),
+                        $request->get('_route'),
+                        $request->getRequestFormat(),
                         array('id' => $id)
                     )
                     ->setObjectManager(
@@ -403,7 +406,7 @@ class ApiFaqController extends FOSRestController
      *
      * @param integer $id
      */
-    public function getFaqQuestionAction($faq_id, $id)
+    public function getFaqQuestionAction(Request $request, $faq_id, $id)
     {
         try {
             $view = $this->view(
@@ -411,8 +414,8 @@ class ApiFaqController extends FOSRestController
                     ->get('tms_rest.formatter.factory')
                     ->create(
                         'item',
-                        $this->getRequest()->get('_route'),
-                        $this->getRequest()->getRequestFormat(),
+                        $request->get('_route'),
+                        $request->getRequestFormat(),
                         array(
                             'faq_id' => $faq_id,
                             'id'     => $id,
