@@ -28,3 +28,69 @@ fos_elastica:
                         # propel and should be removed
                         listener: ~
                         finder: ~
+# Model IO
+tms_model_io:
+    models:
+    ## Common
+        metadatas:
+            object_manager: doctrine
+            class: IDCI\Bundle\SimpleMetadataBundle\Entity\Metadata
+            aliases: ["tags"]
+            modes:
+                simple:
+                    - namespace
+                    - key
+                    - value
+                    - objectClassName
+        images:
+            object_manager: doctrine
+            class: Tms\Bundle\MediaClientBundle\Entity\Media
+            aliases: ["icon"]
+            modes:
+                simple:
+                    - publicUri
+                    - mimeType
+                    - providerName
+                    - providerReference
+                    - providerData
+                    - extension
+                    - metadata
+    ## Faq
+        faq:
+            object_manager: doctrine
+            class: Tms\Bundle\FaqBundle\Entity\Faq
+            aliases: ["faq"]
+            modes:
+                full:
+                    - title
+                    - enabled
+                    - hash
+                    - objectClassName
+                    - objectId
+                    - questions: {mode: full}
+                    - categories: {mode: full}
+        question:
+            object_manager: doctrine
+            class: Tms\Bundle\FaqBundle\Entity\Question
+            aliases: ["questions"]
+            modes:
+                full:
+                    - question
+                    - answer
+                    - average
+                    - countYep
+                    - countNope
+                    - tags: {mode: simple}
+                    - categories: {mode: full}
+        question_categories:
+            object_manager: doctrine
+            class: Tms\Bundle\FaqBundle\Entity\QuestionCategory
+            aliases: ["categories"]
+            modes:
+                full:
+                    - name
+                    - slug
+                    - icon: {mode: simple}
+                    - countYep
+                    - countNope
+                    - tags: {mode: simple}

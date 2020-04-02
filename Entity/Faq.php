@@ -64,12 +64,12 @@ class Faq
     private $objectId;
 
     /**
-     * @ORM\OneToMany(targetEntity="QuestionCategory", mappedBy="faq")
+     * @ORM\OneToMany(targetEntity="QuestionCategory", mappedBy="faq", cascade={"all"})
      */
     private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="faq")
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="faq", cascade={"all"})
      */
     private $questions;
 
