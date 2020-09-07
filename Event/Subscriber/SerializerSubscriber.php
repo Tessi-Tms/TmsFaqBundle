@@ -61,13 +61,33 @@ class SerializerSubscriber implements EventSubscriberInterface
 
         if ($object instanceof FaqOwnerInterface) {
             $hash = $this->getFaqManager()->generateHash($object);
-            $faq = $this->getFaqManager()->findOneBy(array('hash' => $hash));
+            $collection = $this->getFaqManager()->findBy(array('hash' => $hash));
 
-            if (null !== $faq) {
-                $event->getVisitor()->addData('faq', array(
-                    'id'      => $faq->getId(),
-                    'enabled' => $faq->getEnabled(),
-                ));
+            if (null !== $collection) {
+                $defaultFaq = false;
+                $faqs = array();
+                foreach ($collection as $faq) {
+                    if (!$faq->getEnabled()) {
+                        continue;
+                    }
+
+                    if (!$defaultFaq) {
+                        $defaultFaq = true;
+                        $event->getVisitor()->addData('faq', array(
+                            'id'      => $faq->getId(),
+                            'enabled' => $faq->getEnabled(),
+                        ));
+                    }
+
+                    $faqs[] = array(
+                        'id'      => $faq->getId(),
+                        'enabled' => $faq->getEnabled(),
+                    );
+                }
+
+                if (!empty($faqs)) {
+                    $event->getVisitor()->addData('faqs', $faqs);
+                }
             }
         }
     }
